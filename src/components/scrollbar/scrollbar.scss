@@ -24,16 +24,13 @@ $scrollbar-track-color: #aeaeae;
 
 .scrollbar {
   position: relative;
-  display: flex;
   overflow: hidden;
   width: 100%;
   max-height: inherit;
   outline: none;
 
   &-content {
-    width: 100%;
-    overflow: hidden;
-    max-height: inherit;
+    flex-grow: 1;
   }
 
   &-bar {
