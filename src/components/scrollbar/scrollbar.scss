@@ -1,0 +1,73 @@
+$scrollbar-track-color: #aeaeae;
+
+@mixin bar-icon($normal, $hover, $disable, $active) {
+  width: (12rem/16);
+  height: (12rem/16);
+  display: inline-block;
+  cursor: pointer;
+  background-image: url($normal);
+
+
+  &:hover {
+    background-image: url($hover);
+  }
+
+  &:active {
+    background-image: url($active);
+  }
+
+  &.disable {
+    cursor: initial;
+    background-image: url($disable);
+  }
+}
+
+.scrollbar {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  max-height: inherit;
+  outline: none;
+
+  &-content {
+    width: 100%;
+    overflow: hidden;
+    max-height: inherit;
+  }
+
+  &-bar {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: (12rem/16);
+    right: 0;
+    height: 100%;
+    background-color: #eaeaea;
+
+    &-body {
+      flex-grow:1;
+      position: relative;
+
+      &-track {
+        position: absolute;
+        background-color: #c0c0c0;
+        width: 100%;
+        border: (1rem/16) solid #c0c0c0;
+
+        &:hover {
+          background-color: #9b9b9b;
+          border: (1rem/16) solid #898989;
+        }
+      }
+    }
+
+    &-up {
+      @include bar-icon('./imgs/w_up_normal.png', './imgs/w_up_over.png', './imgs/w_up_disable.png', './imgs/w_up_press.png');
+    }
+
+    &-down {
+      @include bar-icon('./imgs/w_down_normal.png', './imgs/w_down_over.png', './imgs/w_down_disable.png', './imgs/w_down_press.png');
+    }
+  }
+}

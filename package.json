@@ -1,0 +1,32 @@
+{
+  "name": "react-components",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run-server": "./node_modules/.bin/webpack-dev-server --hot"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "awesome-typescript-loader": "^4.0.1",
+    "css-loader": "^0.28.11",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^3.0.7",
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.7",
+    "source-map-loader": "^0.2.3",
+    "style-loader": "^0.20.3",
+    "typescript": "^2.7.2",
+    "url-loader": "^1.0.1",
+    "webpack": "3.11.0",
+    "webpack-dev-server": "2.11.0"
+  },
+  "dependencies": {
+    "@types/react": "^16.0.40",
+    "@types/react-dom": "^16.0.4",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+  }
+}
