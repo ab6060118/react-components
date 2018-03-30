@@ -40,9 +40,11 @@ export default class Example extends React.Component<any,ExampleState> {
         <div>
           {this.state.element.map((e,index:number) => <div key={index}>{e}</div>)}
         </div>
-        <Scrollbar>
-          <Example1 />
-        </Scrollbar>
+        <div style={{maxHeight: '300px'}}>
+          <Scrollbar>
+            <Example1 />
+          </Scrollbar>
+        </div>
       </div>
     )
   }

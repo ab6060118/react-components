@@ -6,11 +6,9 @@ import Scrollbar from './components/scrollbar/scrollbar';
 export default class App extends React.Component<any, any> {
   render() {
     return (
-      <div style={{maxHeight: '600px'}}>
-        <Scrollbar>
+        <Scrollbar id={1}>
           <Example />
         </Scrollbar>
-      </div>
     )
   }
 }

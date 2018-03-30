@@ -35,7 +35,7 @@ $scrollbar-track-color: #aeaeae;
 
   &-bar {
     position: absolute;
-    display: flex;
+    display: none;
     flex-direction: column;
     width: (12rem/16);
     right: 0;

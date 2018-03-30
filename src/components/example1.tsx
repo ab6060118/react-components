@@ -9,7 +9,7 @@ export default class Example extends React.Component<any,ExampleState> {
   constructor(props:any) {
     super(props)
     this.state = {
-      element: [1,2,3,4,5,6]
+      element: [1,2,3,4,5,61,2,3,4,5,61,2,3,4,5,61,2,3,4,5,6]
     }
   }
 
@@ -37,7 +37,7 @@ export default class Example extends React.Component<any,ExampleState> {
           <button onClick={this.handleRemoveClick.bind(this)}>Delete</button>
         </div>
         <div>
-          {this.state.element.map((e,index:number) => <div key={index}>{e}</div>)}
+          {this.state.element.map((e,index:number) => <div key={index + '2'}>{e}</div>)}
         </div>
       </div>
     )

@@ -20,16 +20,19 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   refs:{[key:string]:HTMLElement}
   moveFirstClickYPoint:number
   originalScrollTop:number
+  lastScrollHeight:number
+  scrollHeightWatcher:any
 
   constructor(props:ScrollbarProps) {
     super(props)
     this.state = {
-      trackAtTop: true,
+      trackAtTop: false,
       trackAtBottom: false
     }
     this.handleWindowResize = this.handleWindowResize.bind(this)
     this.handleMoveTrack = this.handleMoveTrack.bind(this)
     this.handleTrackMouseUp = this.handleTrackMouseUp.bind(this)
+    this.scrollHeightWatch = this.scrollHeightWatch.bind(this)
   }
 
   componentWillMount() {
@@ -42,28 +45,57 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
   componentDidMount() {
     this.updateScrollbar()
+    this.scrollHeightWatcher = window.requestAnimationFrame(this.scrollHeightWatch);
   }
 
   componentDidUpdate(p:any, n:any) {
     this.updateScrollbar()
   }
 
+  scrollHeightWatch() {
+    let { scrollbar } = this.refs
+
+    cancelAnimationFrame(this.scrollHeightWatcher);
+
+    if (this.lastScrollHeight !== scrollbar.scrollHeight) {
+      this.updateScrollbar()
+    }
+
+    this.lastScrollHeight = scrollbar.scrollHeight;
+    this.scrollHeightWatcher = requestAnimationFrame(this.scrollHeightWatch);
+  }
+
   updateScrollbar() {
     let { scrollbar, track, bar } = this.refs
+    let { trackAtTop, trackAtBottom } = this.state
 
     if(scrollbar.scrollHeight !== scrollbar.offsetHeight) {
       bar.style.display = 'flex'
+      bar.style.top = scrollbar.scrollTop + 'px';
+      track.style.top = scrollbar.scrollTop / scrollbar.scrollHeight * 100 + '%'
       track.style.height = scrollbar.offsetHeight / scrollbar.scrollHeight * 100 + '%'
     }
     else {
       bar.style.display = 'none'
+    }
+
+    if(scrollbar.scrollTop === 0 && !trackAtTop) {
+      this.setState({trackAtTop: true})
+    }
+    if(scrollbar.scrollTop !== 0 && trackAtTop) {
+      this.setState({trackAtTop: false})
+    }
+    if(scrollbar.scrollTop + scrollbar.offsetHeight === scrollbar.scrollHeight && !trackAtBottom) {
+      this.setState({trackAtBottom: true})
+    }
+    if(scrollbar.scrollTop + scrollbar.offsetHeight !== scrollbar.scrollHeight && trackAtBottom) {
+      this.setState({trackAtBottom: false})
     }
   }
 
   handleWheelAndKeyup(e:React.WheelEvent<HTMLElement>|React.KeyboardEvent<HTMLElement>) {
     let { scrollbar, track } = this.refs
     let { trackAtTop, trackAtBottom } = this.state
-
 
     if(e.type === 'keydown') {
       let allowKey = [
@@ -104,27 +136,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   }
 
   handleScroll() {
-    let { scrollbar, track, bar } = this.refs
-    let { trackAtTop, trackAtBottom } = this.state
-
-    track.style.top = scrollbar.scrollTop / scrollbar.scrollHeight * 100 + '%'
-    bar.style.top = scrollbar.scrollTop + 'px';
-
-    if(scrollbar.scrollTop === 0 && !trackAtTop) {
-      this.setState({trackAtTop: true})
-    }
-    if(scrollbar.scrollTop !== 0 && trackAtTop) {
-      this.setState({trackAtTop: false})
-    }
-    if(scrollbar.scrollTop + scrollbar.offsetHeight === scrollbar.scrollHeight && !trackAtBottom) {
-      this.setState({trackAtBottom: true})
-    }
-    if(scrollbar.scrollTop + scrollbar.offsetHeight !== scrollbar.scrollHeight && trackAtBottom) {
-      this.setState({trackAtBottom: false})
-    }
+    this.updateScrollbar()
   }
 
-  handleWindowResize() {
+  handleWindowResize(e?:Event) {
     this.updateScrollbar()
   }
 
