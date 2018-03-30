@@ -20,6 +20,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   moveFirstClickYPoint:number
   originalScrollTop:number
   lastScrollHeight:number
+  lastScrollTop:number
   scrollHeightWatcher:any
 
   constructor(props:ScrollbarProps) {
@@ -52,16 +53,21 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   }
 
   scrollHeightWatch() {
-    let { scrollbar } = this.refs
+    let { scrollbar, bar } = this.refs
 
-    cancelAnimationFrame(this.scrollHeightWatcher);
+    cancelAnimationFrame(this.scrollHeightWatcher)
 
     if (this.lastScrollHeight !== scrollbar.scrollHeight) {
       this.updateScrollbar()
     }
 
-    this.lastScrollHeight = scrollbar.scrollHeight;
-    this.scrollHeightWatcher = requestAnimationFrame(this.scrollHeightWatch);
+    if (this.lastScrollTop !== scrollbar.scrollTop) {
+      bar.style.top = scrollbar.scrollTop + 'px';
+    }
+
+    this.lastScrollHeight = scrollbar.scrollHeight
+    this.lastScrollTop = scrollbar.scrollTop
+    this.scrollHeightWatcher = requestAnimationFrame(this.scrollHeightWatch)
   }
 
   updateScrollbar() {
@@ -70,7 +76,6 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
     if(scrollbar.scrollHeight !== scrollbar.offsetHeight) {
       bar.style.display = 'flex'
-      bar.style.top = scrollbar.scrollTop + 'px';
       track.style.top = scrollbar.scrollTop / scrollbar.scrollHeight * 100 + '%'
       track.style.height = scrollbar.offsetHeight / scrollbar.scrollHeight * 100 + '%'
     }
