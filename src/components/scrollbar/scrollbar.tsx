@@ -2,8 +2,7 @@ import * as React from 'react'
 import './scrollbar.scss'
 
 interface ScrollbarProps {
-  width?:number|string
-  height?:number|string
+  maxHeight?:number|string
 }
 
 interface ScrollbarState {
@@ -244,12 +243,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   }
 
   render() {
-    let { children, width, height } = this.props
+    let { children, maxHeight } = this.props
     let scrollbarStyle = {
-      width:width,
-      maxWidth: width,
-      height:height,
-      maxHeight: height 
+      maxHeight: maxHeight 
     }
 
     return(
