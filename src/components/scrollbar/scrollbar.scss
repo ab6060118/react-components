@@ -25,10 +25,12 @@ $scrollbar-track-color: #aeaeae;
 .scrollbar {
   position: relative;
   width: 100%;
+  height: 100%;
   max-height: inherit;
   outline: none;
 
   &-content {
+    height: 100%;
     max-height: inherit;
     overflow: hidden;
   }
