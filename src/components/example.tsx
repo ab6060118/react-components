@@ -41,7 +41,7 @@ export default class Example extends React.Component<any,ExampleState> {
           {this.state.element.map((e,index:number) => <div key={index}>{e}</div>)}
         </div>
         <div style={{maxHeight: '300px'}}>
-          <Scrollbar>
+          <Scrollbar stopWheelEventWhenMouseOver={false}>
             <Example1 />
           </Scrollbar>
         </div>

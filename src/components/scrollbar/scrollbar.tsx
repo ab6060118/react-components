@@ -3,6 +3,7 @@ import './scrollbar.scss'
 
 interface ScrollbarProps {
   maxHeight?:number|string
+  stopWheelEventWhenMouseOver?:boolean
 }
 
 interface ScrollbarState {
@@ -96,6 +97,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     let { content, track } = this.refs
     let { trackAtTop, trackAtBottom } = this.state
 
+    if(this.props.stopWheelEventWhenMouseOver !== false) {
+      e.stopPropagation()
+    }
+
     if(e.type === 'keydown') {
       let allowKey = [
         33, /* pageUp */
@@ -128,6 +133,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         content.scrollTop -= 30
       }
     }
+
 
     if(content.scrollTop !== 0 && content.scrollTop + content.offsetHeight !== content.scrollHeight)  {
       e.stopPropagation();

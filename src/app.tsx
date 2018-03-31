@@ -13,7 +13,7 @@ export default class App extends React.Component<any, any> {
           <div className="app-body-content">
             <div className="app-body-content-tabbar"></div>
             <div style={{flexGrow: 1, height: '1px'}}>
-              <Scrollbar>
+              <Scrollbar stopWheelEventWhenMouseOver={false}>
                 <Example />
               </Scrollbar>
             </div>
