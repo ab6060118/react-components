@@ -29,13 +29,13 @@ $scrollbar-track-color: #aeaeae;
   max-height: inherit;
   outline: none;
 
-  &-content {
+  .scrollbar-content {
     height: 100%;
     max-height: inherit;
     overflow: hidden;
   }
 
-  &-bar {
+  .scrollbar-bar {
     position: absolute;
     display: none;
     flex-direction: column;
@@ -45,11 +45,11 @@ $scrollbar-track-color: #aeaeae;
     height: 100%;
     background-color: #eaeaea;
 
-    &-body {
+    .scrollbar-bar-body {
       flex-grow:1;
       position: relative;
 
-      &-track {
+      .scrollbar-bar-body-track {
         position: absolute;
         background-color: #c0c0c0;
         width: 100%;
@@ -62,11 +62,11 @@ $scrollbar-track-color: #aeaeae;
       }
     }
 
-    &-up {
+    .scrollbar-bar-up {
       @include bar-icon('./imgs/w_up_normal.png', './imgs/w_up_over.png', './imgs/w_up_disable.png', './imgs/w_up_press.png');
     }
 
-    &-down {
+    .scrollbar-bar-down {
       @include bar-icon('./imgs/w_down_normal.png', './imgs/w_down_over.png', './imgs/w_down_disable.png', './imgs/w_down_press.png');
     }
   }

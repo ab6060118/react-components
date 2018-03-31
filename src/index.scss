@@ -17,21 +17,32 @@ html, body {
   display: flex;
   flex-direction: column;
 
-  &-header {
+  .app-header {
     height: 100px;
     flex-shrink: 0;
   }
 
-  &-body {
+  .app-body {
     display: flex;
     flex-grow: 1;
+      border-top: 1px solid black;
 
-    &-sidebar {
+    .app-body-sidebar {
       width: 200px;
       flex-shrink: 0;
+      border-right: 1px solid black;
     }
-    &-content {
-      flex-grow: 1;
+
+    .app-body-content {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+
+      .app-body-content-tabbar {
+        flex-shrink: 0;
+        height: 100px;
+        background-color: red;
+      }
     }
   }
 }

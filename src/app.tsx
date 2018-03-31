@@ -11,9 +11,12 @@ export default class App extends React.Component<any, any> {
         <div className="app-body">
           <div className="app-body-sidebar"></div>
           <div className="app-body-content">
-            <Scrollbar>
-              <Example />
-            </Scrollbar>
+            <div className="app-body-content-tabbar"></div>
+            <div style={{flexGrow: 1, height: '1px'}}>
+              <Scrollbar>
+                <Example />
+              </Scrollbar>
+            </div>
           </div>
         </div>
       </div>
