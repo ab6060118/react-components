@@ -40,6 +40,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowResize)
+    cancelAnimationFrame(this.scrollHeightWatcher)
   }
 
   componentDidMount() {
