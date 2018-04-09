@@ -85,10 +85,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     if(content.scrollTop !== 0 && trackAtTop) {
       this.setState({trackAtTop: false})
     }
-    if(content.scrollTop + content.offsetHeight === content.scrollHeight && !trackAtBottom) {
+    if(Math.floor(content.scrollTop + content.offsetHeight) === content.scrollHeight && !trackAtBottom) {
       this.setState({trackAtBottom: true})
     }
-    if(content.scrollTop + content.offsetHeight !== content.scrollHeight && trackAtBottom) {
+    if(Math.floor(content.scrollTop + content.offsetHeight) !== content.scrollHeight && trackAtBottom) {
       this.setState({trackAtBottom: false})
     }
   }
@@ -135,7 +135,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     }
 
 
-    if(content.scrollTop !== 0 && content.scrollTop + content.offsetHeight !== content.scrollHeight)  {
+    if(content.scrollTop !== 0 && Math.floor(content.scrollTop + content.offsetHeight) !== content.scrollHeight)  {
       e.stopPropagation();
     }
   }
@@ -257,16 +257,23 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         <div className="scrollbar-bar" ref='bar'>
           <span
             className={this.getUpDownButtonClassName(BUTTON_TYPE.UP)}
-            onMouseDown={this.handleUpDownClick(BUTTON_TYPE.UP).bind(this)}></span>
-          <div className="scrollbar-bar-body" ref="bar_body" onMouseDown={this.handleBarBodyMouseDown.bind(this)}>
+            onMouseDown={this.handleUpDownClick(BUTTON_TYPE.UP).bind(this)}
+            onClick={(e:React.MouseEvent<HTMLElement>) => { e.stopPropagation() }}></span>
+          <div 
+            className="scrollbar-bar-body"
+            ref="bar_body"
+            onMouseDown={this.handleBarBodyMouseDown.bind(this)}
+            onClick={(e:React.MouseEvent<HTMLElement>) => { e.stopPropagation() }}>
             <div 
               className="scrollbar-bar-body-track"
               ref="track"
-              onMouseDown={this.handleTrackMouseDown.bind(this)} ></div>
+              onMouseDown={this.handleTrackMouseDown.bind(this)}
+              onClick={(e:React.MouseEvent<HTMLElement>) => { e.stopPropagation() }}></div>
           </div>
           <span
             className={this.getUpDownButtonClassName(BUTTON_TYPE.DOWND)}
-            onMouseDown={this.handleUpDownClick(BUTTON_TYPE.DOWND).bind(this)}></span>
+            onMouseDown={this.handleUpDownClick(BUTTON_TYPE.DOWND).bind(this)}
+            onClick={(e:React.MouseEvent<HTMLElement>) => { e.stopPropagation() }}></span>
         </div>
       </div>
     )
