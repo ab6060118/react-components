@@ -1,0 +1,58 @@
+.table {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  border: 1px solid black;
+
+  .table-resize-line {
+    visibility: hidden;
+    position: absolute;
+    height: 100%;
+    border-right: 1px dashed black;
+    left: 20px;
+  }
+
+  .table-head {
+    .table-head-row {
+      overflow: hidden;
+      border-bottom: 1px solid black;
+      .table-head-col {
+        width: 25%;
+        position: relative;
+        display: inline-block;
+
+        .table-col-resizer {
+          position: absolute;
+          cursor: col-resize;
+          width: 5px;
+          height: 100%;
+          color: red;
+          right: 0;
+          top: 0;
+          margin-right: -3px;
+          z-index: 1;
+        }
+
+        &:not(:last-child) {
+          border-right: 1px solid black;
+        }
+      }
+    }
+  }
+
+  .table-body {
+    max-height: 130px;
+    .table-body-row {
+      &:not(:last-child) {
+        border-bottom: 1px solid black;
+      }
+
+      .table-body-col {
+        width: 25%;
+        display: inline-block;
+      }
+    }
+  }
+}
