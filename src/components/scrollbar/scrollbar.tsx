@@ -85,10 +85,10 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     if(content.scrollTop !== 0 && trackAtTop) {
       this.setState({trackAtTop: false})
     }
-    if(Math.floor(content.scrollTop + content.offsetHeight) === content.scrollHeight && !trackAtBottom) {
+    if(Math.floor(content.scrollTop + content.offsetHeight) >= ( content.scrollHeight - 1 ) && !trackAtBottom) {
       this.setState({trackAtBottom: true})
     }
-    if(Math.floor(content.scrollTop + content.offsetHeight) !== content.scrollHeight && trackAtBottom) {
+    if(Math.floor(content.scrollTop + content.offsetHeight) < ( content.scrollHeight - 1 )&& trackAtBottom) {
       this.setState({trackAtBottom: false})
     }
   }
@@ -135,7 +135,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     }
 
 
-    if(content.scrollTop !== 0 && Math.floor(content.scrollTop + content.offsetHeight) !== content.scrollHeight)  {
+    if(content.scrollTop !== 0 && Math.floor(content.scrollTop + content.offsetHeight) < ( content.scrollHeight - 1 ))  {
       e.stopPropagation();
     }
   }
@@ -155,10 +155,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     let interval:number
     let barTop:number
 
+    e.stopPropagation()
+
     barTop = bar_body.getBoundingClientRect().top
     clickPoint = e.pageY
     clickPointOfBar = clickPoint - bar_body.getBoundingClientRect().top
-
 
     if(e.pageY < track.getBoundingClientRect().top) {
       interval = window.setInterval(() => {
@@ -177,7 +178,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       }, 10)
     }
 
-    window.addEventListener('mouseup', () => {
+    window.addEventListener('mouseup', (e) => {
+      e.stopPropagation()
       window.clearInterval(interval)
     }, { once: true })
   }
@@ -195,6 +197,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   }
 
   handleTrackMouseUp(e:MouseEvent) {
+    e.stopPropagation()
     window.removeEventListener('mousemove', this.handleMoveTrack)
     window.removeEventListener('mouseup', this.handleTrackMouseUp)
   }
@@ -207,10 +210,12 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   }
 
   handleUpDownClick(type:BUTTON_TYPE) {
-    return function() {
+    return function(e:React.MouseEvent<HTMLElement>) {
       let { trackAtTop, trackAtBottom } = this.state
       let { content } = this.refs
       let interval:number
+
+      e.stopPropagation()
 
       if(type === BUTTON_TYPE.UP && !trackAtTop) {
         interval = window.setInterval(() => {
@@ -223,7 +228,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
         }, 10)
       }
 
-      window.addEventListener('mouseup', () => {
+      window.addEventListener('mouseup', (e) => {
+        e.stopPropagation()
         window.clearInterval(interval)
       }, { once: true })
     }
