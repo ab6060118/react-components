@@ -59,22 +59,30 @@ export default class Example extends React.Component<any,ExampleState> {
 
   render() {
     let { head, tableData } = this.state
+    let headSpanStyle:React.CSSProperties = {
+      display: 'inline-block',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      width: '100%',
+      padding: '0 10px',
+    }
 
     return (
       <div style={{padding: '30px'}}>
         <Table
           widths={[
-            { init: '25%', max: 300, min: 200},
-            { init: '25%', max: 300, min: 200},
-            { init: '25%', max: 300, min: 200},
-            { init: '25%', max: 300, min: 200},
+            { init: '25%', max: 300, min: 100},
+            { init: '25%', max: 300, min: 100},
+            { init: '25%', max: 300, min: 100},
+            { init: '25%', max: 300, min: 100},
           ]}
           className='good'
           resizable={ true }
-          headElements={ head.map( str => <span>{ str }</span> ) } 
+          headElements={ head.map( str => <span style={headSpanStyle}>{ str }</span> ) } 
           bodyElements={ tableData.map( ( item, index ) => [
-            <span key={ 'name-' + index }>{ item.name }</span>,
-            <span key={ 'method-' + index }>{ item.method }</span>,
+            <span key={ 'name-' + index } style={headSpanStyle}>{ item.name }</span>,
+            <span key={ 'method-' + index } style={headSpanStyle}>{ item.method }</span>,
             <div key={ 'recipient-' + index }>
             {
               item.recipient.map( ( str, index ) => (

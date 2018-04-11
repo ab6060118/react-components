@@ -77,20 +77,31 @@ export default class Table extends React.Component<TableProps, TableState> {
   handleResizerMouseUp(e:MouseEvent) {
     let { widths } = this.props
     let newWidths = [...this.state.widths]
-
     let index = this.resizingColIndex
-    let deltaX = e.clientX - this.mouseDownPosition
+    let towColWidth:number = ( newWidths[index] as number ) + ( newWidths[index + 1] as number ) 
+
+    let newWidthLeft:number
+    let newWidthRight:number
+    let deltaX:number 
+
+    console.log(towColWidth);
 
     this.refs['resize-line'].style.visibility = 'hidden'
 
-    newWidths[index] = ( newWidths[index] as number ) + deltaX
-    newWidths[index + 1] = ( newWidths[index + 1] as number ) - deltaX
+    newWidthLeft = ( newWidths[index] as number ) + e.clientX - this.mouseDownPosition
 
-    if(newWidths[index] > widths[index].max) newWidths[index] = widths[index].max
-    if(newWidths[index] < widths[index].min) newWidths[index] = widths[index].min
+    if(newWidthLeft > widths[index].max) newWidthLeft = widths[index].max
+    if(newWidthLeft < widths[index].min) newWidthLeft = widths[index].min
 
-    if(newWidths[index + 1] > widths[index + 1].max) newWidths[index + 1] = widths[index + 1].max
-    if(newWidths[index + 1] < widths[index + 1].min) newWidths[index + 1] = widths[index + 1].min
+    deltaX = newWidthLeft - ( newWidths[index] as number )
+
+    newWidthRight = ( newWidths[index + 1] as number ) - deltaX
+
+    if(newWidthRight > widths[index + 1].max) newWidthRight = widths[index + 1].max
+    if(newWidthRight < widths[index + 1].min) newWidthRight = widths[index + 1].min
+
+    newWidths[index] = newWidthLeft
+    newWidths[index + 1] = newWidthRight
 
     this.setState({ widths: newWidths })
 
@@ -121,7 +132,7 @@ export default class Table extends React.Component<TableProps, TableState> {
   convertPercentageToPx() {
     let result:number[]
 
-    result = Object.keys( this.refs ).filter( key => key.indexOf('table-head-col') > -1 ).map( key => this.refs[key].offsetWidth - 1 )
+    result = Object.keys( this.refs ).filter( key => key.indexOf('table-header-col') > -1 ).map( key => this.refs[key].offsetWidth - 1 )
 
     this.setState({ widths: result })
   }
@@ -130,22 +141,26 @@ export default class Table extends React.Component<TableProps, TableState> {
     let { headElements, bodyElements, className, resizable, bodyMaxHeight } = this.props
     let timestamp = +new Date()
     let widths:React.CSSProperties[] = this.getWidthStyle();
+    let lastColStyle:React.CSSProperties = {
+      flexGrow: 1,
+      flexShrink: 1,
+    }
 
     console.log(this.state.widths);
 
     return (
       <div className={ ['table', className].join(' ') } ref='table'>
         <div className="table-resize-line" ref='resize-line'></div>
-        <div className="table-head">
-          <div className="table-head-row">
+        <div className="table-header">
+          <div className="table-header-row">
           {
             headElements.map(
               ( element, index, elements ) => (
                 <div 
-                  className="table-head-col"
+                  className="table-header-col"
                   style={ widths[index] }
-                  key={ 'table-head-col' + timestamp + '-' + index }
-                  ref={ 'table-head-col-' + index }>
+                  key={ 'table-header-col' + timestamp + '-' + index }
+                  ref={ 'table-header-col-' + index }>
                 { element }
                 { ( resizable && index !== elements.length - 1 ) &&
                   <div 
@@ -164,10 +179,10 @@ export default class Table extends React.Component<TableProps, TableState> {
             bodyElements.map( ( rowElements, indexRow ) => ( 
               <div className="table-body-row" key={ 'table-body-row' + timestamp + '-' + indexRow }>
               {
-                rowElements.map( ( element, indexCol  )=> (
+                rowElements.map( ( element, indexCol, elements )=> (
                   <div
                     className="table-body-col"
-                  style={ widths[indexCol] }
+                    style={ widths[indexCol] }
                     key={ 'table-body-col' + timestamp + '-' + indexRow + '-' + indexCol }>
                   { element }
                   </div> 

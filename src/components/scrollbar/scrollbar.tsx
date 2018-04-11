@@ -2,6 +2,7 @@ import * as React from 'react'
 import './scrollbar.scss'
 
 interface ScrollbarProps {
+  className?:string
   maxHeight?:number|string
   stopWheelEventWhenMouseOver?:boolean
 }
@@ -252,11 +253,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   }
 
   render() {
-    let { children, maxHeight } = this.props
+    let { children, maxHeight, className } = this.props
     let scrollbarStyle = { maxHeight: maxHeight }
 
     return(
-      <div className="scrollbar" style={scrollbarStyle} onWheel={this.handleWheelAndKeyup.bind(this)} onKeyDown={this.handleWheelAndKeyup.bind(this)} tabIndex={0}>
+      <div className={["scrollbar", className].join(' ')} style={scrollbarStyle} onWheel={this.handleWheelAndKeyup.bind(this)} onKeyDown={this.handleWheelAndKeyup.bind(this)} tabIndex={0}>
         <div className="scrollbar-content" ref='content' onScroll={this.handleScroll.bind(this)}>
           { children }
         </div>
