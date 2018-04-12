@@ -3,8 +3,10 @@
   height: (12rem/16);
   display: inline-block;
   cursor: pointer;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
   background-image: url($normal);
-
 
   &:hover {
     background-image: url($hover);
