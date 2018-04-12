@@ -122,16 +122,16 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       if(keyCode === 34) content.scrollTop += content.offsetHeight
       if(keyCode === 35) content.scrollTop = content.scrollHeight
       if(keyCode === 36) content.scrollTop = 0
-      if(keyCode === 38) content.scrollTop -= 30
-      if(keyCode === 40) content.scrollTop += 30
+      if(keyCode === 38) content.scrollTop -= 50
+      if(keyCode === 40) content.scrollTop += 50
     }
     else {
       let { deltaY } = (e as React.WheelEvent<HTMLElement>)
       if(deltaY > 0) {
-        content.scrollTop += 30
+        content.scrollTop += 50
       }
       else {
-        content.scrollTop -= 30
+        content.scrollTop -= 50
       }
     }
 
@@ -164,7 +164,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
     if(e.pageY < track.getBoundingClientRect().top) {
       interval = window.setInterval(() => {
-        content.scrollTop -= 15
+        content.scrollTop -= 5
         if(track.offsetTop <= clickPointOfBar - track.offsetHeight / 2) {
           window.clearInterval(interval)
         }
@@ -172,7 +172,7 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     }
     else {
       interval = window.setInterval(() => {
-        content.scrollTop += 15
+        content.scrollTop += 5
         if(track.offsetTop >= clickPointOfBar - track.offsetHeight / 2) {
           window.clearInterval(interval)
         }
@@ -220,12 +220,12 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
 
       if(type === BUTTON_TYPE.UP && !trackAtTop) {
         interval = window.setInterval(() => {
-          content.scrollTop -= 15
+          content.scrollTop -= 5
         }, 10)
       }
       if(type === BUTTON_TYPE.DOWND && !trackAtBottom) {
         interval = window.setInterval(() => {
-          content.scrollTop += 15
+          content.scrollTop += 5
         }, 10)
       }
 

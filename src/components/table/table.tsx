@@ -8,6 +8,7 @@ interface TableProps {
   bodyMaxHeight?:number
   headElements:JSX.Element[]
   bodyElements:JSX.Element[][]
+  stopWheelEventOnTableBody?:boolean
   widths:{
     default:number|string
     min:number
@@ -127,7 +128,7 @@ export default class Table extends React.Component<TableProps, TableState> {
   }
 
   render() {
-    let { headElements, bodyElements, className, resizable, bodyMaxHeight } = this.props
+    let { headElements, bodyElements, className, resizable, bodyMaxHeight, stopWheelEventOnTableBody } = this.props
     let timestamp = +new Date()
     let widths:React.CSSProperties[] = this.getWidthStyle();
 
@@ -156,7 +157,7 @@ export default class Table extends React.Component<TableProps, TableState> {
           </div>
         </div>
         <div className="table-body" style={{ maxHeight:bodyMaxHeight }}>
-          <Scrollbar>
+          <Scrollbar stopWheelEventWhenMouseOver={ stopWheelEventOnTableBody === true }>
           { 
             bodyElements.map( ( rowElements, indexRow ) => ( 
               <div className="table-body-row" key={ 'table-body-row' + timestamp + '-' + indexRow }>

@@ -1,6 +1,9 @@
 import * as React from 'react'
 import Scrollbar from './scrollbar/scrollbar'
 import Table from './table/table'
+import Example2 from './example1';
+
+import './example.scss'
 
 interface ExampleState {
   element:number[]
@@ -19,6 +22,25 @@ export default class Example extends React.Component<any,ExampleState> {
       element: [4,5,6,1,2,3,4,5,6,1,2,3,4,5,6],
       head: ['name', 'delivery method', 'recipient', 'action'],
       tableData: [
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
+        { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
         { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
         { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
         { name: 'a', method: 'sms', recipient: ['1','2','3','4'] },
@@ -69,28 +91,22 @@ export default class Example extends React.Component<any,ExampleState> {
     }
 
     return (
-      <div style={{padding: '30px'}}>
+      <div style={{padding: '30px' }}>
         <Table
-          bodyMaxHeight={ 130 }
+          bodyMaxHeight={ 200 }
           widths={[
             { default: '25%', min: 100},
             { default: '25%', min: 100},
             { default: '25%', min: 100},
             { default: '25%', min: 100},
           ]}
-          className='good'
+          className='example-table'
           resizable={ true }
           headElements={ head.map( str => <span style={headSpanStyle}>{ str }</span> ) } 
           bodyElements={ tableData.map( ( item, index ) => [
             <span key={ 'name-' + index } style={headSpanStyle}>{ item.name }</span>,
             <span key={ 'method-' + index } style={headSpanStyle}>{ item.method }</span>,
-            <div key={ 'recipient-' + index }>
-            {
-              item.recipient.map( ( str, index ) => (
-                <span key={ 'recipient-' + index }>{ str }</span> 
-              ))
-            }
-            </div>,
+            <div key={ 'recipient-' + index } style={headSpanStyle}>{ item.recipient.join(',') }</div>,
             <span key={ 'name-' + index + '-' + index }>{ item.name }</span>,
           ] ) }/>
         <div style={{ marginTop: '30px' }}>
