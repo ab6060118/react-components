@@ -71,11 +71,12 @@ export default class Example extends React.Component<any,ExampleState> {
     return (
       <div style={{padding: '30px'}}>
         <Table
+          bodyMaxHeight={ 130 }
           widths={[
-            { init: '25%', max: 300, min: 100},
-            { init: '25%', max: 300, min: 100},
-            { init: '25%', max: 300, min: 100},
-            { init: '25%', max: 300, min: 100},
+            { default: '25%', min: 100},
+            { default: '25%', min: 100},
+            { default: '25%', min: 100},
+            { default: '25%', min: 100},
           ]}
           className='good'
           resizable={ true }
