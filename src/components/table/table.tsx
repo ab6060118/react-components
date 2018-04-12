@@ -131,8 +131,6 @@ export default class Table extends React.Component<TableProps, TableState> {
     let timestamp = +new Date()
     let widths:React.CSSProperties[] = this.getWidthStyle();
 
-    console.log(this.state.widths, widths);
-
     return (
       <div className={ ['table', className].join(' ') } ref='table'>
         <div className="table-header">
