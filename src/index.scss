@@ -4,6 +4,7 @@
 
 html, body {
   margin: 0;
+  background-color: rgba(0,0,0,0.01);
 }
 
 #App {
@@ -41,7 +42,7 @@ html, body {
       .app-body-content-tabbar {
         flex-shrink: 0;
         height: 100px;
-        background-color: red;
+        border-bottom: 1px solid black;
       }
     }
   }
