@@ -2,3 +2,4 @@ node_modules
 *.swp
 *.css
 dist
+package-lock.json
