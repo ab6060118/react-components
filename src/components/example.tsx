@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Scrollbar from './scrollbar/scrollbar'
 import Dropdown from './dropdown/dropdown';
+import FunctionInfo from './function_info/function_info';
 import Table from './table/table'
 import Example2 from './example1';
 
@@ -90,9 +91,11 @@ export default class Example extends React.Component<any,ExampleState> {
       borderBottom: '1px solid black',
       width: '100%',
     }
+    let functionInfoElement = <span>{'Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test'}</span>
 
     return (
       <div style={{padding: '30px' }}>
+        <FunctionInfo element={functionInfoElement}><span>{'Function Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info Test'}</span></FunctionInfo>
         <Dropdown 
           labelElement={ <div><span>{'dropdown'}</span></div> }
           handleUpdate={ (value:any) => { this.setState({ dropdownValue: value }) } }

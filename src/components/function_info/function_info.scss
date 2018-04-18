@@ -1,0 +1,47 @@
+@mixin function-info-icon($path) {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: (16rem/16);
+  height: (16rem/16);
+  background-image: url($path);
+  flex-shrink: 0;
+}
+
+.function-info {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .function-info-icon {
+    @include function-info-icon('./imgs/info.svg')
+    margin-left: (10rem/16);
+    cursor: pointer;
+  }
+
+  .function-info-box {
+    position: fixed;
+    max-width: (300rem/16);
+    min-width: (150rem/16);
+    padding: 1rem (12rem/16);
+    background-color: #ffffff;
+    border: 1px solid #767676;
+    z-index: 1;
+
+    .window-close-icon { 
+      @include function-info-icon('./imgs/delete.svg');
+      position: absolute;
+      cursor: pointer;
+      top: (4rem/16);
+      right: (4rem/16);
+      width: (9rem/16);
+      height: (9rem/16);
+    }
+
+    .function-info-text {
+      color: #2f2f2f;
+      font-size: (12rem/16);
+    }
+  }
+}
