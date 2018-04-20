@@ -129,7 +129,6 @@ export default class Table extends React.Component<TableProps, TableState> {
 
   render() {
     let { headElements, bodyElements, className, resizable, bodyMaxHeight, stopWheelEventOnTableBody } = this.props
-    let timestamp = +new Date()
     let widths:React.CSSProperties[] = this.getWidthStyle();
 
     return (
@@ -142,7 +141,7 @@ export default class Table extends React.Component<TableProps, TableState> {
                 <div 
                   className="table-header-col"
                   style={ widths[index] }
-                  key={ 'table-header-col' + timestamp + '-' + index }
+                  key={ 'table-header-col' + '-' + index }
                   ref={ 'table-header-col-' + index }>
                 { element }
                 { ( resizable && index !== elements.length - 1 ) &&
@@ -160,13 +159,13 @@ export default class Table extends React.Component<TableProps, TableState> {
           <Scrollbar stopWheelEventWhenMouseOver={ stopWheelEventOnTableBody === true }>
           { 
             bodyElements.map( ( rowElements, indexRow ) => ( 
-              <div className="table-body-row" key={ 'table-body-row' + timestamp + '-' + indexRow }>
+              <div className="table-body-row" key={ 'table-body-row' + '-' + indexRow }>
               {
                 rowElements.map( ( element, indexCol, elements )=> (
                   <div
                     className="table-body-col"
                     style={ widths[indexCol] }
-                    key={ 'table-body-col' + timestamp + '-' + indexRow + '-' + indexCol }>
+                    key={ 'table-body-col' + '-' + indexRow + '-' + indexCol }>
                   { element }
                   </div> 
                 )) 
