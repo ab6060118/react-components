@@ -4,6 +4,7 @@ import Scrollbar from '../scrollbar/scrollbar';
 
 interface FunctionInfoProps {
   element:JSX.Element
+  className?:string
 }
 
 interface FunctionInfoState {
@@ -78,13 +79,15 @@ export default class FunctionInfo extends React.Component<FunctionInfoProps, Fun
   }
 
   render() {
+    let { className } = this.props
+
     return (
-      <div className="function-info">
+      <div className={["function-info", className].join(' ')}>
         {this.props.children}
         <span className="function-info-icon" onClick={this.handleIconClick.bind(this)} ref='info-icon'></span>
       {this.state.isOpen === true &&
         <div className="function-info-box" ref='text-box'>
-          <span className="window-close-icon" onClick={this.closeBox.bind(this)}></span>
+          <span className="function-info-window-close-icon" onClick={this.closeBox.bind(this)}></span>
           {this.props.element}
         </div>
       }

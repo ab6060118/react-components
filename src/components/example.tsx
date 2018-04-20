@@ -2,10 +2,12 @@ import * as React from 'react'
 import Scrollbar from './scrollbar/scrollbar'
 import Dropdown from './dropdown/dropdown';
 import FunctionInfo from './function_info/function_info';
+import CloneElement from './clone-element';
 import Table from './table/table'
 import Example2 from './example1';
 
 import './example.scss'
+import './function_info/function_info.scss'
 
 interface ExampleState {
   element:number[]
@@ -17,6 +19,15 @@ interface ExampleState {
     method:string,
     recipient:string[]
   }[]
+}
+
+class Span extends React.Component<any> {
+  render() {
+    console.log('span rerender');
+    return (
+      <span style={this.props.style}>ttt</span>
+    )
+  }
 }
 
 export default class Example extends React.Component<any,ExampleState> {
@@ -67,6 +78,7 @@ export default class Example extends React.Component<any,ExampleState> {
   }
 
   render() {
+    console.log('example render');
     let { head, tableData, dropdownValue, dropdownItems } = this.state
     let headSpanStyle:React.CSSProperties = {
       display: 'inline-block',
@@ -95,15 +107,24 @@ export default class Example extends React.Component<any,ExampleState> {
 
     return (
       <div style={{padding: '30px' }}>
-        <FunctionInfo element={functionInfoElement}><span>{'Function Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info Test'}</span></FunctionInfo>
+        <CloneElement>
+          <span className="example-span">{'test'}</span>
+        </CloneElement>
+        <FunctionInfo className="example-function-info" element={functionInfoElement}><span>{'Function Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info Test'}</span></FunctionInfo>
         <Dropdown 
           labelElement={ <div><span>{'dropdown'}</span></div> }
           handleUpdate={ (value:any) => { this.setState({ dropdownValue: value }) } }
           id={'dropdown'}
           options={[
-            ...dropdownItems.map( item => (
-            { value:item.value, element: <span style={itemStyle}>{item.text}</span> }
-            )),
+            ...dropdownItems.map( item => ({ 
+              value:item.value,
+              element: (
+                <div style={{display: 'flex', alignItems: 'center'} as React.CSSProperties}>
+                  <span className="function-info-icon"></span>
+                  <span style={itemStyle}>{item.text}</span>
+                </div> 
+              )
+            })),
             { 
               value:2,
               element: <div style={dividerContainerStyle} onClick={ () => { this.setState({ dropdownItems: [...this.state.dropdownItems, { value: +new Date(), text: +new Date() }] }) } }><div style={dividerStyle}></div></div>,
@@ -125,10 +146,10 @@ export default class Example extends React.Component<any,ExampleState> {
           resizable={ true }
           headElements={ head.map( str => <span style={headSpanStyle}>{ str }</span> ) } 
           bodyElements={ tableData.map( ( item, index ) => [
-            <span key={ 'name-' + index } style={headSpanStyle}>{ item.name }</span>,
-            <span key={ 'method-' + index } style={headSpanStyle}>{ item.method }</span>,
-            <div key={ 'recipient-' + index } style={headSpanStyle}>{ item.recipient.join(',') }</div>,
-            <span key={ 'name-' + index + '-' + index }>{ item.name }</span>,
+            <Span style={headSpanStyle}/>,
+            <span style={headSpanStyle}>{ item.method }</span>,
+            <div style={headSpanStyle}>{ item.recipient.join(',') }</div>,
+            <span>{ item.name }</span>,
           ] ) }/>
         <div style={{ marginTop: '30px' }}>
           <button onClick={this.handleAddClick.bind(this)}>Add</button>
