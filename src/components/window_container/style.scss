@@ -1,0 +1,30 @@
+@mixin window-container-resizer-n() {
+  position: absolute;
+  width: 100%;
+  height: (5rem/16);
+  cursor: n-resize;
+}
+
+@mixin window-container-resizer-e() {
+  position: absolute;
+  height: 100%;
+  width: (5rem/16);
+  cursor: e-resize;
+}
+
+.window-container {
+  .window-container-resizer-top {
+    @include window-container-resizer-n();
+  }
+  .window-container-resizer-bottom {
+    @include window-container-resizer-n();
+    bottom: 0;
+  }
+  .window-container-resizer-left {
+    @include window-container-resizer-e();
+  }
+  .window-container-resizer-right {
+    @include window-container-resizer-e();
+    right: 0;
+  }
+}

@@ -1,6 +1,6 @@
 import * as React from 'react'
-import Scrollbar from '../scrollbar/scrollbar';
-import './dropdown.scss'
+import Scrollbar from '../scrollbar';
+import './style.scss'
 
 interface Option {
   value:any

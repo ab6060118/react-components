@@ -1,5 +1,5 @@
 import * as React from 'react'
-import './scrollbar.scss'
+import './style.scss'
 
 interface ScrollbarProps {
   className?:string

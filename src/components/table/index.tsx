@@ -1,6 +1,6 @@
 import * as React from 'react'
-import Scrollbar from '../scrollbar/scrollbar'
-import './table.scss'
+import Scrollbar from '../scrollbar'
+import './style.scss'
 
 interface TableProps {
   className?:string

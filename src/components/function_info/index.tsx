@@ -1,6 +1,6 @@
 import * as React from 'react'
-import './function_info.scss'
-import Scrollbar from '../scrollbar/scrollbar';
+import './style.scss'
+import Scrollbar from '../scrollbar';
 
 interface FunctionInfoProps {
   element:JSX.Element

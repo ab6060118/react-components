@@ -1,26 +1,48 @@
+const Webpack = require('webpack')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const plugins = [
+  new CleanWebpackPlugin(__dirname + '/dist'),
   new HtmlWebpackPlugin( {
     title: 'Hello',
     template: __dirname + '/src/index.html'
   }),
   new ExtractTextPlugin({
-    filename: "bundle.css",
+    filename: "[name]/style.css",
     disable: process.env.NODE_ENV !== "prod"
-  })
+  }),
+  new Webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    filename: 'vendor.bundle.js',
+    minChunks: (module) => {
+      var context = module.context;
+      if (typeof context !== 'string') {
+        return false;
+      }
+      return context.indexOf('node_modules') !== -1;
+    }
+  }),
 ]
 
 module.exports = {
-  entry: __dirname + "/src/index.tsx",
+  // entry: __dirname + "/src/index.tsx",
+  entry: {
+    "index": './src/index.tsx',
+    "scrollbar":  './src/components/scrollbar/index.tsx',
+    "table":  './src/components/table/index.tsx',
+    "function_info":  './src/components/function_info/index.tsx',
+    "dropdown":  './src/components/dropdown/index.tsx',
+    "window_container":  './src/components/window_container/index.tsx',
+  },
   output: {
-    filename: "bundle.js",
-    path: __dirname + "/dist"
+    path: __dirname + "/dist",
+    filename: "[name]/index.js",
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: "source-map",
+  devtool: process.env.NODE_ENV === 'prod' ? undefined : "source-map",
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.

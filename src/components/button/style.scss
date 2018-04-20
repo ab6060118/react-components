@@ -1,0 +1,25 @@
+.default-button {
+  border: 1px solid #707070;
+  color: #2f2f2f;
+  height: (30rem/16);
+  min-width: (80rem/16);
+  outline: none;
+  cursor: pointer;
+  background-color: #ffffff;
+  font-size: (14rem/16);
+
+  &:hover {
+    border-color: #707070;
+    color: #707070;
+  }
+
+  &.pressed {
+    border: 2px solid #2f2f2f;
+    color: #2f2f2f;
+  }
+
+  &.disabled {
+    border-color: #aeaeae;
+    color: #aeaeae;
+  }
+}

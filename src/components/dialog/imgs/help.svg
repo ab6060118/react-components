@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-rule: evenodd;
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="0" y="32" width="32" height="32" filterUnits="userSpaceOnUse">
+      <feImage preserveAspectRatio="none" x="0" y="32" width="32" height="32" result="image" xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPGRlZnM+CiAgICA8c3R5bGU+CiAgICAgIC5jbHMtMSB7CiAgICAgICAgZmlsbDogdXJsKCNsaW5lYXItZ3JhZGllbnQpOwogICAgICB9CiAgICA8L3N0eWxlPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJsaW5lYXItZ3JhZGllbnQiIHgxPSIxNiIgeTE9IjMyIiB4Mj0iMTYiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDA3OWUzIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzAwYTlmYyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPHJlY3QgY2xhc3M9ImNscy0xIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiLz4KPC9zdmc+Cg=="/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <path id="help.png_help.svg" data-name="help.png,help.svg" class="cls-1" d="M16,32A16,16,0,1,0,32,48,16,16,0,0,0,16,32ZM17.41,59.691H14.021v-3.2H17.41v3.2Zm5.331-13.542a12.337,12.337,0,0,1-2.777,2.92,14.381,14.381,0,0,0-1.9,1.784,4.043,4.043,0,0,0-.656,1.325,8.123,8.123,0,0,0-.255,2.184H14.3c-0.012-.367-0.017-0.409-0.017-0.583a7.42,7.42,0,0,1,.495-2.86A6.179,6.179,0,0,1,15.95,49.1a20.806,20.806,0,0,1,2.137-1.967,5.859,5.859,0,0,0,1.6-1.862,3.265,3.265,0,0,0,.352-1.715,3.012,3.012,0,0,0-1.265-2.568,4.4,4.4,0,0,0-3.019-1.016,3.852,3.852,0,0,0-2.869,1.2,5.56,5.56,0,0,0-1.094,2.918l-3.231-.133c0.282-2.139.532-3.757,1.874-5.266,1.219-1.362,3.16-1.692,5.4-1.692a8.339,8.339,0,0,1,5.673,1.82,5.3,5.3,0,0,1,1.936,4.343A6.2,6.2,0,0,1,22.741,46.148Z" transform="translate(0 -32)"/>
+</svg>

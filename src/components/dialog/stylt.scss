@@ -1,0 +1,96 @@
+@mixin dialog-icon($path) {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: (32rem/16);
+  height: (32rem/16);
+  background-image: url($path);
+  flex-shrink: 0;
+}
+
+.dialog {
+  height: 100%;
+  border: 1px solid #b0b0b0;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+
+  .dialog-header {
+    height: (24rem/16);
+    cursor: move;
+    display: flex;
+    padding: 0 (8rem/16);
+    padding-top: (8rem/16);
+    justify-content: flex-end;
+
+    .dialog-tool-icon-group {
+      display: flex;
+      width: (10rem/16);
+
+      span {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .dialog-body {
+    display: flex;
+    padding: 0 (24rem/16);
+    flex-grow: 1;
+
+    .dialog-icon-container {
+      display: flex;
+    }
+
+    .dialog-content {
+      padding: 0 (16rem/16);
+      padding-top: (8rem/16);
+      min-height: (34rem/16);
+      flex-grow: 1;
+      flex-shrink: 1;
+
+      span {
+        font-size: (14rem/16);
+        color: #2f2f2f;
+      }
+    }
+  }
+
+  .dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    height: (74rem/16);
+    padding: 0 (24rem/16);
+    padding-bottom: (24rem/16);
+
+    .button-group {
+      align-self: flex-end;
+      width: (168rem/16);
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+.dialog-icon-info {
+  @include dialog-icon('./imgs/info.svg');
+}
+
+.dialog-icon-help {
+  @include dialog-icon('./imgs/help.svg');
+}
+
+.dialog-icon-warngin {
+  @include dialog-icon('./imgs/warning.svg');
+}
+
+.dialog-icon-error {
+  @include dialog-icon('./imgs/error.svg');
+}
+
+.dialog-icon-close {
+  @include dialog-icon('./imgs/delete.svg');
+  width: (10rem/16);
+  height: (10rem/16);
+}

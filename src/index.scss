@@ -47,3 +47,34 @@ html, body {
     }
   }
 }
+
+.example-table {
+  border: 1px solid black;
+
+  div[class$="row"] {
+    border-bottom: 1px solid black;
+  }
+
+  div[class$="col"] {
+    &:not(:last-child) {
+      border-right: 1px solid black;
+    }
+  }
+}
+
+.example-window {
+  background-color: black;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0,0,0,0.3);
+
+  .window-header {
+    height: 50px;
+    border-bottom: 1px solid black;
+    cursor: move;
+  }
+  .window-body {
+    flex-grow: 1;
+  }
+}
