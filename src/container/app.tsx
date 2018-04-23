@@ -1,4 +1,5 @@
 import * as React from "react";
+import Dialog from './dialog'
 
 import Example from './example'
 import Scrollbar from '../components/scrollbar';
@@ -34,6 +35,7 @@ export default class App extends React.Component<any, any> {
   render() {
     return (
       <div className="app">
+        <Dialog />
         <div className="app-header">123</div>
         <div className="app-body">
           <div className="app-body-sidebar" style={{fontSize: '24px', color: 'red'}}></div>

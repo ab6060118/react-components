@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Table from '../components/table'
+import Tooltip from '../components/tooltip'
 
 class Span extends React.Component<any> {
   render() {
@@ -52,14 +53,18 @@ export default class TableContainer extends React.PureComponent<any, TableContai
       <Table
         bodyMaxHeight={ 200 }
         widths={[
-          { default: '25%', min: 100},
-          { default: '25%', min: 100},
-          { default: '25%', min: 100},
-          { default: '25%', min: 100},
+          { default: '25%', min: 30},
+          { default: '25%', min: 30},
+          { default: '25%', min: 30},
+          { default: '25%', min: 30},
         ]}
         className='example-table'
         resizable={ true }
-        headElements={ head.map( str => <span style={headSpanStyle}>{ str }</span> ) } 
+        headElements={ head.map( str => (
+          <Tooltip text={str}>
+            <span style={headSpanStyle}>{ str }</span>
+          </Tooltip> 
+        ))} 
         bodyElements={ tableData.map( ( item, index ) => [
           <Span style={headSpanStyle}/>,
           <span style={headSpanStyle}>{ item.method }</span>,

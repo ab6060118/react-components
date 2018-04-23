@@ -1,5 +1,6 @@
 import * as React from "react";
 import Dialog, { DIALOG_LEVEL } from '../components/dialog';
+import Table from './table';
 
 export default class DialogContainer extends React.Component<any> {
   render() {
@@ -9,9 +10,7 @@ export default class DialogContainer extends React.Component<any> {
         handleOkClick={()=>{}}
         handleNoClick={()=>{}}
         handleCloseClick={()=>{}}>
-        <div>
-          <span>123</span>
-        </div>
+        <Table />
       </Dialog>
     )
   }
