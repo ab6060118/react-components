@@ -1,0 +1,35 @@
+.checkbox {
+  display: flex;
+  align-items: center;
+
+  &.disabled {
+    opacity: 0.5;
+  }
+}
+
+@mixin checkbox-icon($normal, $hover, $disable) {
+  width: (16rem/16);
+  height: (15rem/16);
+  display: inline-block;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url($normal);
+
+  &:hover {
+    background-image: url($hover);
+  }
+
+  &.disabled {
+    cursor: initial;
+    background-image: url($disable);
+  }
+}
+
+.checkbox-icon-on {
+  @include checkbox-icon('./imgs/btn_checkbox_pressed_wbg.svg', './imgs/btn_checkbox_pressedover_wbg.svg', './imgs/btn_checkbox_presseddisable_wbg.svg')
+}
+.checkbox-icon-off {
+  @include checkbox-icon('./imgs/btn_checkbox_wbg.svg', './imgs/btn_checkbox_over_wbg.svg', './imgs/btn_checkbox_disable_wbg.svg')
+}
