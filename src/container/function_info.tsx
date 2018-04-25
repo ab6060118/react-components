@@ -1,5 +1,6 @@
 import * as React from 'react'
 import FunctionInfo from '../components/function_info'
+import Checkbox from './checkbox';
 
 export default class FunctionInfoContainer extends React.Component<any> {
   render() {
@@ -7,7 +8,7 @@ export default class FunctionInfoContainer extends React.Component<any> {
 
     return (
       <FunctionInfo className="example-function-info" element={functionInfoElement}>
-        <span>{'Function Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info TestFunction Info Test'}</span>
+        <Checkbox />
       </FunctionInfo>
     )
   }
