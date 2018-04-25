@@ -3,6 +3,7 @@ import Dropdown from './dropdown';
 import FunctionInfo from './function_info';
 import Table from './table'
 import Window from './window'
+import Input from './input';
 
 interface ExampleState {
   element:number[]
@@ -37,7 +38,9 @@ export default class Example extends React.Component<any,ExampleState> {
 
     return (
       <div style={{padding: '30px' }}>
+        <Input />
         <FunctionInfo />
+        <Dropdown />
         <div style={{marginTop: '20px'}}></div>
         <Table />
         <div style={{ marginTop: '30px' }}>

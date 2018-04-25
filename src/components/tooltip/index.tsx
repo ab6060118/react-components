@@ -39,7 +39,7 @@ export default class Tooltip extends React.Component<TooltipProps,TooltipState> 
 
     setTimeout(() => {
       if(this.state.isHover === true && this.state.isShow === false) {
-        this.refs.child.appendChild(this.tooltipBox)
+        document.body.appendChild(this.tooltipBox)
 
         this.setState({
           isShow: true
@@ -55,7 +55,7 @@ export default class Tooltip extends React.Component<TooltipProps,TooltipState> 
   }
 
   handleMouseLeave() {
-    if(this.state.isShow === true) this.refs.child.removeChild(this.tooltipBox)
+    if(this.state.isShow === true) document.body.removeChild(this.tooltipBox)
 
     this.setState({
       isShow: false,
@@ -79,7 +79,6 @@ export default class Tooltip extends React.Component<TooltipProps,TooltipState> 
       onMouseEnter: this.handleMouseEnter.bind(this),
       onMouseLeave: this.handleMouseLeave.bind(this),
       onMouseMove: this.handleMouseMove.bind(this),
-      ref:'child'
     })
   }
 }

@@ -54,21 +54,21 @@
         position: absolute;
         background-color: #c0c0c0;
         width: 100%;
-        border: (1rem/16) solid #c0c0c0;
+        border: 1px solid #c0c0c0;
 
         &:hover {
           background-color: #9b9b9b;
-          border: (1rem/16) solid #898989;
+          border: 1px solid #898989;
         }
       }
     }
-
-    .scrollbar-bar-up {
-      @include bar-icon('./imgs/w_up_normal.png', './imgs/w_up_over.png', './imgs/w_up_disable.png', './imgs/w_up_press.png');
-    }
-
-    .scrollbar-bar-down {
-      @include bar-icon('./imgs/w_down_normal.png', './imgs/w_down_over.png', './imgs/w_down_disable.png', './imgs/w_down_press.png');
-    }
   }
+}
+
+.scrollbar-bar-up {
+  @include bar-icon('./imgs/w_up_normal.png', './imgs/w_up_over.png', './imgs/w_up_disable.png', './imgs/w_up_press.png');
+}
+
+.scrollbar-bar-down {
+  @include bar-icon('./imgs/w_down_normal.png', './imgs/w_down_over.png', './imgs/w_down_disable.png', './imgs/w_down_press.png');
 }

@@ -48,6 +48,8 @@ export default class DropdownContainer extends React.Component<any, DropdownCont
         labelElement={ <div><span>{'dropdown'}</span></div> }
         handleUpdate={ (value:any) => { this.setState({ dropdownValue: value }) } }
         id={'dropdown'}
+        multiMode={true}
+        valueElement={ <span>{dropdownValue}</span> }
         options={[
           ...dropdownItems.map( item => ({ 
             value:item.value,
@@ -63,8 +65,7 @@ export default class DropdownContainer extends React.Component<any, DropdownCont
             element: <div style={dividerContainerStyle} onClick={ () => { this.setState({ dropdownItems: [...this.state.dropdownItems, { value: +new Date(), text: +new Date() }] }) } }><div style={dividerStyle}></div></div>,
             selectAble: false
           }
-        ]}
-        value={ dropdownValue }/>
+        ]} />
     )
   }
 }

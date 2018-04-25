@@ -30,12 +30,13 @@ export default class App extends React.Component<any, any> {
     window.addEventListener('resize', () => {
       document.querySelector('.app-body-sidebar').textContent = 'Resize'
     })
+
+    document.addEventListener('contextmenu', event => event.preventDefault());
   }
 
   render() {
     return (
       <div className="app">
-        <Dialog />
         <div className="app-header">123</div>
         <div className="app-body">
           <div className="app-body-sidebar" style={{fontSize: '24px', color: 'red'}}></div>

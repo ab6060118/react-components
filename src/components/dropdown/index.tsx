@@ -2,7 +2,7 @@ import * as React from 'react'
 import Scrollbar from '../scrollbar';
 import './style.scss'
 
-interface Option {
+export interface Option {
   value:any
   element:JSX.Element
   disabled?:boolean
@@ -10,12 +10,14 @@ interface Option {
 }
 
 interface DropdownProps {
-  disabled?: boolean
   handleUpdate:Function
   id:string
   options: Option[]
+  valueElement: JSX.Element
+  multiMode?:boolean
   labelElement?:JSX.Element
-  value: any
+  className?:string
+  disabled?: boolean
 }
 
 interface DropdownState {
@@ -48,7 +50,7 @@ class DropdownItem extends React.Component<DropdownItemProps> {
   }
 }
 
-export default class DropdownList extends React.Component<DropdownProps, DropdownState> {
+export default class Dropdown extends React.Component<DropdownProps, DropdownState> {
   refs:{[key:string]:HTMLElement}
 
   constructor(props:DropdownProps) {
@@ -101,11 +103,13 @@ export default class DropdownList extends React.Component<DropdownProps, Dropdow
   }
 
   handleSelect(value:any) {
-    let { handleUpdate } = this.props
+    let { handleUpdate, multiMode } = this.props
 
     if(handleUpdate) handleUpdate(value)
 
-    this.closeMenu()
+    if(multiMode !== true) {
+      this.closeMenu()
+    }
   }
 
   closeMenu() {
@@ -124,11 +128,11 @@ export default class DropdownList extends React.Component<DropdownProps, Dropdow
       return;
     }
 
-    let { menu } = this.refs
+    let { menu, field } = this.refs
 
     let paddingSpace = 10;
     let { innerHeight:windowHeight } = window;
-    let { top:parentTop, left:parentLeft, height: parentHeight, bottom: parentBottom, width:parentWidth } = menu.parentElement.getBoundingClientRect();
+    let { top:parentTop, left:parentLeft, height: parentHeight, bottom: parentBottom, width:parentWidth } = field.getBoundingClientRect();
     let { top, height } = menu.getBoundingClientRect();
     let newTop = parentTop + parentHeight;
     let maxHeight:number;
@@ -163,45 +167,44 @@ export default class DropdownList extends React.Component<DropdownProps, Dropdow
 
   getDropdownClassName() {
     let className:string[] = ['dropdown']
+    let { disabled, className:classStr } = this.props
 
-    if(this.props.disabled) {
-      className.push('disabled')
-    }
+    if(classStr !== undefined) className.push(classStr)
+    if(disabled === true) className.push('disabled')
 
     return className.join(' ')
   }
 
   render() {
-    let { id, labelElement, options, value } = this.props
+    let { id, labelElement, options, valueElement } = this.props
     let { isOpend } = this.state
-    let dispalyValue = options.filter(option => option.value === value)[0] || options[0]
 
     return (
       <div className={this.getDropdownClassName()} ref='dropdown'>
         <input style={{display: 'none'}} readOnly id={id} onClick={this.handleClick.bind(this)} />
         {labelElement && <label className="dropdown-label-container" htmlFor={id}>{labelElement}</label> }
-        <div className="dropdown-field" onClick={this.handleClick.bind(this)}>
+        <div className="dropdown-field" onClick={this.handleClick.bind(this)} ref='field'>
           <div className="dropdown-item">
-            {dispalyValue.element}
+            {valueElement}
           </div>
           <div className="dropdown-icon-container">
             <span className={isOpend ? 'dropdown-close-icon' : 'dropdown-open-icon'}></span>
           </div>
-        { isOpend &&
-          <div className="dropdown-menu" ref='menu'>
-            <Scrollbar>
-            {
-              options.map((item, key:number) => (
-                <DropdownItem 
-                  {...item}
-                  handleSelect={this.handleSelect.bind(this)}
-                  key={key}/>
-              ))
-            }
-            </Scrollbar>
-          </div>
-        }
         </div>
+      { isOpend &&
+        <div className="dropdown-menu" ref='menu'>
+          <Scrollbar>
+          {
+            options.map((item, key:number) => (
+              <DropdownItem 
+                {...item}
+                handleSelect={this.handleSelect.bind(this)}
+                key={key}/>
+            ))
+          }
+          </Scrollbar>
+        </div>
+      }
       </div>
     )
   }

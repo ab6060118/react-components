@@ -1,0 +1,102 @@
+.page-control {
+  display: flex;
+  justify-content: space-between;
+  height: (25rem/16);
+  padding: 0 (10rem/16);
+  border: 1px solid black;
+  border-top: 0;
+  background-color: #ffffff;
+
+  span {
+    font-size: (12rem/16);
+  }
+
+  .page-control-input {
+    display: flex;
+    align-items: center;
+    .input-label {
+      display: flex;
+      height: 1rem;
+    }
+
+    .input-field {
+      margin-left: (4rem/16);
+      height: 1rem;
+      width: 3rem;
+      text-align: right;
+      color: #0278d1;
+      font-size: (12rem/16);
+    }
+  }
+
+  .page-control-dropdown {
+    height: 1rem;
+    .dropdown-field {
+      border: 0;
+    }
+  }
+
+  .page-control-divider {
+    height: 1rem;
+    margin: 0 (10rem/16);
+    border-left: 1px solid #c8c8c8;
+  }
+
+  .page-control-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .page-control-right {
+    display: flex;
+    align-items: center;
+  }
+}
+
+@mixin page-control-icon($normal, $disable, $active) {
+  width: (16rem/16);
+  height: (15rem/16);
+  display: inline-block;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url($normal);
+
+  &:active {
+    background-image: url($active);
+  }
+
+  &.disable {
+    cursor: initial;
+    background-image: url($disable);
+  }
+}
+
+.page-control-icon-down {
+  @include page-control-icon('./imgs/down.png', './imgs/down_active.png', './imgs/down_active.png')
+}
+
+.page-control-icon-more-left {
+  @include page-control-icon('./imgs/more_left.png', './imgs/more_left_disable.png', './imgs/more_left_active.png')
+}
+
+.page-control-icon-more-right {
+  @include page-control-icon('./imgs/more_right.png', './imgs/more_right_disable.png', './imgs/more_right_active.png')
+
+  margin-left: (6rem/16);
+}
+
+.page-control-icon-left {
+  @include page-control-icon('./imgs/play_left.png', './imgs/play_left_disable.png', './imgs/play_left_active.png')
+
+  margin-left: (6rem/16);
+}
+
+.page-control-icon-right {
+  @include page-control-icon('./imgs/play_right.png', './imgs/play_right_disable.png', './imgs/play_right_active.png')
+}
+
+.page-control-icon-refresh {
+  @include page-control-icon('./imgs/refresh.png', './imgs/refresh_disable.png', './imgs/refresh_active.png')
+}
