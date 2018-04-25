@@ -97,8 +97,6 @@ export default class PageControl extends React.Component<PageControlProps, PageC
     let { disabled, currentPage, totalItems, itemPerPage } = this.props
     let totalPage = Math.ceil(totalItems/itemPerPage)
 
-    console.log(totalPage, currentPage, type);
-
     if(disabled === true) className.push('disable')
 
     if(type === ICON_TYPE.LEFT && currentPage === 1) className.push('disable')
