@@ -73,6 +73,12 @@
       &:hover {
         background-color: #defefd
       }
+
+      &.disabled {
+        cursor: default;
+        opacity: 0.5;
+        background-color: transparent;
+      }
     }
   }
 }

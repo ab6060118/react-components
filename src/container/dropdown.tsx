@@ -10,7 +10,7 @@ export default class DropdownContainer extends React.Component<any, DropdownCont
   constructor(props:any) {
     super(props)
     this.state = {
-      dropdownValue: 1,
+      dropdownValue: [1],
       dropdownItems: [
         { text: '1', value: 1 },
         { text: '2', value: 2 },
@@ -23,6 +23,18 @@ export default class DropdownContainer extends React.Component<any, DropdownCont
         { text: '9', value: 9 },
       ],
     }
+  }
+
+  handleUpdate(value:any) {
+    let newValue = [...this.state.dropdownValue]
+
+    newValue = newValue.indexOf(value) < 0 ? [...newValue, value] : newValue.filter(v => v !== value)
+
+    if(newValue.length === 0) return
+
+    this.setState({
+      dropdownValue: newValue
+    }) 
   }
 
   render() {
@@ -46,13 +58,15 @@ export default class DropdownContainer extends React.Component<any, DropdownCont
     return (
       <Dropdown 
         labelElement={ <div><span>{'dropdown'}</span></div> }
-        handleUpdate={ (value:any) => { this.setState({ dropdownValue: value }) } }
+        handleUpdate={this.handleUpdate.bind(this)}
+        handleCloseDropdown={() => {console.log('close')}}
         id={'dropdown'}
         multiMode={true}
-        valueElement={ <span>{dropdownValue}</span> }
+        valueElement={ <span style={{marginLeft: 10}}>{dropdownValue.join(',')}</span> }
         options={[
           ...dropdownItems.map( item => ({ 
             value:item.value,
+            disabled: false,
             element: (
               <div style={{display: 'flex', alignItems: 'center'} as React.CSSProperties}>
               <span className="function-info-icon"></span>
@@ -60,11 +74,6 @@ export default class DropdownContainer extends React.Component<any, DropdownCont
               </div> 
             )
           })),
-          { 
-            value:2,
-            element: <div style={dividerContainerStyle} onClick={ () => { this.setState({ dropdownItems: [...this.state.dropdownItems, { value: +new Date(), text: +new Date() }] }) } }><div style={dividerStyle}></div></div>,
-            selectAble: false
-          }
         ]} />
     )
   }

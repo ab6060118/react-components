@@ -18,6 +18,7 @@ interface DropdownProps {
   labelElement?:JSX.Element
   className?:string
   disabled?: boolean
+  handleCloseDropdown?:Function
 }
 
 interface DropdownState {
@@ -32,7 +33,7 @@ class DropdownItem extends React.Component<DropdownItemProps> {
   handleSelect(e:React.MouseEvent<HTMLElement>) {
     let { value, disabled, selectAble, handleSelect } = this.props
 
-    if(disabled || selectAble === false) {
+    if(disabled === true || selectAble === false) {
       e.stopPropagation()
 
       return
@@ -41,9 +42,18 @@ class DropdownItem extends React.Component<DropdownItemProps> {
     handleSelect(value)
   }
 
+  getClassName() {
+    let { disabled } = this.props
+    let className:string[] = ['dropdown-item']
+
+    if(disabled === true) className.push('disabled')
+
+    return className.join(' ')
+  }
+
   render() {
     return (
-      <div className="dropdown-item" onClick={this.handleSelect.bind(this)}>
+      <div className={this.getClassName()} onClick={this.handleSelect.bind(this)}>
         {this.props.element}
       </div>
     )
@@ -113,7 +123,11 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
   }
 
   closeMenu() {
+    let { handleCloseDropdown } = this.props
+
     this.unbindListeners()
+
+    if(handleCloseDropdown) handleCloseDropdown()
 
     this.setState({ isOpend: false })
   }
