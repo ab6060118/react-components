@@ -29,7 +29,12 @@ interface DropdownItemProps extends Option{
   handleSelect:Function
 }
 
-class DropdownItem extends React.Component<DropdownItemProps> {
+class DropdownItem extends React.PureComponent<DropdownItemProps> {
+  constructor(props:DropdownItemProps) {
+    super(props)
+    this.handleSelect = this.handleSelect.bind(this)
+  }
+
   handleSelect(e:React.MouseEvent<HTMLElement>) {
     let { value, disabled, selectAble, handleSelect } = this.props
 
@@ -53,14 +58,14 @@ class DropdownItem extends React.Component<DropdownItemProps> {
 
   render() {
     return (
-      <div className={this.getClassName()} onClick={this.handleSelect.bind(this)}>
+      <div className={this.getClassName()} onClick={this.handleSelect}>
         {this.props.element}
       </div>
     )
   }
 }
 
-export default class Dropdown extends React.Component<DropdownProps, DropdownState> {
+export default class Dropdown extends React.PureComponent<DropdownProps, DropdownState> {
   refs:{[key:string]:HTMLElement}
 
   constructor(props:DropdownProps) {
@@ -71,6 +76,8 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
 
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.handleWheelOutOfDropdown = this.handleWheelOutOfDropdown.bind(this)
+    this.handleSelect = this.handleSelect.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentWillUnmount() {
@@ -195,9 +202,9 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
 
     return (
       <div className={this.getDropdownClassName()} ref='dropdown'>
-        <input style={{display: 'none'}} readOnly id={id} onClick={this.handleClick.bind(this)} />
+        <input style={{display: 'none'}} readOnly id={id} onClick={this.handleClick} />
         {labelElement && <label className="dropdown-label-container" htmlFor={id}>{labelElement}</label> }
-        <div className="dropdown-field" onClick={this.handleClick.bind(this)} ref='field'>
+        <div className="dropdown-field" onClick={this.handleClick} ref='field'>
           <div className="dropdown-item">
             {valueElement}
           </div>
@@ -212,7 +219,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
             options.map((item, key:number) => (
               <DropdownItem 
                 {...item}
-                handleSelect={this.handleSelect.bind(this)}
+                handleSelect={this.handleSelect}
                 key={key}/>
             ))
           }

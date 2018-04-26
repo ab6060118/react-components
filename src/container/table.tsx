@@ -5,7 +5,6 @@ import PageControl from '../components/page_control'
 
 class Span extends React.Component<any> {
   render() {
-    console.log('span rerender');
     return (
       <span style={this.props.style}>ttt</span>
     )
