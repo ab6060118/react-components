@@ -68,7 +68,6 @@ export default class TableContainer extends React.PureComponent<any, TableContai
     return (
       <div>
         <Table
-          bodyMaxHeight={ 100 }
           widths={[
             { default: '25%', min: 30},
             { default: '25%', min: 30},

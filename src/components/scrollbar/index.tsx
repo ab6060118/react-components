@@ -55,13 +55,15 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   }
 
   scrollHeightWatch() {
-    let { content } = this.refs
+    let { content, bar } = this.refs
 
     cancelAnimationFrame(this.scrollHeightWatcher)
 
     if (this.lastScrollHeight !== content.scrollHeight) {
       this.updateScrollbar()
     }
+
+    bar.style.top = content.scrollTop + 'px';
 
     this.lastScrollHeight = content.scrollHeight
     this.scrollHeightWatcher = requestAnimationFrame(this.scrollHeightWatch)
@@ -70,6 +72,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   updateScrollbar() {
     let { content, track, bar } = this.refs
     let { trackAtTop, trackAtBottom } = this.state
+
+    if(content.offsetHeight !== content.parentElement.offsetHeight)
+      content.style.height = content.parentElement.offsetHeight + 'px'
+
+    console.log(content.scrollTop, content.offsetHeight, content.scrollHeight);
 
     if(content.scrollHeight !== content.offsetHeight) {
       bar.style.display = 'flex'
@@ -154,11 +161,9 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     let clickPoint:number
     let clickPointOfBar:number
     let interval:number
-    let barTop:number
 
     e.stopPropagation()
 
-    barTop = bar_body.getBoundingClientRect().top
     clickPoint = e.pageY
     clickPointOfBar = clickPoint - bar_body.getBoundingClientRect().top
 
@@ -257,8 +262,8 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     let scrollbarStyle = { maxHeight: maxHeight }
 
     return(
-      <div className={["scrollbar", className].join(' ')} style={scrollbarStyle} onWheel={this.handleWheelAndKeyup.bind(this)} onKeyDown={this.handleWheelAndKeyup.bind(this)} tabIndex={0}>
-        <div className="scrollbar-content" ref='content' onScroll={this.handleScroll.bind(this)}>
+      <div className={["scrollbar", className].join(' ')} onWheel={this.handleWheelAndKeyup.bind(this)} onKeyDown={this.handleWheelAndKeyup.bind(this)} onScroll={this.handleScroll.bind(this)} tabIndex={0} ref='content' >
+        <div className="scrollbar-content">
           { children }
         </div>
         <div className="scrollbar-bar" ref='bar'>

@@ -38,7 +38,7 @@ export default class Example extends React.Component<any,ExampleState> {
     console.log('example render');
 
     return (
-      <div style={{padding: '30px' }}>
+      <div style={{padding: 30, width: '100%' }}>
         <Checkbox />
         <Input />
         <FunctionInfo />
