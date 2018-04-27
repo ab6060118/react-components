@@ -27,18 +27,10 @@ const plugins = [
 ]
 
 module.exports = {
-  // entry: __dirname + "/src/index.tsx",
-  entry: {
-    "index": './src/index.tsx',
-    "scrollbar":  './src/components/scrollbar/index.tsx',
-    "table":  './src/components/table/index.tsx',
-    "function_info":  './src/components/function_info/index.tsx',
-    "dropdown":  './src/components/dropdown/index.tsx',
-    "window_container":  './src/components/window_container/index.tsx',
-  },
+  entry: __dirname + "/src/index.tsx",
   output: {
     path: __dirname + "/dist",
-    filename: "[name]/index.js",
+    filename: "index.js",
   },
 
   // Enable sourcemaps for debugging webpack's output.
