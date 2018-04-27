@@ -50,7 +50,7 @@ html, body {
 
       .app-body-content-tabbar {
         flex-shrink: 0;
-        height: 200px;
+        height: 100px;
         border-bottom: 1px solid black;
       }
 
@@ -93,6 +93,7 @@ html, body {
   .example-table-container {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
     flex-shrink: 1;
 
     &>.page-control {
@@ -101,13 +102,15 @@ html, body {
 
     .example-table {
       border: 1px solid black;
+      flex-shrink: 1;
+      flex-grow: 1;
+
+      .scrollbar {
+        flex-grow: 1;
+      }
 
       div[class*="row"] {
         border-bottom: 1px solid black;
-
-        &.selected {
-          background-color: DeepSkyBlue;
-        }
       }
 
       div[class$="col"] {
