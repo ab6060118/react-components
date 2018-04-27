@@ -42,9 +42,11 @@ export default class App extends React.Component<any, any> {
           <div className="app-body-sidebar" style={{fontSize: '24px', color: 'red'}}>
           </div>
           <div className="app-body-content">
-            <div className="app-body-content-tabbar"></div>
-            <div style={{display: 'flex', width: '100%'}}>
+            <div className="app-body-content-tabbar">{'tabbar'}</div>
+            <div className="app-body-content-body">
+              <Scrollbar>
                 <Example />
+              </Scrollbar>
             </div>
           </div>
         </div>
