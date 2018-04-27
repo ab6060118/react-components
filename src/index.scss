@@ -81,7 +81,14 @@ html, body {
 }
 
 .example {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
   padding: 30px;
+
+  &>div {
+    flex-shrink: 0;
+  }
 
   .example-table-container {
     display: flex;

@@ -44,9 +44,7 @@ export default class App extends React.Component<any, any> {
           <div className="app-body-content">
             <div className="app-body-content-tabbar">{'tabbar'}</div>
             <div className="app-body-content-body">
-              <Scrollbar>
                 <Example />
-              </Scrollbar>
             </div>
           </div>
         </div>
