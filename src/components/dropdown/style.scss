@@ -23,13 +23,13 @@
   }
 
   .dropdown-field {
-    padding-right: (22rem/16);
     display: flex;
     align-items: center;
+    flex-grow: 1;
+    padding-right: (22rem/16);
     border: 1px solid #848484;
     position: relative;
     height: 100%;
-    width: 100%;
     cursor: pointer;
     background-color: #ffffff;
 
@@ -38,6 +38,7 @@
       justify-content:center;
       align-items: center;
       position: absolute;
+      top: 0;
       right: 0;
       width: (22rem/16);
       height: 100%;
