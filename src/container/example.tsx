@@ -45,13 +45,6 @@ export default class Example extends React.Component<any,ExampleState> {
         <Dropdown />
         <div style={{marginTop: '20px'}}></div>
         <Table />
-        <div style={{ marginTop: '30px' }}>
-          <button onClick={this.handleAddClick.bind(this)}>Add</button>
-          <button onClick={this.handleRemoveClick.bind(this)}>Delete</button>
-        </div>
-        <div>
-          {this.state.element.map((e,index:number) => <div key={index}>{e}</div>)}
-        </div>
       </div>
     )
   }
