@@ -1,7 +1,6 @@
 .table {
   position: relative;
   display: flex;
-  flex-shrink: 1;
   flex-direction: column;
 
   .table-header {
@@ -27,9 +26,16 @@
   }
 
   .table-body {
+    display:flex;
+    flex-grow: 1;
     flex-shrink: 1;
 
     .table-body-row {
+
+      &.selected {
+        background-color: DeepSkyBlue;
+      }
+
       .table-body-col {
         display: inline-block;
       }

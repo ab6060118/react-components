@@ -18,12 +18,14 @@ interface TableProps {
   }
   className?:string
   selectable?:boolean
+  multiSelect?:boolean
+  handleBodyRowSelect?:Function
+  handleBodyRowRightClick?:Function
 }
 
 interface BodyRowElement {
   id:any
   selectable?:boolean
-  rightClickAble?:boolean
   elements:JSX.Element[]
 }
 
@@ -56,6 +58,7 @@ export default class Table extends React.Component<TableProps, TableState> {
     this.handleResizerMouseUp = this.handleResizerMouseUp.bind(this)
     this.handleWindowResize = this.handleWindowResize.bind(this)
     this.handleBodyRowClick = this.handleBodyRowClick.bind(this)
+    this.handleBodyRowRightClick = this.handleBodyRowRightClick.bind(this)
   }
 
   componentWillMount() {
@@ -99,14 +102,14 @@ export default class Table extends React.Component<TableProps, TableState> {
     let originWidths = this.state.widths
     let newWidths = [...this.state.widths]
     let index = this.resizingColIndex
-    let twoColWidth:number = ( originWidths[index] as number ) + ( originWidths[index + 1] as number ) 
+    let twoColWidth:number = (originWidths[index] as number) + (originWidths[index+1] as number) 
 
     let newWidthLeft:number
     let newWidthRight:number
 
     newWidthLeft = this.originLeftWidth + e.clientX - this.mouseDownPosition
 
-    if(newWidthLeft + ( widths[index + 1].min as number) > twoColWidth) {
+    if(newWidthLeft + (widths[index+1].min as number) > twoColWidth) {
       newWidthLeft = twoColWidth - widths[index + 1].min
     }
     if(newWidthLeft < widths[index].min) newWidthLeft = widths[index].min
@@ -114,21 +117,22 @@ export default class Table extends React.Component<TableProps, TableState> {
     newWidthRight = twoColWidth - newWidthLeft
 
     newWidths[index] = newWidthLeft
-    newWidths[index + 1] = newWidthRight
+    newWidths[index+1] = newWidthRight
 
     this.setState({ widths: newWidths })
   }
 
   handleBodyRowClick(id:any, index:number) {
     return function(e:React.MouseEvent<HTMLElement>) {
+      let lastSelectedRowIndex = this.lastSelectedRowIndex
       let newSelected:any[] = [...this.state.selected]
-      let { bodyRowElements, selectable } = this.props
+      let { bodyRowElements, selectable, multiSelect, handleBodyRowSelect } = this.props
       let rowElements:BodyRowElement[] = bodyRowElements.filter((rowElement:BodyRowElement) => rowElement.id === id)
 
       if(rowElements.length === 0) return
       if(selectable === false || rowElements[0].selectable === false) return
 
-      if(e.ctrlKey === true) {
+      if(e.ctrlKey === true && multiSelect === true) {
         if(newSelected.indexOf(id) < 0) {
           newSelected.push(id)
         }
@@ -136,25 +140,61 @@ export default class Table extends React.Component<TableProps, TableState> {
           newSelected = newSelected.filter((selected:any) => selected !== id)
         }
       }
-      else if(e.shiftKey === true) {
+      else if(e.shiftKey === true && multiSelect === true) {
+        let selectedElements:BodyRowElement[]
+
         if(index > this.lastSelectedRowIndex) {
-          newSelected = bodyRowElements.slice(this.lastSelectedRowIndex, index + 1).map((e:any) => e.id)
+          selectedElements = bodyRowElements.slice(lastSelectedRowIndex, index+1)
         }
         else {
-          newSelected = bodyRowElements.slice(index, this.lastSelectedRowIndex + 1).map((e:any) => e.id)
+          selectedElements = bodyRowElements.slice(index, lastSelectedRowIndex+1)
         }
+
+        newSelected = selectedElements.map((e:BodyRowElement) => e.id)
       }
       else {
         newSelected = [id]
       }
 
-      if(e.shiftKey !== true) {
+      if(e.shiftKey !== true && multiSelect === true) {
         this.lastSelectedRowIndex = index
       }
 
       this.setState({
         selected: newSelected
+      }, () => {
+        if(handleBodyRowSelect !== undefined) {
+          handleBodyRowSelect(this.state.selected)
+        }
       })
+    }.bind(this)
+  }
+
+  handleBodyRowRightClick(id:any, index:number) {
+    return function(e:React.MouseEvent<HTMLElement>) {
+      let { selectable, bodyRowElements, handleBodyRowRightClick, handleBodyRowSelect } = this.props
+      let { selected } = this.state
+      let rowElements:BodyRowElement[] = bodyRowElements.filter((rowElement:BodyRowElement) => rowElement.id === id)
+
+      if(rowElements.length === 0 || handleBodyRowRightClick === undefined) return
+      if(selectable === false || rowElements[0].selectable === false) return
+
+      if(selected.indexOf(id) < 0) {
+        this.lastSelectedRowIndex = index
+
+        this.setState({
+          selected: [id]
+        }, () => {
+          handleBodyRowRightClick(this.state.selected)
+
+          if(handleBodyRowSelect !== undefined) {
+            handleBodyRowSelect(this.state.selected)
+          }
+        })
+      }
+      else {
+        handleBodyRowRightClick(selected)
+      }
     }.bind(this)
   }
 
@@ -196,8 +236,6 @@ export default class Table extends React.Component<TableProps, TableState> {
     let { headerElements, bodyRowElements, className, resizable, bodyMaxHeight, stopWheelEventOnTableBody } = this.props
     let widths:React.CSSProperties[] = this.getWidthStyle();
 
-    console.log(this.lastSelectedRowIndex, this.state.selected);
-
     return (
       <div className={ ['table', className].join(' ') } ref='table'>
         <div className="table-header">
@@ -229,7 +267,8 @@ export default class Table extends React.Component<TableProps, TableState> {
               <div 
                 className={this.getBodyRowClassName(rowElement.id)}
                 key={ 'table-body-row' + '-' + indexRow }
-                onClick={this.handleBodyRowClick(rowElement.id, indexRow)}>
+                onClick={this.handleBodyRowClick(rowElement.id, indexRow)}
+                onContextMenu={this.handleBodyRowRightClick(rowElement.id, indexRow)}>
               {
                 rowElement.elements.map( ( element, indexCol, elements )=> (
                   <div
