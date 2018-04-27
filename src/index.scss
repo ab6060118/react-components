@@ -32,6 +32,8 @@ html, body {
 
   .app-body {
     display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
     border-top: 1px solid black;
 
     .app-body-sidebar {
@@ -42,28 +44,21 @@ html, body {
 
     .app-body-content {
       display: flex;
-      width: 100%;
       flex-direction: column;
+      flex-grow: 1;
+      flex-shrink: 1;
 
       .app-body-content-tabbar {
         flex-shrink: 0;
-        height: 30%;
+        height: 200px;
         border-bottom: 1px solid black;
       }
-    }
-  }
-}
 
-.example-table {
-  border: 1px solid black;
-
-  div[class$="row"] {
-    border-bottom: 1px solid black;
-  }
-
-  div[class$="col"] {
-    &:not(:last-child) {
-      border-right: 1px solid black;
+      .app-body-content-body {
+        display: flex;
+        height: 1px;
+        flex-grow: 1;
+      }
     }
   }
 }
@@ -82,5 +77,37 @@ html, body {
   }
   .window-body {
     flex-grow: 1;
+  }
+}
+
+.example {
+  padding: 30px;
+
+  .example-table-container {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 1;
+
+    &>.page-control {
+      flex-shrink: 0;
+    }
+
+    .example-table {
+      border: 1px solid black;
+
+      div[class*="row"] {
+        border-bottom: 1px solid black;
+
+        &.selected {
+          background-color: DeepSkyBlue;
+        }
+      }
+
+      div[class$="col"] {
+        &:not(:last-child) {
+          border-right: 1px solid black;
+        }
+      }
+    }
   }
 }

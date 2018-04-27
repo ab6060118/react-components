@@ -1,9 +1,12 @@
 .table {
   position: relative;
   display: flex;
+  flex-shrink: 1;
   flex-direction: column;
 
   .table-header {
+    flex-shrink: 0;
+    
     .table-header-row {
       .table-header-col {
         position: relative;
@@ -24,6 +27,8 @@
   }
 
   .table-body {
+    flex-shrink: 1;
+
     .table-body-row {
       .table-body-col {
         display: inline-block;
