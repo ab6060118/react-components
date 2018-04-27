@@ -3,7 +3,6 @@ import './style.scss'
 
 interface ScrollbarProps {
   className?:string
-  maxHeight?:number|string
   stopWheelEventWhenMouseOver?:boolean
 }
 
@@ -63,20 +62,16 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
       this.updateScrollbar()
     }
 
-    bar.style.top = content.scrollTop + 'px';
-
     this.lastScrollHeight = content.scrollHeight
     this.scrollHeightWatcher = requestAnimationFrame(this.scrollHeightWatch)
   }
 
   updateScrollbar() {
-    let { content, track, bar } = this.refs
+    let { scrollbar, content, track, bar } = this.refs
     let { trackAtTop, trackAtBottom } = this.state
 
-    if(content.offsetHeight !== content.parentElement.offsetHeight)
-      content.style.height = content.parentElement.offsetHeight + 'px'
-
-    console.log(content.scrollTop, content.offsetHeight, content.scrollHeight);
+    if(scrollbar.offsetHeight !== scrollbar.parentElement.offsetHeight)
+      scrollbar.style.height = scrollbar.parentElement.offsetHeight + 'px'
 
     if(content.scrollHeight !== content.offsetHeight) {
       bar.style.display = 'flex'
@@ -258,12 +253,11 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
   }
 
   render() {
-    let { children, maxHeight, className } = this.props
-    let scrollbarStyle = { maxHeight: maxHeight }
+    let { children, className } = this.props
 
     return(
-      <div className={["scrollbar", className].join(' ')} onWheel={this.handleWheelAndKeyup.bind(this)} onKeyDown={this.handleWheelAndKeyup.bind(this)} onScroll={this.handleScroll.bind(this)} tabIndex={0} ref='content' >
-        <div className="scrollbar-content">
+      <div className={["scrollbar", className].join(' ')} onWheel={this.handleWheelAndKeyup.bind(this)} onKeyDown={this.handleWheelAndKeyup.bind(this)} ref='scrollbar' tabIndex={0} >
+        <div className="scrollbar-content" onScroll={this.handleScroll.bind(this)} ref='content' >
           { children }
         </div>
         <div className="scrollbar-bar" ref='bar'>
