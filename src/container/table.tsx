@@ -117,7 +117,10 @@ export default class TableContainer extends React.PureComponent<any, TableContai
       <div className="example-table-container">
         <Table
           selectable={true}
+          multiSelect={true}
           bodyMaxHeight={500}
+          handleBodyRowSelect={(selected:any) => {console.log(selected)}}
+          handleBodyRowRightClick={(selected:any) => {console.log(selected)}}
           widths={[
             { default: '33%', min: 30},
             { default: '33%', min: 30},
