@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Menu, { MenuDividerItem, MenuTitleItem, MenuSubMenuItem } from '../components/menu';
+import Menu, { MenuDefaultItem, MenuDividerItem, MenuTitleItem, MenuSubMenuItem } from '../components/menu';
 
 export default class TableMenu extends React.Component<any,any> {
   constructor(props:any) {
@@ -21,22 +21,26 @@ export default class TableMenu extends React.Component<any,any> {
     }
 
     return (
-      <Menu
-        className="exapmle-table-menu"
-        top={top}
-        left={left}
-        items={[
-          <div style={is} onClick={this.handleOneClick}><span>1111111</span></div>,
-          <div style={is}><span>2</span></div>,
-          <MenuDividerItem />,
-          <MenuTitleItem text="Title" />,
-          <MenuSubMenuItem 
-            text="Next"
-            items={[
-              <div style={is}><span>3</span></div>,
-              <div style={is}><span>4</span></div>
-            ]}/>,
-        ]}/> 
+      <Menu className="exapmle-table-menu" top={top} left={left}>
+        <MenuDefaultItem onClick={()=>{ console.log('ItemClick'); }}>
+          <span>{'123'}</span>
+        </MenuDefaultItem>
+        <MenuDividerItem />
+        <MenuTitleItem text="Title" />
+        <MenuSubMenuItem text="Next">
+          <MenuDefaultItem onClick={()=>{ console.log('ItemClick'); }}>
+            <span>{'123'}</span>
+          </MenuDefaultItem>
+          <MenuDefaultItem onClick={()=>{ console.log('ItemClick'); }}>
+            <span>{'123'}</span>
+          </MenuDefaultItem>
+          <MenuDefaultItem onClick={()=>{ console.log('ItemClick'); }}>
+            <span>{'123'}</span>
+          </MenuDefaultItem>
+          <MenuDividerItem />
+          <MenuTitleItem text="Title" />
+        </MenuSubMenuItem>
+      </Menu>
     )
   }
 }

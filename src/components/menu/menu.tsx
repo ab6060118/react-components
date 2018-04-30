@@ -1,7 +1,6 @@
 import * as React from 'react'
 
 interface MenuProps {
-  items:JSX.Element[]
   top:number
   left:number
   className?:string
@@ -21,13 +20,21 @@ export default class Menu extends React.Component<MenuProps>{
 
   updateMenuPosition() {
     let { menu } = this.refs
-
+    let { isSubMenu } = this.props
     let { innerHeight, innerWidth} = window
     let { top, left, height, width } = menu.getBoundingClientRect()
     let paddingSpace:number = 10
 
-    if(height + top > innerHeight) menu.style.top = innerHeight - height - paddingSpace + 'px'
-    if(width + left > innerWidth) menu.style.left = innerWidth - width - paddingSpace + 'px'
+    if(isSubMenu === true) {
+      let { left:parentLeft, width:parentWidth } = menu.parentElement.getBoundingClientRect()
+
+      if(height + top > innerHeight) menu.style.top = innerHeight - height - paddingSpace+ 'px'
+      if(width + left > innerWidth) menu.style.left = parentLeft - parentWidth - 2 + 'px'
+    }
+    else {
+      if(height + top > innerHeight) menu.style.top = innerHeight - height - paddingSpace + 'px'
+      if(width + left > innerWidth) menu.style.left = innerWidth - width - paddingSpace + 'px'
+    }
   }
 
   getClassName() {
@@ -39,16 +46,8 @@ export default class Menu extends React.Component<MenuProps>{
     return className.join(' ')
   }
 
-  getItemClassName(componentName:string) {
-    let className:string[] = ['menu-item']
-
-    if(componentName === 'MenuDividerItem') className.push('divider')
-
-    return className.join(' ')
-  }
-
   render() {
-    let { items, top, left } = this.props
+    let { top, left, children } = this.props
     let menuStyle:React.CSSProperties = {
       top: top,
       left: left,
@@ -56,10 +55,7 @@ export default class Menu extends React.Component<MenuProps>{
 
     return (
       <div className={this.getClassName()} style={menuStyle} ref="menu">
-      {items.map((element, index) => (
-        <div className={this.getItemClassName((element.type as any).name)} key={index}>{element}</div>
-      ))
-      }
+      {children}
       </div>
     )
   }

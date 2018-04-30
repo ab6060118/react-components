@@ -1,5 +1,6 @@
 import * as React from 'react'
 import Menu from './menu';
+import MenuDefaultItem from './menu_default_item';
 import MenuSubMenuItem from './menu_sub_menu_item';
 
 import './style.scss'
@@ -14,16 +15,21 @@ class MenuDividerItem extends React.Component {
   }
 }
 
-const MenuTitleItem = ({text}:{text:string}) => (
-  <div className="menu-item-title">
-    <span className="menu-item-title-content">{text}</span>
-  </div>
-)
+class MenuTitleItem extends React.Component<{text:string}> {
+  render() {
+    return (
+      <div className="menu-item-title">
+        <span className="menu-item-title-content">{this.props.text}</span>
+      </div>
+    )
+  }
+}
 
 export {
   MenuTitleItem,
+  MenuDefaultItem,
   MenuDividerItem,
-  MenuSubMenuItem
+  MenuSubMenuItem,
 }
 
 export default Menu
