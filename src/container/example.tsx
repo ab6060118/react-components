@@ -36,7 +36,6 @@ export default class Example extends React.Component<any,ExampleState> {
 
   render() {
     console.log('example render');
-
     return (
       <div className="example">
         <Checkbox />

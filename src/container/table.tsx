@@ -1,7 +1,9 @@
 import * as React from 'react'
+import * as ReactDOM from 'react-dom';
 import Table from '../components/table'
 import Tooltip from '../components/tooltip'
 import PageControl from '../components/page_control'
+import TableMenu from './table_menu';
 
 class Span extends React.Component<any> {
   render() {
@@ -14,96 +16,106 @@ class Span extends React.Component<any> {
 
 interface TableContainerState {
   currentPage:number
+  selected:any[]
   head:string[]
+  isRightClickMenuOpened:boolean
   tableData:{
     id:number
     name:string
     method:string
   }[] 
+  reightClickPos:{left:number,top:number}
 }
 
 export default class TableContainer extends React.PureComponent<any, TableContainerState> {
+  refs:{[key:string]:HTMLElement}
+
   constructor(props:any) {
     super(props)
     this.state = {
+      isRightClickMenuOpened: false,
       currentPage: 1,
+      selected:[],
       head: ['name', 'delivery method', 'action'],
+      reightClickPos:{left:0,top:0},
       tableData: [
-        { id: 1, name: 'a', method: ''},
-        { id: 2, name: 'a', method: ''},
-        { id: 3, name: 'a', method: ''},
-        { id: 4, name: 'a', method: ''},
-        { id: 5, name: 'a', method: ''},
-        { id: 6, name: 'a', method: ''},
-        { id: 7, name: 'a', method: ''},
-        { id: 8, name: 'a', method: ''},
-        { id: 9, name: 'a', method: ''},
-        { id: 10, name: 'a', method: ''},
-        { id: 11, name: 'a', method: ''},
-        { id: 12, name: 'a', method: ''},
-        { id: 13, name: 'a', method: ''},
-        { id: 14, name: 'a', method: ''},
-        { id: 15, name: 'a', method: ''},
-        { id: 16, name: 'a', method: ''},
-        { id: 17, name: 'a', method: ''},
-        { id: 18, name: 'a', method: ''},
-        { id: 19, name: 'a', method: ''},
-        { id: 20, name: 'a', method: ''},
-        { id: 21, name: 'a', method: ''},
-        { id: 22, name: 'a', method: ''},
-        { id: 23, name: 'a', method: ''},
-        { id: 24, name: 'a', method: ''},
-        { id: 25, name: 'a', method: ''},
-        { id: 26, name: 'a', method: ''},
-        { id: 27, name: 'a', method: ''},
-        { id: 28, name: 'a', method: ''},
-        { id: 29, name: 'a', method: ''},
-        { id: 30, name: 'a', method: ''},
-        { id: 31, name: 'a', method: ''},
-        { id: 32, name: 'a', method: ''},
-        { id: 33, name: 'a', method: ''},
-        { id: 34, name: 'a', method: ''},
-        { id: 35, name: 'a', method: ''},
-        { id: 36, name: 'a', method: ''},
-        { id: 37, name: 'a', method: ''},
-        { id: 38, name: 'a', method: ''},
-        { id: 39, name: 'a', method: ''},
-        { id: 40, name: 'a', method: ''},
-        { id: 41, name: 'a', method: ''},
-        { id: 42, name: 'a', method: ''},
-        { id: 43, name: 'a', method: ''},
-        { id: 44, name: 'a', method: ''},
-        { id: 45, name: 'a', method: ''},
-        { id: 46, name: 'a', method: ''},
-        { id: 47, name: 'a', method: ''},
-        { id: 48, name: 'a', method: ''},
-        { id: 49, name: 'a', method: ''},
-        { id: 50, name: 'a', method: ''},
-        { id: 51, name: 'a', method: ''},
-        { id: 52, name: 'a', method: ''},
-        { id: 53, name: 'a', method: ''},
-        { id: 54, name: 'a', method: ''},
-        { id: 55, name: 'a', method: ''},
-        { id: 56, name: 'a', method: ''},
-        { id: 57, name: 'a', method: ''},
-        { id: 58, name: 'a', method: ''},
-        { id: 59, name: 'a', method: ''},
-        { id: 60, name: 'a', method: ''},
-        { id: 61, name: 'a', method: ''},
-        { id: 62, name: 'a', method: ''},
-        { id: 63, name: 'a', method: ''},
-        { id: 64, name: 'a', method: ''},
-        { id: 65, name: 'a', method: ''},
-        { id: 66, name: 'a', method: ''},
-        { id: 67, name: 'a', method: ''},
-        { id: 68, name: 'a', method: ''},
-        { id: 69, name: 'a', method: ''},
+        { id: 1, name: 'a', method: ''}, { id: 2, name: 'a', method: ''},
+        { id: 3, name: 'a', method: ''}, { id: 4, name: 'a', method: ''},
+        { id: 5, name: 'a', method: ''}, { id: 6, name: 'a', method: ''},
+        { id: 7, name: 'a', method: ''}, { id: 8, name: 'a', method: ''},
+        { id: 9, name: 'a', method: ''}, { id: 10, name: 'a', method: ''},
+        { id: 11, name: 'a', method: ''}, { id: 12, name: 'a', method: ''},
+        { id: 13, name: 'a', method: ''}, { id: 14, name: 'a', method: ''},
+        { id: 15, name: 'a', method: ''}, { id: 16, name: 'a', method: ''},
+        { id: 17, name: 'a', method: ''}, { id: 18, name: 'a', method: ''},
+        { id: 19, name: 'a', method: ''}, { id: 20, name: 'a', method: ''},
+        { id: 21, name: 'a', method: ''}, { id: 22, name: 'a', method: ''},
+        { id: 23, name: 'a', method: ''}, { id: 24, name: 'a', method: ''},
+        { id: 25, name: 'a', method: ''}, { id: 26, name: 'a', method: ''},
+        { id: 27, name: 'a', method: ''}, { id: 28, name: 'a', method: ''},
+        { id: 29, name: 'a', method: ''}, { id: 30, name: 'a', method: ''},
       ]
+    }
+
+    this.handleBodyRowRightClick = this.handleBodyRowRightClick.bind(this)
+    this.handlePressESC = this.handlePressESC.bind(this)
+    this.handleClickOutOfRightClickMenu = this.handleClickOutOfRightClickMenu.bind(this)
+  }
+
+  componentWillUnmount() {
+    this.unbindEvent()
+  }
+
+  handleBodyRowRightClick(selected:any[], left:number, top:number) {
+    document.addEventListener('click', this.handleClickOutOfRightClickMenu)
+    document.addEventListener('keydown', this.handlePressESC)
+
+    this.setState({
+      selected: selected,
+      isRightClickMenuOpened: true,
+      reightClickPos: {
+        left: left,
+        top: top,
+      }
+    })
+  }
+
+  handleClickOutOfRightClickMenu(e:MouseEvent) {
+    console.log('click');
+    if(this.state.isRightClickMenuOpened === false) return
+
+    if(!ReactDOM.findDOMNode(this.refs.menu).contains(e.target as Node)) {
+      this.closeRightClickMenu()
     }
   }
 
+  handlePressESC(e:KeyboardEvent) {
+    console.log('press');
+    if(this.state.isRightClickMenuOpened === false) return
+
+    if(e.keyCode === 27) {
+      this.closeRightClickMenu()
+    }
+  }
+
+  unbindEvent() {
+    console.log("unbind");
+    document.removeEventListener('click', this.handleClickOutOfRightClickMenu)
+    document.removeEventListener('keydown', this.handlePressESC)
+  }
+
+  closeRightClickMenu() {
+    if(this.state.isRightClickMenuOpened === false) return
+
+    this.unbindEvent()
+
+    this.setState({
+      isRightClickMenuOpened: false
+    })
+  }
+
   render () {
-    let { currentPage, tableData, head } = this.state
+    let { currentPage, tableData, head, reightClickPos, isRightClickMenuOpened, selected } = this.state
     let headSpanStyle:React.CSSProperties = {
       display: 'inline-block',
       overflow: 'hidden',
@@ -115,16 +127,18 @@ export default class TableContainer extends React.PureComponent<any, TableContai
 
     return (
       <div className="example-table-container">
+      {isRightClickMenuOpened === true &&
+        <TableMenu top={reightClickPos.top} left={reightClickPos.left} ids={selected} ref="menu"/>
+      }
         <Table
           selectable={true}
           multiSelect={true}
-          bodyMaxHeight={500}
-          handleBodyRowSelect={(selected:any) => {console.log(selected)}}
-          handleBodyRowRightClick={(selected:any) => {console.log(selected)}}
+          handleBodyRowSelect={(selected:any) => {}}
+          handleBodyRowRightClick={this.handleBodyRowRightClick}
           widths={[
-            { default: '33%', min: 30},
-            { default: '33%', min: 30},
-            { default: '33%', min: 30},
+            { default: '33.33%', min: 30},
+            { default: '33.33%', min: 30},
+            { default: '33.33%', min: 30},
           ]}
           className='example-table'
           resizable={ true }

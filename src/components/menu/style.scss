@@ -1,0 +1,81 @@
+@mixin menu-item() {
+  height: 100%;
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+}
+
+.menu {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  border: 1px solid #b0b0b0;
+  min-width: 10rem;
+  max-width: (300rem/16);
+  z-index: 1;
+  padding: 1rem 0;
+
+  span {
+    font-size: (13rem/16);
+  }
+
+  .menu-item {
+    position: relative;
+    height: (28rem/16);
+
+    &.divider {
+      height: (17rem/16);
+    }
+
+    &:hover {
+      background-color: #defefd;
+    }
+
+    .menu-item-divider {
+      @include menu-item();
+
+      .menu-item-divider-item {
+        width: 80%;
+        border-top: 1px solid #cecece;
+      }
+    }
+
+    .menu-item-title {
+      @include menu-item();
+      padding: 0 (22rem/16);
+
+      .menu-item-title-content {
+        flex-grow: 1;
+        color: #969696;
+      }
+    }
+
+    .menu-item-next {
+      @include menu-item();
+      background-color: transparent;
+      padding-left: (22rem/16);
+      padding-right: (10rem/16);
+
+      .menu-item-next-content {
+        flex-grow: 1;
+      }
+    }
+  }
+}
+
+@mixin menu-icon($path) {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url($path);
+}
+
+.menu-icon-next {
+  @include menu-icon('./imgs/framset_next.svg')
+  margin-left: (14rem/16);
+}
