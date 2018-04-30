@@ -8,6 +8,7 @@ import TableMenu from './table_menu';
 class Span extends React.Component<any> {
   render() {
     console.log('span');
+
     return (
       <span style={this.props.style}>ttt</span>
     )
@@ -81,7 +82,6 @@ export default class TableContainer extends React.PureComponent<any, TableContai
   }
 
   handleClickOutOfRightClickMenu(e:MouseEvent) {
-    console.log('click');
     if(this.state.isRightClickMenuOpened === false) return
 
     if(!ReactDOM.findDOMNode(this.refs.menu).contains(e.target as Node)) {
@@ -90,7 +90,6 @@ export default class TableContainer extends React.PureComponent<any, TableContai
   }
 
   handlePressESC(e:KeyboardEvent) {
-    console.log('press');
     if(this.state.isRightClickMenuOpened === false) return
 
     if(e.keyCode === 27) {
@@ -99,7 +98,6 @@ export default class TableContainer extends React.PureComponent<any, TableContai
   }
 
   unbindEvent() {
-    console.log("unbind");
     document.removeEventListener('click', this.handleClickOutOfRightClickMenu)
     document.removeEventListener('keydown', this.handlePressESC)
   }
