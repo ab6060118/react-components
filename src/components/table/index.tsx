@@ -12,10 +12,6 @@ interface TableProps {
     default:number|string
     min:number
   }[]
-  bodyRowHeight?:{
-    init:number|string
-    max?:number|string
-  }
   className?:string
   selectable?:boolean
   multiSelect?:boolean
@@ -50,7 +46,7 @@ export default class Table extends React.Component<TableProps, TableState> {
     super(props)
 
     this.state = {
-      widths: props.widths.map( width => width.default ),
+      widths: props.widths.map(width => width.default),
       selected: []
     }
 
@@ -76,7 +72,7 @@ export default class Table extends React.Component<TableProps, TableState> {
 
   handleWindowResize() {
     this.setState({
-      widths: this.props.widths.map( width => width.default )
+      widths: this.props.widths.map(width => width.default)
     }, () => { this.convertPercentageToPx() })
   }
 
@@ -174,6 +170,7 @@ export default class Table extends React.Component<TableProps, TableState> {
     return function(e:React.MouseEvent<HTMLElement>) {
       let { selectable, bodyRowElements, handleBodyRowRightClick, handleBodyRowSelect } = this.props
       let { selected } = this.state
+      let { clientX, clientY } = e
       let rowElements:BodyRowElement[] = bodyRowElements.filter((rowElement:BodyRowElement) => rowElement.id === id)
 
       if(rowElements.length === 0 || handleBodyRowRightClick === undefined) return
@@ -185,7 +182,7 @@ export default class Table extends React.Component<TableProps, TableState> {
         this.setState({
           selected: [id]
         }, () => {
-          handleBodyRowRightClick(this.state.selected)
+          handleBodyRowRightClick(this.state.selected, clientX, clientY)
 
           if(handleBodyRowSelect !== undefined) {
             handleBodyRowSelect(this.state.selected)
@@ -193,7 +190,7 @@ export default class Table extends React.Component<TableProps, TableState> {
         })
       }
       else {
-        handleBodyRowRightClick(selected)
+        handleBodyRowRightClick(selected, clientX, clientY)
       }
     }.bind(this)
   }
@@ -207,7 +204,7 @@ export default class Table extends React.Component<TableProps, TableState> {
     let stateWidths = this.state.widths
     let propsWidths = this.props.widths
 
-    return stateWidths.map( ( width, index ) => {
+    return stateWidths.map((width, index) => {
       return {
         width: width,
         minWidth: propsWidths[index].min,
@@ -227,7 +224,7 @@ export default class Table extends React.Component<TableProps, TableState> {
   convertPercentageToPx() {
     let result:number[]
 
-    result = Object.keys( this.refs ).filter( key => key.indexOf('table-header-col') > -1 ).map( key => this.refs[key].offsetWidth - 1 )
+    result = Object.keys(this.refs).filter(key => key.indexOf('table-header-col') > -1).map(key => this.refs[key].offsetWidth - 1)
 
     this.setState({ widths: result })
   }
@@ -242,49 +239,49 @@ export default class Table extends React.Component<TableProps, TableState> {
           <div className="table-header-row">
           {
             headerElements.map(
-              ( element, index, elements ) => (
+              (element, index, elements) => (
                 <div 
                   className="table-header-col"
                   style={ widths[index] }
                   key={ 'table-header-col' + '-' + index }
                   ref={ 'table-header-col-' + index }>
                 { element }
-                { ( resizable && index !== elements.length - 1 ) &&
+                { (resizable && index !== elements.length - 1) &&
                   <div 
                     className="table-col-resizer"
                     onMouseDown={ this.handleResizerMouseDown.bind(this)(index) }></div>
                 }
                 </div> 
-              )
-            ) 
+             )
+           ) 
           }
           </div>
         </div>
         <div className="table-body" style={{ maxHeight:bodyMaxHeight }}>
           <Scrollbar stopWheelEventWhenMouseOver={ stopWheelEventOnTableBody === true }>
           { 
-            bodyRowElements.map( ( rowElement, indexRow ) => ( 
+            bodyRowElements.map((rowElement, indexRow) => (
               <div 
                 className={this.getBodyRowClassName(rowElement.id)}
                 key={ 'table-body-row' + '-' + indexRow }
                 onClick={this.handleBodyRowClick(rowElement.id, indexRow)}
                 onContextMenu={this.handleBodyRowRightClick(rowElement.id, indexRow)}>
               {
-                rowElement.elements.map( ( element, indexCol, elements )=> (
+                rowElement.elements.map((element, indexCol, elements)=> (
                   <div
                     className="table-body-col"
                     style={ widths[indexCol] }
                     key={ 'table-body-col' + '-' + indexRow + '-' + indexCol }>
                   { element }
                   </div> 
-                )) 
+               )) 
               } 
               </div>
-            )) 
+           )) 
           }
           </Scrollbar>
         </div>
       </div>
-    )
+   )
   }
 }
