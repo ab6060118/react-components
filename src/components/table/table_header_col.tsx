@@ -3,9 +3,13 @@ import * as React from 'react'
 interface TableHeaderColProps {
   index?:number
   width?:number
-  widths?:number[]
   resizable?:boolean
   updateWidths?:Function
+}
+
+const findAncestor = (el:HTMLElement, cls:string):HTMLElement => {
+  while ((el = el.parentElement) && !el.classList.contains(cls));
+  return el;
 }
 
 export default class TableHeaderCol extends React.Component<TableHeaderColProps> {
@@ -14,6 +18,8 @@ export default class TableHeaderCol extends React.Component<TableHeaderColProps>
   originLeftWidth:number
   originRightWidth:number
   resizeLine:HTMLElement
+  tableLeft:number
+  minWidth:number = 50
 
   constructor(props:TableHeaderColProps) {
     super(props)
@@ -23,13 +29,21 @@ export default class TableHeaderCol extends React.Component<TableHeaderColProps>
     this.handleResizerMouseUp = this.handleResizerMouseUp.bind(this)
   }
 
-  cdm() {
-    this.resizeLine = this.refs.col.parentElement.parentElement.querySelector('.table-resize-line')
+  componentDidMount() {
+    this.tableLeft = findAncestor(this.refs.col, 'table').getBoundingClientRect().left
+    this.resizeLine = findAncestor(this.refs.col, 'table-header').querySelector('.table-resize-line')
+  }
+
+  componentWillUnmount(){
+    this.removeMouseListener()
   }
 
   handleResizerMouseDown(e:React.MouseEvent<HTMLDivElement>) {
-    let { index } = this.props
     let { col } = this.refs
+    let { resizeLine, tableLeft } = this
+
+    resizeLine.style.display = 'inline-block'
+    resizeLine.style.left = e.clientX - tableLeft + 'px'
 
     this.mouseDownPosition = e.clientX
     this.originLeftWidth = col.offsetWidth
@@ -39,30 +53,49 @@ export default class TableHeaderCol extends React.Component<TableHeaderColProps>
     document.addEventListener('mouseup', this.handleResizerMouseUp)
   }
 
-  handleResizerMouseUp() {
-    this.removeMouseListener()
-  }
+  handleResizerMouseUp(e:MouseEvent) {
+    let { index, updateWidths } = this.props
+    let { resizeLine, mouseDownPosition, originLeftWidth, originRightWidth, minWidth } = this
 
-  handleResizerDrag(e:MouseEvent) {
-    let { widths, index, updateWidths } = this.props
-
-    let twoColWidth:number = this.originLeftWidth + this.originRightWidth
-    let resizeLine:HTMLElement = this.refs.col.parentElement.parentElement
-    let minWidth = 30
+    let twoColWidth:number = originLeftWidth + originRightWidth
 
     let newWidthLeft:number
     let newWidthRight:number
 
-    newWidthLeft = this.originLeftWidth + e.clientX - this.mouseDownPosition
+    resizeLine.style.display = 'none'
+
+    newWidthLeft = originLeftWidth + e.clientX - mouseDownPosition
 
     if(newWidthLeft + minWidth > twoColWidth) {
       newWidthLeft = twoColWidth - minWidth
     }
-    if(newWidthLeft < minWidth) newWidthLeft = minWidth
+    if(newWidthLeft < minWidth) {
+      newWidthLeft = minWidth
+    }
 
     newWidthRight = twoColWidth - newWidthLeft
 
     updateWidths(index, newWidthLeft, newWidthRight)
+
+    this.removeMouseListener()
+  }
+
+  handleResizerDrag(e:MouseEvent) {
+    let { resizeLine, mouseDownPosition, originLeftWidth, originRightWidth, tableLeft } = this
+    let minWidth = 30
+    let resizeLineLeft:number
+
+    if(e.clientX > mouseDownPosition + originRightWidth - minWidth) {
+      resizeLineLeft = mouseDownPosition + originRightWidth - minWidth
+    }
+    else if(e.clientX < mouseDownPosition - originLeftWidth + minWidth) {
+      resizeLineLeft = mouseDownPosition - originLeftWidth + minWidth
+    }
+    else {
+      resizeLineLeft = e.clientX
+    }
+
+    resizeLine.style.left = resizeLineLeft - tableLeft + 'px'
   }
 
   removeMouseListener() {

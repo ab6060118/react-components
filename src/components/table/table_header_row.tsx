@@ -20,7 +20,6 @@ export default class TableHeaderRow extends React.Component<TableHeaderRowProps>
           return React.cloneElement(React.Children.only(child), { 
             resizable: resizable,
             width: widths[index],
-            widths: widths,
             index: index,
             updateWidths: updateWidths,
           })
