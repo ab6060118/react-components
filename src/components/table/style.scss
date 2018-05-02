@@ -3,13 +3,33 @@
   display: flex;
   flex-direction: column;
 
+  .table-col {
+    &:not(:last-child) {
+      width: 100px;
+    }
+
+    &:last-child {
+      flex-grow: 1;
+      flex-shrink: 0;
+    }
+  }
+
   .table-header {
     flex-shrink: 0;
     
+    .table-resize-line {
+      position: absolute;
+      height: 100%;
+      border-left: 1px dotted black;
+      left:50px;
+      z-index: 1;
+    }
+
     .table-header-row {
-      .table-header-col {
+      display: flex;
+
+      .table-col {
         position: relative;
-        display: inline-block;
 
         .table-col-resizer {
           position: absolute;
@@ -31,13 +51,10 @@
     flex-shrink: 1;
 
     .table-body-row {
+      display: flex;
 
       &.selected {
         background-color: DeepSkyBlue;
-      }
-
-      .table-body-col {
-        display: inline-block;
       }
     }
   }

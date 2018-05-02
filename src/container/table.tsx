@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom';
-import Table from '../components/table'
+import Table, { TableBody, TableBodyRow, TableBodyCol, TableHeader, TableHeaderRow, TableHeaderCol } from '../components/table'
 import Tooltip from '../components/tooltip'
 import PageControl from '../components/page_control'
 import TableMenu from './table_menu';
@@ -125,36 +125,36 @@ export default class TableContainer extends React.PureComponent<any, TableContai
 
     return (
       <div className="example-table-container">
-      {isRightClickMenuOpened === true &&
-        <TableMenu top={reightClickPos.top} left={reightClickPos.left} ids={selected} ref="menu"/>
-      }
-        <Table
-          selectable={true}
-          multiSelect={true}
-          handleBodyRowSelect={(selected:any) => {}}
-          handleBodyRowRightClick={this.handleBodyRowRightClick}
-          widths={[
-            { default: '33.33%', min: 30},
-            { default: '33.33%', min: 30},
-            { default: '33.33%', min: 30},
-          ]}
-          className='example-table'
-          resizable={ true }
-          headerElements={ head.map( str => (
-            <Tooltip text={str}>
-              <span style={headSpanStyle}>{ str }</span>
-            </Tooltip> 
-          ))} 
-          bodyRowElements={ tableData.map( ( item, index ) => ({
-            id: item.id,
-            selectable: true,
-            elements: [
-              <Span style={headSpanStyle}/>,
-              <span style={headSpanStyle}>{ index+item.method }</span>,
-              <span>{ item.name }</span>,
-            ] 
-          }))
-        }/>
+        <Table className="example-table">
+          <TableHeader>
+            <TableHeaderRow>
+              <TableHeaderCol>
+                <span style={headSpanStyle}>{1}</span>
+              </TableHeaderCol>
+              <TableHeaderCol>
+                <span style={headSpanStyle}>{23123123123123123123124345345}</span>
+              </TableHeaderCol>
+              <TableHeaderCol>
+                <span style={headSpanStyle}>{3123123123123123123124345345}</span>
+              </TableHeaderCol>
+            </TableHeaderRow>
+          </TableHeader>
+          <TableBody>
+          {tableData.map((item, index) => (
+            <TableBodyRow isSelected={true} key={index}>
+              <TableBodyCol>
+                <Span style={headSpanStyle}/>
+              </TableBodyCol>
+              <TableBodyCol>
+                <span style={headSpanStyle}>{ index+item.method }</span>
+              </TableBodyCol>
+              <TableBodyCol>
+                <span>{ item.name }</span>
+              </TableBodyCol>
+            </TableBodyRow>
+          ))}
+          </TableBody>
+        </Table>
         <PageControl
           handleGoPage={(page:number)=>{this.setState({currentPage: page})}}
           totalItems={77}
@@ -165,3 +165,34 @@ export default class TableContainer extends React.PureComponent<any, TableContai
     )
   }
 }
+
+      // {isRightClickMenuOpened === true &&
+        // <TableMenu top={reightClickPos.top} left={reightClickPos.left} ids={selected} ref="menu"/>
+      // }
+        // <Table
+          // selectable={true}
+          // multiSelect={true}
+          // handleBodyRowSelect={(selected:any) => {}}
+          // handleBodyRowRightClick={this.handleBodyRowRightClick}
+          // widths={[
+            // { default: '33.33%', min: 30},
+            // { default: '33.33%', min: 30},
+            // { default: '33.33%', min: 30},
+          // ]}
+          // className='example-table'
+          // resizable={ true }
+          // headerElements={ head.map( str => (
+            // <Tooltip text={str}>
+              // <span style={headSpanStyle}>{ str }</span>
+            // </Tooltip> 
+          // ))} 
+          // bodyRowElements={ tableData.map( ( item, index ) => ({
+            // id: item.id,
+            // selectable: true,
+            // elements: [
+              // <Span style={headSpanStyle}/>,
+              // <span style={headSpanStyle}>{ index+item.method }</span>,
+              // <span>{ item.name }</span>,
+            // ] 
+          // }))
+        // }/>
