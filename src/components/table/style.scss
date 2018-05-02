@@ -18,11 +18,12 @@
     flex-shrink: 0;
     
     .table-resize-line {
+      display: none;
       position: absolute;
       height: 100%;
       border-left: 1px dotted black;
-      left:50px;
       z-index: 1;
+      overflow: hidden;
     }
 
     .table-header-row {
