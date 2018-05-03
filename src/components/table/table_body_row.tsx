@@ -1,7 +1,9 @@
 import * as React from 'react'
 
 interface TableBodyRowProps {
+  id?:any
   isSelected?:boolean
+  selectable?:boolean
   widths?:number[]
   onClick?:(e:React.MouseEvent<HTMLElement>) => void
   onContextMenu?:(e:React.MouseEvent<HTMLElement>) => void
