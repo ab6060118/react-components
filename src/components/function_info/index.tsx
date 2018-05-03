@@ -3,7 +3,7 @@ import './style.scss'
 import Scrollbar from '../scrollbar';
 
 interface FunctionInfoProps {
-  element:JSX.Element
+  wrapElement:JSX.Element
   className?:string
 }
 
@@ -21,6 +21,8 @@ export default class FunctionInfo extends React.Component<FunctionInfoProps, Fun
     }
 
     this.handleOutClick = this.handleOutClick.bind(this)
+    this.handleIconClick = this.handleIconClick.bind(this)
+    this.closeBox = this.closeBox.bind(this)
   }
 
   componentWillUnmount() {
@@ -57,21 +59,21 @@ export default class FunctionInfo extends React.Component<FunctionInfoProps, Fun
   updateTextBoxOpsition() {
     if(!this.refs['text-box']) return
 
-    let { 'text-box':el, 'info-icon':icon } = this.refs
+    let { 'text-box':el } = this.refs
     let { innerHeight, innerWidth } = window
-    let parentBounding = (el.parentNode as HTMLElement).getBoundingClientRect()
-    let iconBounding = icon.getBoundingClientRect()
-    let paddingSpace:number = 10
+    let iconBounding = this.refs['info-icon'].getBoundingClientRect()
 
-    el.style.top = parentBounding.top + 'px'
-    el.style.left = iconBounding.left + iconBounding.width + paddingSpace + 'px'
-
-    if(el.offsetLeft + el.offsetWidth > innerWidth) {
-      el.style.left = (iconBounding.left - el.offsetWidth - paddingSpace) + 'px'
+    el.style.top = iconBounding.top + 'px'
+    
+    if(iconBounding.left + iconBounding.width + el.offsetWidth + 10 > innerWidth) {
+      el.style.left = (iconBounding.left - el.offsetWidth - 10) + 'px'
+    }
+    else {
+      el.style.left = iconBounding.left + iconBounding.width + 10 + 'px'
     }
 
     if(el.offsetTop + el.offsetHeight > innerHeight) {
-      el.style.top = innerHeight - el.offsetHeight - paddingSpace + 'px';
+      el.style.top = innerHeight - el.offsetHeight - 10 + 'px';
     }
   }
 
@@ -84,18 +86,18 @@ export default class FunctionInfo extends React.Component<FunctionInfoProps, Fun
   }
 
   render() {
-    let { className } = this.props
+    let { className, wrapElement, children } = this.props
 
     return (
       <div className={["function-info", className].join(' ')}>
-        {this.props.children}
-        <span className="function-info-icon" onClick={this.handleIconClick.bind(this)} ref='info-icon'></span>
       {this.state.isOpen === true &&
         <div className="function-info-box" ref='text-box'>
-          <span className="function-info-window-close-icon" onClick={this.closeBox.bind(this)}></span>
-          {this.props.element}
+          <span className="function-info-window-close-icon" onClick={this.closeBox}></span>
+          {children}
         </div>
       }
+        {wrapElement}
+        <span className="function-info-icon" onClick={this.handleIconClick} ref='info-icon'></span>
       </div>
     )
   }

@@ -7,8 +7,8 @@ export default class FunctionInfoContainer extends React.Component<any> {
     let functionInfoElement = <span>{'Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test Test Function Info Test'}</span>
 
     return (
-      <FunctionInfo className="example-function-info" element={functionInfoElement}>
-        <Checkbox />
+      <FunctionInfo className="example-function-info" wrapElement={<Checkbox />}>
+        {functionInfoElement}
       </FunctionInfo>
     )
   }
