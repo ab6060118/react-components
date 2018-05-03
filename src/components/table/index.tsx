@@ -45,9 +45,7 @@ export default class Table extends React.Component<TableProps, TableState> {
     }
 
     this.updateWidths = this.updateWidths.bind(this)
-    // this.handleResizerDrag = this.handleResizerDrag.bind(this)
-    // this.handleResizerMouseUp = this.handleResizerMouseUp.bind(this)
-    // this.handleWindowResize = this.handleWindowResize.bind(this)
+    this.handleWindowResize = this.handleWindowResize.bind(this)
     // this.handleBodyRowClick = this.handleBodyRowClick.bind(this)
     // this.handleBodyRowRightClick = this.handleBodyRowRightClick.bind(this)
   }
@@ -63,24 +61,23 @@ export default class Table extends React.Component<TableProps, TableState> {
     })
   }
 
-  // componentWillMount() {
-    // window.addEventListener('resize', this.handleWindowResize)
-  // }
+  componentWillMount() {
+    window.addEventListener('resize', this.handleWindowResize)
+  }
 
   // componentDidMount() {
     // this.convertPercentageToPx()
   // }
 
-  // componentWillUnmount() {
-    // window.removeEventListener('resize', this.handleWindowResize)
-    // this.removeMouseListener()
-  // }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleWindowResize)
+  }
 
-  // handleWindowResize() {
-    // this.setState({
-      // widths: this.props.widths.map(width => width.default)
-    // }, () => { this.convertPercentageToPx() })
-  // }
+  handleWindowResize() {
+    this.setState({
+      widths: []
+    })
+  }
 
   // handleResizerMouseDown(index:number) {
     // return function(e:React.MouseEvent<HTMLElement>) {
