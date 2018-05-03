@@ -141,7 +141,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
           </TableHeader>
           <TableBody>
           {tableData.map((item, index) => (
-            <TableBodyRow isSelected={true} key={index}>
+            <TableBodyRow id={item.id} key={index}>
               <TableBodyCol>
                 <Span style={headSpanStyle}/>
               </TableBodyCol>
