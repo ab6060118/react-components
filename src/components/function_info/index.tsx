@@ -23,6 +23,10 @@ export default class FunctionInfo extends React.Component<FunctionInfoProps, Fun
     this.handleOutClick = this.handleOutClick.bind(this)
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleOutClick)
+  }
+
   componentDidUpdate(){
     if(this.state.isOpen === true) {
       this.updateTextBoxOpsition()
@@ -53,20 +57,21 @@ export default class FunctionInfo extends React.Component<FunctionInfoProps, Fun
   updateTextBoxOpsition() {
     if(!this.refs['text-box']) return
 
-    let el = this.refs['text-box']
-    let appBounding = document.querySelector('#App').getBoundingClientRect()
+    let { 'text-box':el, 'info-icon':icon } = this.refs
+    let { innerHeight, innerWidth } = window
     let parentBounding = (el.parentNode as HTMLElement).getBoundingClientRect()
-    let iconBounding = this.refs['info-icon'].getBoundingClientRect()
+    let iconBounding = icon.getBoundingClientRect()
+    let paddingSpace:number = 10
 
     el.style.top = parentBounding.top + 'px'
-    el.style.left = iconBounding.left + iconBounding.width + 10 + 'px'
-    
-    if(el.offsetLeft + 300 > appBounding.width) {
-      el.style.left = (iconBounding.left - 300- 10) + 'px'
+    el.style.left = iconBounding.left + iconBounding.width + paddingSpace + 'px'
+
+    if(el.offsetLeft + el.offsetWidth > innerWidth) {
+      el.style.left = (iconBounding.left - el.offsetWidth - paddingSpace) + 'px'
     }
 
-    if(el.offsetTop + el.offsetHeight > appBounding.height) {
-      el.style.top = appBounding.height - el.offsetHeight - 10 + 'px';
+    if(el.offsetTop + el.offsetHeight > innerHeight) {
+      el.style.top = innerHeight - el.offsetHeight - paddingSpace + 'px';
     }
   }
 
