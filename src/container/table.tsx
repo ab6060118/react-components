@@ -21,7 +21,7 @@ interface TableContainerState {
   head:string[]
   isRightClickMenuOpened:boolean
   tableData:{
-    id:number
+    id:any
     name:string
     method:string
   }[] 
@@ -139,7 +139,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
               </TableHeaderCol>
             </TableHeaderRow>
           </TableHeader>
-          <TableBody>
+          <TableBody multiSelect={true}>
           {tableData.map((item, index) => (
             <TableBodyRow id={item.id} key={index}>
               <TableBodyCol>
