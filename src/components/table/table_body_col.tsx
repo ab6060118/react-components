@@ -2,6 +2,7 @@ import * as React from 'react'
 
 interface TableBodyColProps {
   width?:number
+  index?:number
 }
 
 export default class TableBodyCol extends React.Component<TableBodyColProps> {
