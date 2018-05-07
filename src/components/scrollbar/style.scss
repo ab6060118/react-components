@@ -17,6 +17,8 @@
     top: 0;
     right: 0;
     height: 100%;
+    opacity: 0;
+    transition: opacity 0.2s;
 
     .scrollbar-bar-body {
       flex-grow:1;

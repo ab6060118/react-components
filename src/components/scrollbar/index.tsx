@@ -256,7 +256,14 @@ export default class Scrollbar extends React.Component<ScrollbarProps, Scrollbar
     let { children, className } = this.props
 
     return(
-      <div className={["scrollbar", className].join(' ')} onWheel={this.handleWheelAndKeyup.bind(this)} onKeyDown={this.handleWheelAndKeyup.bind(this)} ref='scrollbar' tabIndex={0} >
+      <div 
+        className={["scrollbar", className].join(' ')}
+        onWheel={this.handleWheelAndKeyup.bind(this)}
+        onKeyDown={this.handleWheelAndKeyup.bind(this)}
+        onMouseEnter={()=>{ this.refs.bar.style.opacity = '1' }}
+        onMouseLeave={()=>{ this.refs.bar.style.opacity = '0' }}
+        tabIndex={0} 
+        ref='scrollbar'>
         <div className="scrollbar-content" onScroll={this.handleScroll.bind(this)} ref='content' >
           { children }
         </div>
