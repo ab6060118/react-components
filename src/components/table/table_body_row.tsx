@@ -9,7 +9,8 @@ interface TableBodyRowProps {
   widths?:number[]
   onClick?:(e:React.MouseEvent<HTMLElement>) => void
   onContextMenu?:(e:React.MouseEvent<HTMLElement>) => void
-  handleRowClick?:Function
+  handleRowSelect?:Function
+  handleRowRightClick?:Function
 }
 
 export default class TableBodyRow extends React.Component<TableBodyRowProps> {
@@ -17,6 +18,7 @@ export default class TableBodyRow extends React.Component<TableBodyRowProps> {
     super(props)
 
     this.handleRowClick = this.handleRowClick.bind(this)
+    this.handleRowRightClick = this.handleRowRightClick.bind(this)
   }
 
   getClassName() {
@@ -29,7 +31,7 @@ export default class TableBodyRow extends React.Component<TableBodyRowProps> {
   }
 
   handleRowClick(e:React.MouseEvent<HTMLElement>) {
-    let { id, index, handleRowClick } = this.props
+    let { id, index, handleRowSelect } = this.props
     let operation:TABLE_ROW_CLICK_OPERATIONS = TABLE_ROW_CLICK_OPERATIONS.NORMAL
 
     if(e.ctrlKey === true) {
@@ -39,13 +41,22 @@ export default class TableBodyRow extends React.Component<TableBodyRowProps> {
       operation = TABLE_ROW_CLICK_OPERATIONS.SHIFT
     }
 
-    handleRowClick(operation, index, id)
+    handleRowSelect(operation, index, id)
+  }
+
+  handleRowRightClick(e:React.MouseEvent<HTMLElement>) {
+    let { id, index, handleRowRightClick } = this.props
+
+    handleRowRightClick(index, id, {top: e.clientY, left: e.clientX})
   }
 
   render() {
     let { children, onClick, onContextMenu, widths } = this.props
     return (
-      <div className={this.getClassName()} onClick={this.handleRowClick} onContextMenu={onContextMenu}>
+      <div 
+        className={this.getClassName()}
+        onClick={this.handleRowClick}
+        onContextMenu={this.handleRowRightClick}>
       {
         React.Children.map(children, (child, index) => {
           return React.cloneElement(React.Children.only(child), { 
