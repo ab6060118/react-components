@@ -67,7 +67,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
     this.unbindEvent()
   }
 
-  handleBodyRowRightClick(selected:any[], left:number, top:number) {
+  handleBodyRowRightClick(selected:any[], top:number, left:number) {
     document.addEventListener('click', this.handleClickOutOfRightClickMenu)
     document.addEventListener('keydown', this.handlePressESC)
 
@@ -125,6 +125,9 @@ export default class TableContainer extends React.PureComponent<any, TableContai
 
     return (
       <div className="example-table-container">
+      {isRightClickMenuOpened === true &&
+        <TableMenu top={reightClickPos.top} left={reightClickPos.left} ids={selected} ref="menu"/>
+      }
         <Table className="example-table">
           <TableHeader>
             <TableHeaderRow>
@@ -132,14 +135,14 @@ export default class TableContainer extends React.PureComponent<any, TableContai
                 <span style={headSpanStyle}>{1}</span>
               </TableHeaderCol>
               <TableHeaderCol>
-                <span style={headSpanStyle}>{23123123123123123123124345345}</span>
+                <span style={headSpanStyle}>{'index'}</span>
               </TableHeaderCol>
               <TableHeaderCol>
-                <span style={headSpanStyle}>{3123123123123123123124345345}</span>
+                <span style={headSpanStyle}>{'id'}</span>
               </TableHeaderCol>
             </TableHeaderRow>
           </TableHeader>
-          <TableBody multiSelect={true}>
+          <TableBody multiSelect={true} selectable={true} handleRowSelect={(selected:any[])=>{console.log(selected)}} handleRowRightClick={this.handleBodyRowRightClick}>
           {tableData.map((item, index) => (
             <TableBodyRow id={item.id} key={index}>
               <TableBodyCol>
@@ -149,7 +152,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
                 <span style={headSpanStyle}>{ index+item.method }</span>
               </TableBodyCol>
               <TableBodyCol>
-                <span>{ item.name }</span>
+                <span style={headSpanStyle}>{ item.id }</span>
               </TableBodyCol>
             </TableBodyRow>
           ))}
@@ -165,34 +168,3 @@ export default class TableContainer extends React.PureComponent<any, TableContai
     )
   }
 }
-
-      // {isRightClickMenuOpened === true &&
-        // <TableMenu top={reightClickPos.top} left={reightClickPos.left} ids={selected} ref="menu"/>
-      // }
-        // <Table
-          // selectable={true}
-          // multiSelect={true}
-          // handleBodyRowSelect={(selected:any) => {}}
-          // handleBodyRowRightClick={this.handleBodyRowRightClick}
-          // widths={[
-            // { default: '33.33%', min: 30},
-            // { default: '33.33%', min: 30},
-            // { default: '33.33%', min: 30},
-          // ]}
-          // className='example-table'
-          // resizable={ true }
-          // headerElements={ head.map( str => (
-            // <Tooltip text={str}>
-              // <span style={headSpanStyle}>{ str }</span>
-            // </Tooltip> 
-          // ))} 
-          // bodyRowElements={ tableData.map( ( item, index ) => ({
-            // id: item.id,
-            // selectable: true,
-            // elements: [
-              // <Span style={headSpanStyle}/>,
-              // <span style={headSpanStyle}>{ index+item.method }</span>,
-              // <span>{ item.name }</span>,
-            // ] 
-          // }))
-        // }/>

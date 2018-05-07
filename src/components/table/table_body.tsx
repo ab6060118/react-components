@@ -2,11 +2,13 @@ import * as React from 'react'
 import Scrollbar from '../scrollbar'
 
 interface TableBodyProps {
-  selectable?:boolean
-  multiSelect?:boolean
+  selectable:boolean
+  multiSelect:boolean
   maxHeight?:number
   stopWheelEvent?:boolean
   widths?:number[]
+  handleRowSelect?:Function
+  handleRowRightClick?:Function
 }
 
 interface TableBodyStete {
@@ -29,12 +31,13 @@ export default class TableBody extends React.Component<TableBodyProps, TableBody
       lastSelectedRowIndex: undefined
     }
 
-    this.handleRowClick = this.handleRowClick.bind(this)
+    this.handleRowSelect = this.handleRowSelect.bind(this)
+    this.handleRowRightClick = this.handleRowRightClick.bind(this)
   }
 
-  handleRowClick(operation:TABLE_ROW_CLICK_OPERATIONS, index:number, id:any) {
+  handleRowSelect(operation:TABLE_ROW_CLICK_OPERATIONS, index:number, id:any, callback:Function) {
     let { lastSelectedRowIndex, selected } = this.state
-    let { selectable, multiSelect, children } = this.props
+    let { selectable, multiSelect, children, handleRowSelect } = this.props
     let newLastSelectedRowIndex:number = lastSelectedRowIndex
     let newSelected:any[] = [...selected]
     let rowElements = React.Children.toArray(children)
@@ -72,10 +75,28 @@ export default class TableBody extends React.Component<TableBodyProps, TableBody
       selected: newSelected,
       lastSelectedRowIndex: newLastSelectedRowIndex
     }, () => {
-      // if(handleBodyRowSelect !== undefined) {
-        // handleBodyRowSelect(this.state.selected)
-      // }
+      let { selected } = this.state
+      if(handleRowSelect !== undefined) {
+        handleRowSelect(selected)
+      }
+      if(callback !== undefined) {
+        callback(selected)
+      }
     })
+  }
+
+  handleRowRightClick(index:number, id:any, mousePosition?:{top:number, left:number}) {
+    let { selected } = this.state
+    let { handleRowRightClick } = this.props
+
+    if(selected.indexOf(id) < 0) {
+      this.handleRowSelect(TABLE_ROW_CLICK_OPERATIONS.NORMAL, index, id, (selected:any[]) => {
+        handleRowRightClick(selected, mousePosition.top, mousePosition.left)
+      })
+    }
+    else {
+      handleRowRightClick(selected, mousePosition.top, mousePosition.left)
+    }
   }
 
   render() {
@@ -87,10 +108,10 @@ export default class TableBody extends React.Component<TableBodyProps, TableBody
         <Scrollbar stopWheelEventWhenMouseOver={ stopWheelEvent === true }>
         {
           React.Children.map(children, (child, index) => {
-            console.log(this.state);
             return React.cloneElement(React.Children.only(child), { 
               isSelected: selected.indexOf((child as any).props.id) > -1,
-              handleRowClick: this.handleRowClick,
+              handleRowSelect: this.handleRowSelect,
+              handleRowRightClick: this.handleRowRightClick,
               widths: widths,
               index: index,
             })
