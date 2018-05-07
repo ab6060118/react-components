@@ -28,7 +28,7 @@ export default class TableMenu extends React.Component<any,any> {
         <MenuDividerItem />
         <MenuTitleItem text="Title" />
         <MenuSubMenuItem text="Next">
-          <MenuDefaultItem onClick={()=>{ console.log('ItemClick'); }}>
+          <MenuDefaultItem onClick={this.props.handleRowRemove}>
             <span>{'123'}</span>
           </MenuDefaultItem>
           <MenuDefaultItem onClick={()=>{ console.log('ItemClick'); }}>

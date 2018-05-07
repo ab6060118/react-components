@@ -58,6 +58,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
       ]
     }
 
+    this.removeRow = this.removeRow.bind(this)
     this.handleBodyRowRightClick = this.handleBodyRowRightClick.bind(this)
     this.handlePressESC = this.handlePressESC.bind(this)
     this.handleClickOutOfRightClickMenu = this.handleClickOutOfRightClickMenu.bind(this)
@@ -112,6 +113,13 @@ export default class TableContainer extends React.PureComponent<any, TableContai
     })
   }
 
+  removeRow() {
+    this.setState({
+      tableData: this.state.tableData.filter(data => this.state.selected.indexOf(data.id) < 0),
+      isRightClickMenuOpened: false
+    })
+  }
+
   render () {
     let { currentPage, tableData, head, reightClickPos, isRightClickMenuOpened, selected } = this.state
     let headSpanStyle:React.CSSProperties = {
@@ -126,7 +134,12 @@ export default class TableContainer extends React.PureComponent<any, TableContai
     return (
       <div className="example-table-container">
       {isRightClickMenuOpened === true &&
-        <TableMenu top={reightClickPos.top} left={reightClickPos.left} ids={selected} ref="menu"/>
+        <TableMenu 
+          handleRowRemove={this.removeRow}
+          top={reightClickPos.top}
+          left={reightClickPos.left}
+          ids={selected}
+          ref="menu"/>
       }
         <Table className="example-table">
           <TableHeader>
