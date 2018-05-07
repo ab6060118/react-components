@@ -1,0 +1,17 @@
+<svg id="btn_radio_pressed.png_btn_radio_pressed.svg" data-name="btn_radio_pressed.png,btn_radio_pressed.svg" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke: #646464;
+        stroke-width: 1px;
+      }
+
+      .cls-2 {
+        fill: #3874db;
+      }
+    </style>
+  </defs>
+  <circle id="btn_radio_拷貝" data-name="btn_radio 拷貝" class="cls-1" cx="6.5" cy="6.5" r="6"/>
+  <circle id="btn_radio_拷貝_2" data-name="btn_radio 拷貝 2" class="cls-2" cx="6.5" cy="6.5" r="2.719"/>
+</svg>

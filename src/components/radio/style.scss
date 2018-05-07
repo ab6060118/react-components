@@ -1,0 +1,41 @@
+.radio {
+  display: flex;
+  align-items: center;
+
+  .radio-label {
+    margin-left: (10rem/16);
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+}
+
+@mixin radio-icon($normal, $hover, $disable) {
+  width: (12rem/16);
+  height: (12rem/16);
+  display: inline-block;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url($normal);
+  flex-shrink: 0;
+
+  &:hover {
+    background-image: url($hover);
+  }
+
+  &.disabled {
+    cursor: initial;
+    background-image: url($disable);
+  }
+}
+
+.radio-icon-normal {
+  @include radio-icon('./imgs/btn_radio.svg', './imgs/btn_radio_over.svg', './imgs/btn_radio_disable.svg')
+}
+
+.radio-icon-checked {
+  @include radio-icon('./imgs/btn_radio_pressed.svg', './imgs/btn_radio_pressedover.svg', './imgs/btn_radio_presseddisable.svg')
+}

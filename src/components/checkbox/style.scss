@@ -16,6 +16,7 @@
   background-size: contain;
   background-position: center;
   background-image: url($normal);
+  flex-shrink: 0;
 
   &:hover {
     background-image: url($hover);

@@ -5,6 +5,7 @@ import Table from './table'
 import Window from './window'
 import Input from './input';
 import Checkbox from './checkbox';
+import Radios from './radios';
 
 interface ExampleState {
   element:number[]
@@ -38,6 +39,7 @@ export default class Example extends React.Component<any,ExampleState> {
     console.log('example render');
     return (
       <div className="example">
+        <Radios />
         <Checkbox />
         <Input />
         <FunctionInfo />

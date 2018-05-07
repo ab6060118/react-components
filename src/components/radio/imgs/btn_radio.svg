@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke: #646464;
+        stroke-width: 1px;
+      }
+    </style>
+  </defs>
+  <circle id="btn_radio.png_btn_radio.svg" data-name="btn_radio.png,btn_radio.svg" class="cls-1" cx="6.5" cy="6.5" r="6"/>
+</svg>
