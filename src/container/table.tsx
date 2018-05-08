@@ -5,14 +5,27 @@ import Tooltip from '../components/tooltip'
 import PageControl from '../components/page_control'
 import TableMenu from './table_menu';
 
-class Span extends React.Component<any> {
-  render() {
-    console.log('span');
+const tableDataTotal = [
+  { id: 1, name: 'a', method: ''}, { id: 2, name: 'a', method: ''},
+  { id: 3, name: 'a', method: ''}, { id: 4, name: 'a', method: ''},
+  { id: 5, name: 'a', method: ''}, { id: 6, name: 'a', method: ''},
+  { id: 7, name: 'a', method: ''}, { id: 8, name: 'a', method: ''},
+  { id: 9, name: 'a', method: ''}, { id: 10, name: 'a', method: ''},
+  { id: 11, name: 'a', method: ''}, { id: 12, name: 'a', method: ''},
+  { id: 13, name: 'a', method: ''}, { id: 14, name: 'a', method: ''},
+  { id: 15, name: 'a', method: ''}, { id: 16, name: 'a', method: ''},
+  { id: 17, name: 'a', method: ''}, { id: 18, name: 'a', method: ''},
+  { id: 19, name: 'a', method: ''}, { id: 20, name: 'a', method: ''},
+  { id: 21, name: 'a', method: ''}, { id: 22, name: 'a', method: ''},
+  { id: 23, name: 'a', method: ''}, { id: 24, name: 'a', method: ''},
+  { id: 25, name: 'a', method: ''}, { id: 26, name: 'a', method: ''},
+  { id: 27, name: 'a', method: ''}, { id: 28, name: 'a', method: ''},
+  { id: 29, name: 'a', method: ''}, { id: 30, name: 'a', method: ''},
+  { id: 31, name: 'a', method: ''}, { id: 32, name: 'a', method: ''},
+]
 
-    return (
-      <span style={this.props.style}>ttt</span>
-    )
-  }
+const getTableData = (offset:number, limit:number) => {
+  return tableDataTotal.slice(offset*limit, (offset+1)*limit)
 }
 
 interface TableContainerState {
@@ -20,16 +33,14 @@ interface TableContainerState {
   selected:any[]
   head:string[]
   isRightClickMenuOpened:boolean
-  tableData:{
-    id:any
-    name:string
-    method:string
-  }[] 
   reightClickPos:{left:number,top:number}
+  itemPerPage:number
+  tableData:any[]
 }
 
 export default class TableContainer extends React.PureComponent<any, TableContainerState> {
   refs:{[key:string]:HTMLElement}
+  tableData:any[]
 
   constructor(props:any) {
     super(props)
@@ -39,33 +50,30 @@ export default class TableContainer extends React.PureComponent<any, TableContai
       selected:[],
       head: ['name', 'delivery method', 'action'],
       reightClickPos:{left:0,top:0},
-      tableData: [
-        { id: 1, name: 'a', method: ''}, { id: 2, name: 'a', method: ''},
-        { id: 3, name: 'a', method: ''}, { id: 4, name: 'a', method: ''},
-        { id: 5, name: 'a', method: ''}, { id: 6, name: 'a', method: ''},
-        { id: 7, name: 'a', method: ''}, { id: 8, name: 'a', method: ''},
-        { id: 9, name: 'a', method: ''}, { id: 10, name: 'a', method: ''},
-        { id: 11, name: 'a', method: ''}, { id: 12, name: 'a', method: ''},
-        { id: 13, name: 'a', method: ''}, { id: 14, name: 'a', method: ''},
-        { id: 15, name: 'a', method: ''}, { id: 16, name: 'a', method: ''},
-        { id: 17, name: 'a', method: ''}, { id: 18, name: 'a', method: ''},
-        { id: 19, name: 'a', method: ''}, { id: 20, name: 'a', method: ''},
-        { id: 21, name: 'a', method: ''}, { id: 22, name: 'a', method: ''},
-        { id: 23, name: 'a', method: ''}, { id: 24, name: 'a', method: ''},
-        { id: 25, name: 'a', method: ''}, { id: 26, name: 'a', method: ''},
-        { id: 27, name: 'a', method: ''}, { id: 28, name: 'a', method: ''},
-        { id: 29, name: 'a', method: ''}, { id: 30, name: 'a', method: ''},
-      ]
+      itemPerPage:10,
+      tableData:[]
     }
 
     this.removeRow = this.removeRow.bind(this)
     this.handleBodyRowRightClick = this.handleBodyRowRightClick.bind(this)
     this.handlePressESC = this.handlePressESC.bind(this)
     this.handleClickOutOfRightClickMenu = this.handleClickOutOfRightClickMenu.bind(this)
+    this.handleGoPage = this.handleGoPage.bind(this)
+    this.handlePerpageUpdate = this.handlePerpageUpdate.bind(this)
+  }
+
+  componentWillMount() {
+    this.updateTableData()
   }
 
   componentWillUnmount() {
     this.unbindEvent()
+  }
+
+  handlePerpageUpdate(itemrPerpage:number) {
+    this.setState({
+      itemPerPage: itemrPerpage
+    }, this.updateTableData)
   }
 
   handleBodyRowRightClick(selected:any[], top:number, left:number) {
@@ -98,9 +106,23 @@ export default class TableContainer extends React.PureComponent<any, TableContai
     }
   }
 
+  handleGoPage(page:number) {
+    this.setState({
+      currentPage: page
+    }, this.updateTableData)
+  }
+
   unbindEvent() {
     document.removeEventListener('click', this.handleClickOutOfRightClickMenu)
     document.removeEventListener('keydown', this.handlePressESC)
+  }
+
+  updateTableData() {
+    let { itemPerPage, currentPage} = this.state
+
+    this.setState({
+      tableData: getTableData(currentPage-1, itemPerPage)
+    })
   }
 
   closeRightClickMenu() {
@@ -115,13 +137,13 @@ export default class TableContainer extends React.PureComponent<any, TableContai
 
   removeRow() {
     this.setState({
-      tableData: this.state.tableData.filter(data => this.state.selected.indexOf(data.id) < 0),
       isRightClickMenuOpened: false
     })
   }
 
   render () {
-    let { currentPage, tableData, head, reightClickPos, isRightClickMenuOpened, selected } = this.state
+    let { currentPage, head, reightClickPos, isRightClickMenuOpened, selected, itemPerPage, tableData } = this.state
+
     let headSpanStyle:React.CSSProperties = {
       display: 'inline-block',
       overflow: 'hidden',
@@ -130,6 +152,8 @@ export default class TableContainer extends React.PureComponent<any, TableContai
       width: '100%',
       padding: '0 10px',
     }
+
+    console.log(this.state);
 
     return (
       <div className="example-table-container">
@@ -145,7 +169,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
           <TableHeader>
             <TableHeaderRow>
               <TableHeaderCol>
-                <span style={headSpanStyle}>{1}</span>
+                <span style={headSpanStyle}>{'test'}</span>
               </TableHeaderCol>
               <TableHeaderCol>
                 <span style={headSpanStyle}>{'index'}</span>
@@ -159,7 +183,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
           {tableData.map((item, index) => (
             <TableBodyRow id={item.id} key={index}>
               <TableBodyCol>
-                <Span style={headSpanStyle}/>
+                <span style={headSpanStyle}>{ 't' }</span>
               </TableBodyCol>
               <TableBodyCol>
                 <span style={headSpanStyle}>{ index+item.method }</span>
@@ -172,11 +196,12 @@ export default class TableContainer extends React.PureComponent<any, TableContai
           </TableBody>
         </Table>
         <PageControl
-          handleGoPage={(page:number)=>{this.setState({currentPage: page})}}
-          totalItems={77}
-          itemPerPage={25}
-          currentPage={parseInt(currentPage as any)}
-          itemPerPageList={[10,20,30]} />
+          handleGoPage={this.handleGoPage}
+          handleItemPerPageUpdate={this.handlePerpageUpdate}
+          totalItems={tableDataTotal.length}
+          itemPerPage={itemPerPage}
+          itemPerPageList={[10,20,30]}
+          currentPage={parseInt(currentPage as any)} />
       </div>
     )
   }

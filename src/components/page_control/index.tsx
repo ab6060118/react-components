@@ -17,6 +17,7 @@ interface PageControlProps {
   totalItems:number
   itemPerPage:number
   itemPerPageList:number[]
+  handleItemPerPageUpdate:Function
   handleGoPage:Function
   disabled?:boolean
   pageText?:string
@@ -108,7 +109,7 @@ export default class PageControl extends React.Component<PageControlProps, PageC
 
   render() {
     let { pageTemp } = this.state
-    let { currentPage, itemPerPage, pageText, totalItems, displayItemText, totalText, showText, itemsText } = this.props
+    let { currentPage, itemPerPage, pageText, totalItems, displayItemText, totalText, showText, itemsText, handleItemPerPageUpdate } = this.props
     let totalPage = Math.ceil(totalItems/itemPerPage)
     let itemStart = (currentPage-1)*itemPerPage
     let itemEnd = itemStart+itemPerPage
@@ -142,7 +143,7 @@ export default class PageControl extends React.Component<PageControlProps, PageC
           <Dropdown
             className='page-control-dropdown'
             labelElement={<span style={{marginRight: 4}}>{showText || 'show'}</span>}
-            handleUpdate={()=>{}}
+            handleUpdate={handleItemPerPageUpdate}
             id='page-control-dropdown'
             valueElement={<span>{itemPerPage}</span>}
             options={this.getItemPerpageDropdownOptions()} />

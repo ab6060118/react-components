@@ -40,7 +40,7 @@ export default class MenuSubMenuItem extends React.Component<MenuSubMenuItemProp
           subMenuLeft: left + width,
         })
       }
-    }, 500)
+    }, 300)
 
     this.setState({
       isHover: true
@@ -54,7 +54,7 @@ export default class MenuSubMenuItem extends React.Component<MenuSubMenuItemProp
           isSubMentOpened: false
         })
       }
-    }, 500)
+    }, 300)
 
     this.setState({
       isHover: false,
