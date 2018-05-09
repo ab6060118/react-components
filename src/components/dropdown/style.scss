@@ -62,7 +62,8 @@
     background-color: #ffffff;
     flex-direction: column;
 
-    .dropdown-item {
+    .dropdown-item-normal {
+      padding-left: (10rem/16);
       display: flex;
       flex-grow: 1;
       flex-shrink: 0;

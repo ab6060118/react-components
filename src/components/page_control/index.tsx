@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Input from '../input';
-import Dropdown, { Option } from '../dropdown';
+import Dropdown, { DropdownItemNormal } from '../dropdown';
 
 import './style.scss'
 
@@ -81,18 +81,6 @@ export default class PageControl extends React.Component<PageControlProps, PageC
     }
   }
 
-  getItemPerpageDropdownOptions() {
-    let { itemPerPageList } = this.props
-    let options:Option[]
-
-    options = itemPerPageList.map((data) => ({
-      value: data,
-      element: <span>{data}</span>
-    }))
-
-    return options
-  }
-
   getIconStyle(type:ICON_TYPE, originClassName:string) {
     let className:string[] = [originClassName]
     let { disabled, currentPage, totalItems, itemPerPage } = this.props
@@ -109,7 +97,7 @@ export default class PageControl extends React.Component<PageControlProps, PageC
 
   render() {
     let { pageTemp } = this.state
-    let { currentPage, itemPerPage, pageText, totalItems, displayItemText, totalText, showText, itemsText, handleItemPerPageUpdate } = this.props
+    let { currentPage, itemPerPage, pageText, totalItems, displayItemText, totalText, showText, itemsText, handleItemPerPageUpdate, itemPerPageList } = this.props
     let totalPage = Math.ceil(totalItems/itemPerPage)
     let itemStart = (currentPage-1)*itemPerPage
     let itemEnd = itemStart+itemPerPage
@@ -145,8 +133,15 @@ export default class PageControl extends React.Component<PageControlProps, PageC
             labelElement={<span style={{marginRight: 4}}>{showText || 'show'}</span>}
             handleUpdate={handleItemPerPageUpdate}
             id='page-control-dropdown'
-            valueElement={<span>{itemPerPage}</span>}
-            options={this.getItemPerpageDropdownOptions()} />
+            valueElement={<span>{itemPerPage}</span>} >
+          {
+            itemPerPageList.map((item, index) => (
+              <DropdownItemNormal value={item} key={index}>
+                <span>{item}</span>
+              </DropdownItemNormal>
+            ))
+          }
+          </Dropdown>
           <span style={{marginLeft: 6}}>{itemsText||'items'}</span>
         </div>
       </div>
