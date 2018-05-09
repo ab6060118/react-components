@@ -1,5 +1,4 @@
 import * as React from 'react'
-import Scrollbar from '../scrollbar'
 import './style.scss'
 import Table from './table';
 import TableBody from './table_body';

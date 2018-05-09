@@ -153,55 +153,55 @@ export default class TableContainer extends React.PureComponent<any, TableContai
       padding: '0 10px',
     }
 
-    console.log(this.state);
-
     return (
-      <div className="example-table-container">
-      {isRightClickMenuOpened === true &&
-        <TableMenu 
-          handleRowRemove={this.removeRow}
-          top={reightClickPos.top}
-          left={reightClickPos.left}
-          ids={selected}
-          ref="menu"/>
-      }
-        <Table className="example-table">
-          <TableHeader>
-            <TableHeaderRow>
-              <TableHeaderCol>
-                <span style={headSpanStyle}>{'test'}</span>
-              </TableHeaderCol>
-              <TableHeaderCol>
-                <span style={headSpanStyle}>{'index'}</span>
-              </TableHeaderCol>
-              <TableHeaderCol>
-                <span style={headSpanStyle}>{'id'}</span>
-              </TableHeaderCol>
-            </TableHeaderRow>
-          </TableHeader>
-          <TableBody multiSelect={true} selectable={true} handleRowSelect={(selected:any[])=>{console.log(selected)}} handleRowRightClick={this.handleBodyRowRightClick}>
-          {tableData.map((item, index) => (
-            <TableBodyRow id={item.id} key={index}>
-              <TableBodyCol>
-                <span style={headSpanStyle}>{ 't' }</span>
-              </TableBodyCol>
-              <TableBodyCol>
-                <span style={headSpanStyle}>{ index+item.method }</span>
-              </TableBodyCol>
-              <TableBodyCol>
-                <span style={headSpanStyle}>{ item.id }</span>
-              </TableBodyCol>
-            </TableBodyRow>
-          ))}
-          </TableBody>
-        </Table>
-        <PageControl
-          handleGoPage={this.handleGoPage}
-          handleItemPerPageUpdate={this.handlePerpageUpdate}
-          totalItems={tableDataTotal.length}
-          itemPerPage={itemPerPage}
-          itemPerPageList={[10,20,30]}
-          currentPage={parseInt(currentPage as any)} />
+      <div>
+        <div className="example-table-container">
+        {isRightClickMenuOpened === true &&
+          <TableMenu 
+            handleRowRemove={this.removeRow}
+            top={reightClickPos.top}
+            left={reightClickPos.left}
+            ids={selected}
+            ref="menu"/>
+        }
+          <Table className="example-table">
+            <TableHeader>
+              <TableHeaderRow>
+                <TableHeaderCol>
+                  <span style={headSpanStyle}>{'test'}</span>
+                </TableHeaderCol>
+                <TableHeaderCol>
+                  <span style={headSpanStyle}>{'index'}</span>
+                </TableHeaderCol>
+                <TableHeaderCol>
+                  <span style={headSpanStyle}>{'id'}</span>
+                </TableHeaderCol>
+              </TableHeaderRow>
+            </TableHeader>
+            <TableBody multiSelect={true} selectable={true} handleRowSelect={(selected:any[])=>{console.log(selected)}} handleRowRightClick={this.handleBodyRowRightClick}>
+            {tableData.map((item, index) => (
+              <TableBodyRow id={item.id} key={index}>
+                <TableBodyCol>
+                  <span style={headSpanStyle}>{ 't' }</span>
+                </TableBodyCol>
+                <TableBodyCol>
+                  <span style={headSpanStyle}>{ index+item.method }</span>
+                </TableBodyCol>
+                <TableBodyCol>
+                  <span style={headSpanStyle}>{ item.id }</span>
+                </TableBodyCol>
+              </TableBodyRow>
+            ))}
+            </TableBody>
+          </Table>
+          <PageControl
+            handleGoPage={this.handleGoPage}
+            handleItemPerPageUpdate={this.handlePerpageUpdate}
+            totalItems={tableDataTotal.length}
+            itemPerPage={itemPerPage}
+            itemPerPageList={[10,20,30]}
+            currentPage={parseInt(currentPage as any)} />
+        </div>
       </div>
     )
   }

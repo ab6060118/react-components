@@ -4,11 +4,6 @@ import Menu, { MenuDefaultItem, MenuDividerItem, MenuTitleItem, MenuSubMenuItem 
 export default class TableMenu extends React.Component<any,any> {
   constructor(props:any) {
     super(props)
-    this.handleOneClick = this.handleOneClick.bind(this)
-  }
-
-  handleOneClick() {
-    console.log(this.props.ids);
   }
 
   render() {
