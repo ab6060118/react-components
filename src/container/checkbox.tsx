@@ -14,12 +14,12 @@ export default class CheckboxContainer extends React.Component<any, any> {
     let { value } = this.state
     return (
       <Checkbox
-        id='example-checkbox'
-        item='example'
-        handleValueChange={(value:boolean) => {this.setState({value: value})}}
-        labelElement={<span>{'Example checkbox'}</span>}
+        id={'example-checkbox-' + +new Date()}
+        handleClick={(value:boolean) => {this.setState({value: value})}}
         disabled={false}
-        value={value} />
+        checked={value}>
+        <span>{'Example checkbox'}</span>
+      </Checkbox>
     )
   }
 }

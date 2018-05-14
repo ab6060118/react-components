@@ -4,21 +4,20 @@ import './style.scss'
 
 interface ICheckbox {
   id:string
-  value:boolean
-  item:any
-  handleValueChange:Function
+  checked:boolean
+  handleClick:Function
+  item?:any
   disabled?:boolean
   className?:string
-  labelElement?:JSX.Element
 }
 
 export default class Checkbox extends React.Component <ICheckbox> {
   handleValueChange(e:Event) {
-    let { handleValueChange, value, item, disabled } = this.props
+    let { handleClick, checked, item, disabled } = this.props
 
     if(disabled === true) return
 
-    if(handleValueChange) handleValueChange(!this.props.value, this.props.item)
+    if(handleClick) handleClick(!checked, item)
   }
 
   getClassName() {
@@ -32,10 +31,10 @@ export default class Checkbox extends React.Component <ICheckbox> {
   }
 
   getIconClassName() {
-    let { value, disabled } = this.props
+    let { checked, disabled } = this.props
     let className:string[] = []
 
-    if(value === true) className.push('checkbox-icon-on')
+    if(checked === true) className.push('checkbox-icon-on')
     else className.push('checkbox-icon-off')
 
     if(disabled === true) className.push('disabled')
@@ -44,13 +43,13 @@ export default class Checkbox extends React.Component <ICheckbox> {
   }
 
   render() {
-    let { id, value, labelElement } = this.props
+    let { id, children } = this.props
 
     return (
       <div className={this.getClassName()}>
         <input type="checkbox" id={id} style={{display: 'none'}} onChange={this.handleValueChange.bind(this)} />
         <span className={this.getIconClassName()} onClick={this.handleValueChange.bind(this)}></span>
-        <label className="checkbox-label" htmlFor={id}>{labelElement}</label>
+        <label className="checkbox-label" htmlFor={id}>{children}</label>
       </div>
     )
   }
