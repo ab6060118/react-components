@@ -12,6 +12,20 @@
   cursor: e-resize;
 }
 
+@mixin window-container-resizer-ne() {
+  position: absolute;
+  height: (5rem/16);
+  width: (5rem/16);
+  cursor: ne-resize;
+}
+
+@mixin window-container-resizer-se() {
+  position: absolute;
+  height: (5rem/16);
+  width: (5rem/16);
+  cursor: se-resize;
+}
+
 .window-container {
   .window-container-resizer-top {
     @include window-container-resizer-n();
@@ -26,5 +40,21 @@
   .window-container-resizer-right {
     @include window-container-resizer-e();
     right: 0;
+  }
+  .window-container-resizer-top-right {
+    @include window-container-resizer-ne();
+    right: 0;
+  }
+  .window-container-resizer-bottom-right {
+    @include window-container-resizer-se();
+    right: 0;
+    bottom: 0;
+  }
+  .window-container-resizer-bottom-left {
+    @include window-container-resizer-ne();
+    bottom: 0;
+  }
+  .window-container-resizer-top-left {
+    @include window-container-resizer-se();
   }
 }

@@ -2,10 +2,10 @@ import * as React from "react";
 import './style.scss'
 
 enum SIDES {
-  TOP = 1,
-  RIGHT,
-  BOTTOM,
-  LEFT,
+  TOP = 1 << 0,
+  RIGHT = 1 << 1,
+  BOTTOM = 1 << 2,
+  LEFT = 1 << 3,
 }
 
 interface WindowContainerState {
@@ -27,6 +27,7 @@ interface WindowContainerProps {
   maxWidth:number
   maxHeight:number
   resizable?:boolean
+  zIndex?:number
 }
 
 export default class WindowContainer extends React.Component <WindowContainerProps, WindowContainerState> {
@@ -90,6 +91,7 @@ export default class WindowContainer extends React.Component <WindowContainerPro
   }
 
   handleContainerMoving(e:MouseEvent) {
+    let { top, left } = this.state
     let moveX = e.pageX - this.state.mouseDownPos.x
     let moveY = e.pageY - this.state.mouseDownPos.y
     let resultLeft =  this.state.mouseDownWindowPos.x + moveX
@@ -102,6 +104,8 @@ export default class WindowContainer extends React.Component <WindowContainerPro
       resultTop = 0
     }
 
+    if(top === resultTop && left === resultLeft) return
+
     this.setState({
       left: resultLeft,
       top: resultTop,
@@ -110,6 +114,8 @@ export default class WindowContainer extends React.Component <WindowContainerPro
 
   handleResizeDown(resizeSide: SIDES, e:React.MouseEvent<HTMLElement>) {
     if(this.props.resizable === false) return
+
+    e.stopPropagation()
 
     let { left, top, width, height } = this.state
 
@@ -145,10 +151,10 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     let newWidth:number  = width
     let newHeight:number = height
 
-    if(resizeSide === SIDES.BOTTOM) newHeight = mouseDownWindowPos.h + e.pageY - mouseDownPos.y
-    if(resizeSide === SIDES.RIGHT) newWidth = mouseDownWindowPos.w + e.pageX - mouseDownPos.x
+    if(resizeSide & SIDES.BOTTOM) newHeight = mouseDownWindowPos.h + e.pageY - mouseDownPos.y
+    if(resizeSide & SIDES.RIGHT) newWidth = mouseDownWindowPos.w + e.pageX - mouseDownPos.x
 
-    if(resizeSide === SIDES.TOP) {
+    if(resizeSide & SIDES.TOP) {
       newTop = mouseDownWindowPos.y + e.pageY - mouseDownPos.y
       newHeight = mouseDownWindowPos.h - e.pageY + mouseDownPos.y
 
@@ -156,7 +162,7 @@ export default class WindowContainer extends React.Component <WindowContainerPro
       if(newHeight < minHeight) newTop = mouseDownWindowPos.y + mouseDownWindowPos.h - minHeight
     }
 
-    if(resizeSide === SIDES.LEFT) {
+    if(resizeSide & SIDES.LEFT) {
       newLeft = mouseDownWindowPos.x + e.pageX - mouseDownPos.x
       newWidth = mouseDownWindowPos.w - e.pageX + mouseDownPos.x
 
@@ -169,6 +175,8 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     if(newWidth > maxWidth) newWidth = maxWidth
     if(newWidth < minWidth) newWidth = minWidth
 
+    if(width === newWidth && height === newHeight) return
+
     this.setState({
       top: newTop,
       left: newLeft,
@@ -180,10 +188,10 @@ export default class WindowContainer extends React.Component <WindowContainerPro
   updateContainerPosition() {
     if(!this.refs.container) return ;
 
-    let container = this.refs.container
-    let { offsetHeight, offsetWidth, clientHeight } =  container.parentElement
-    let height = container.offsetHeight
-    let width = container.offsetWidth
+    let { handleMoveClass } = this.props
+    let { container } = this.refs
+    let { offsetHeight, offsetWidth } =  container.parentElement
+    let { offsetHeight:height, offsetWidth:width } = container
     let resultTop = (offsetHeight - height) / 2
     let resultLeft = (offsetWidth - width) / 2  
 
@@ -195,7 +203,7 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     }
 
     if(this.props.handleMoveClass) {
-      container.querySelector('.' + this.props.handleMoveClass).addEventListener('mousedown', this.handleMovingDown, true)
+      container.querySelector('.' + handleMoveClass).addEventListener('mousedown', this.handleMovingDown, true)
     }
 
     this.setState({
@@ -208,7 +216,7 @@ export default class WindowContainer extends React.Component <WindowContainerPro
 
   render() {
     let { top, left, width, height } = this.state
-    let { resizable, minWidth, maxWidth, minHeight, maxHeight } = this.props
+    let { resizable, minWidth, maxWidth, minHeight, maxHeight, zIndex, children } = this.props
     let containerStyle:React.CSSProperties = {
       position:  'absolute',
       top:       top,
@@ -219,12 +227,11 @@ export default class WindowContainer extends React.Component <WindowContainerPro
       minHeight: minHeight,
       maxWidth:  maxWidth,
       maxHeight: maxHeight,
-      zIndex:    1,
+      zIndex:    zIndex || 1,
     }
 
     return (
       <div className="window-container" style={containerStyle} ref='container'>
-        <div className="window-container-resizer-left" onMouseDown={this.handleResizeDown.bind(this, SIDES.LEFT)}></div>
         {resizable !== false && 
         <div className="window-container-resizer-top" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP)}></div>
         }
@@ -237,7 +244,19 @@ export default class WindowContainer extends React.Component <WindowContainerPro
         {resizable !== false && 
         <div className="window-container-resizer-right" onMouseDown={this.handleResizeDown.bind(this, SIDES.RIGHT)}></div>
         }
-        {this.props.children}
+        {resizable !== false && 
+        <div className="window-container-resizer-top-right" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP|SIDES.RIGHT)}></div>
+        }
+        {resizable !== false && 
+        <div className="window-container-resizer-bottom-right" onMouseDown={this.handleResizeDown.bind(this, SIDES.BOTTOM|SIDES.RIGHT)}></div>
+        }
+        {resizable !== false && 
+        <div className="window-container-resizer-bottom-left" onMouseDown={this.handleResizeDown.bind(this, SIDES.BOTTOM|SIDES.LEFT)}></div>
+        }
+        {resizable !== false && 
+        <div className="window-container-resizer-top-left" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP|SIDES.LEFT)}></div>
+        }
+        {children}
       </div>
     )
 }
