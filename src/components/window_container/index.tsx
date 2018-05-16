@@ -8,6 +8,10 @@ enum SIDES {
   LEFT = 1 << 3,
 }
 
+export interface WindowProps {
+  handleTopClick?:(e:React.MouseEvent<HTMLDivElement>) => void
+}
+
 interface WindowContainerState {
   top: number
   left: number
@@ -20,7 +24,7 @@ interface WindowContainerState {
   mouseDownWindowPos: { x:number, y: number, h:number, w:number }
 }
 
-interface WindowContainerProps {
+interface WindowContainerProps extends WindowProps {
   handleMoveClass:string
   minWidth:number
   minHeight:number
@@ -53,6 +57,8 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     this.handleContainerMoving = this.handleContainerMoving.bind(this)
     this.handleResizeUp = this.handleResizeUp.bind(this)
     this.handleResizeMove = this.handleResizeMove.bind(this)
+
+    console.log(props);
   }
 
   componentDidMount() {
@@ -216,7 +222,7 @@ export default class WindowContainer extends React.Component <WindowContainerPro
 
   render() {
     let { top, left, width, height } = this.state
-    let { resizable, minWidth, maxWidth, minHeight, maxHeight, zIndex, children } = this.props
+    let { resizable, minWidth, maxWidth, minHeight, maxHeight, zIndex, children, handleTopClick } = this.props
     let containerStyle:React.CSSProperties = {
       position:  'absolute',
       top:       top,
@@ -231,7 +237,7 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     }
 
     return (
-      <div className="window-container" style={containerStyle} ref='container'>
+      <div className="window-container" style={containerStyle} ref='container' onClick={handleTopClick}>
         {resizable !== false && 
         <div className="window-container-resizer-top" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP)}></div>
         }

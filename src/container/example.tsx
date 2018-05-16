@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Table from './table'
 import Form from './from';
-import Window from './window'
+import Window from './windows_manager'
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 interface ExampleState {

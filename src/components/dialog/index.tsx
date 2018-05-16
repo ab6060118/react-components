@@ -1,18 +1,17 @@
 import * as React from 'react'
-import WindowContainer from '../window_container'
+import WindowContainer, { WindowProps } from '../window_container'
 import Button from '../button'
 
 import './stylt.scss'
 
-interface IDialog {
-  height?:number
+interface DialogProps extends WindowProps{
   level:DIALOG_LEVEL
-  noText?:string
-  okText?:string
   handleCloseClick:any
   handleOkClick:Function
   handleNoClick:Function
   showOkButton?:boolean
+  noText?:string
+  okText?:string
 }
 
 export const enum DIALOG_LEVEL {
@@ -22,8 +21,8 @@ export const enum DIALOG_LEVEL {
   ERROR,
 }
 
-export default class Dialog extends React.Component <IDialog> {
-  getIconClass(level:number) {
+export default class Dialog extends React.Component <DialogProps> {
+  getIconClass(level:DIALOG_LEVEL) {
     switch(level) {
       case DIALOG_LEVEL.INFO:
         return 'dialog-icon-info'
@@ -39,7 +38,6 @@ export default class Dialog extends React.Component <IDialog> {
   render() {
     let { 
       level,
-      height,
       okText,
       noText,
       children,
@@ -47,13 +45,17 @@ export default class Dialog extends React.Component <IDialog> {
       handleOkClick,
       handleNoClick,
       showOkButton,
+      handleTopClick,
     } = this.props
+
+    console.log('rerender');
     return (
       <WindowContainer
         minWidth={340}
         minHeight={200}
         maxWidth={540}
         maxHeight={300}
+        handleTopClick={handleTopClick}
         handleMoveClass="dialog-header">
         <div className="dialog">
           <div className="dialog-header">
