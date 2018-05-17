@@ -13,6 +13,7 @@ export interface WindowProps {
   isMined?:boolean
   metadata?:any
   handleTopClick?:Function
+  handleMinRestoreClick?:Function
 }
 
 interface WindowContainerState {
@@ -37,7 +38,7 @@ interface WindowContainerProps extends WindowProps {
   relativeToParent?:boolean
 }
 
-export default class WindowContainer extends React.Component <WindowContainerProps, WindowContainerState> {
+export default class WindowContainer extends React.PureComponent <WindowContainerProps, WindowContainerState> {
   refs: {[key:string]:HTMLElement}
 
   constructor(props:any) {
@@ -61,12 +62,18 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     this.handleResizeUp = this.handleResizeUp.bind(this)
     this.handleResizeMove = this.handleResizeMove.bind(this)
     this.handleTopClick = this.handleTopClick.bind(this)
-
-    console.log(props);
   }
 
   componentDidMount() {
     this.initContainerPosition()
+  }
+
+  componentDidUpdate(prevProps:WindowContainerProps) {
+    let { isMined, handleMoveClass } = this.props
+
+    if(prevProps.isMined === true && isMined === false) {
+      this.refs.container.querySelector('.' + handleMoveClass).addEventListener('mousedown', this.handleMovingDown)
+    }
   }
 
   componentWillUnmount() {
@@ -87,7 +94,9 @@ export default class WindowContainer extends React.Component <WindowContainerPro
   }
 
   handleMovingDown(e:MouseEvent) {
-    if (e.button !== 0) return
+    let { isMined } = this.props
+
+    if (e.button !== 0 || isMined === true) return
 
     let { left, top, width, height } = this.state
 
@@ -131,7 +140,9 @@ export default class WindowContainer extends React.Component <WindowContainerPro
   }
 
   handleResizeDown(resizeSide: SIDES, e:React.MouseEvent<HTMLElement>) {
-    if(this.props.resizable === false) return
+    let { resizable,  isMined } = this.props
+
+    if(resizable === false || isMined === true) return
 
     let { left, top, width, height } = this.state
 
@@ -223,8 +234,6 @@ export default class WindowContainer extends React.Component <WindowContainerPro
       parentWidth = parentElement.innerWidth
     }
 
-    console.log(parentWidth, parentHeight);
-
     let resultTop = (parentHeight - height) / 2
     let resultLeft = (parentWidth - width) / 2  
 
@@ -236,7 +245,7 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     }
 
     if(this.props.handleMoveClass) {
-      container.querySelector('.' + handleMoveClass).addEventListener('mousedown', this.handleMovingDown, true)
+      container.querySelector('.' + handleMoveClass).addEventListener('mousedown', this.handleMovingDown)
     }
 
     this.setState({
@@ -248,9 +257,8 @@ export default class WindowContainer extends React.Component <WindowContainerPro
   }
 
   render() {
-    console.log('render');
     let { top, left, width, height } = this.state
-    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, relativeToParent } = this.props
+    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, handleMinRestoreClick, relativeToParent, isMined } = this.props
     let containerStyle:React.CSSProperties = {
       position:  relativeToParent === true ? 'absolute' : 'fixed',
       top:       top,
@@ -264,32 +272,40 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     }
 
     return (
-      <div className="window-container" style={containerStyle} ref='container' onMouseDown={this.handleTopClick}>
-        {resizable !== false && 
+      <div
+        className={`window-container ${isMined === true ? 'minimized' : ''}`}
+        style={isMined === true ? {} : containerStyle}
+         onMouseDown={this.handleTopClick}
+        ref='container'>
+        {(resizable !== false &&  isMined !== true) &&
         <div className="window-container-resizer-top" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP)}></div>
         }
-        {resizable !== false && 
+        {(resizable !== false &&  isMined !== true) &&
         <div className="window-container-resizer-bottom" onMouseDown={this.handleResizeDown.bind(this, SIDES.BOTTOM)}></div>
         }
-        {resizable !== false && 
+        {(resizable !== false &&  isMined !== true) &&
         <div className="window-container-resizer-left" onMouseDown={this.handleResizeDown.bind(this, SIDES.LEFT)}></div>
         }
-        {resizable !== false && 
+        {(resizable !== false &&  isMined !== true) &&
         <div className="window-container-resizer-right" onMouseDown={this.handleResizeDown.bind(this, SIDES.RIGHT)}></div>
         }
-        {resizable !== false && 
+        {(resizable !== false &&  isMined !== true) &&
         <div className="window-container-resizer-top-right" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP|SIDES.RIGHT)}></div>
         }
-        {resizable !== false && 
+        {(resizable !== false &&  isMined !== true) &&
         <div className="window-container-resizer-bottom-right" onMouseDown={this.handleResizeDown.bind(this, SIDES.BOTTOM|SIDES.RIGHT)}></div>
         }
-        {resizable !== false && 
+        {(resizable !== false &&  isMined !== true) &&
         <div className="window-container-resizer-bottom-left" onMouseDown={this.handleResizeDown.bind(this, SIDES.BOTTOM|SIDES.LEFT)}></div>
         }
-        {resizable !== false && 
+        {(resizable !== false &&  isMined !== true) &&
         <div className="window-container-resizer-top-left" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP|SIDES.LEFT)}></div>
         }
-        {children}
+        {isMined !== true ?
+          (children) : (
+            <span onClick={handleMinRestoreClick as any}>{'+'}</span>
+          )
+        }
       </div>
     )
   }

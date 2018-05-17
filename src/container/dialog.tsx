@@ -1,19 +1,27 @@
 import * as React from "react";
 import Dialog, { DIALOG_LEVEL } from '../components/dialog';
+import { WindowProps } from '../components/window_container';
 
-export default class DialogContainer extends React.PureComponent<any> {
-  componentDidUpdate(n:any) {
-    console.log('container');
+export default class DialogContainer extends React.PureComponent<WindowProps> {
+  constructor(props:WindowProps) {
+    super(props)
 
-    console.log(n, this.props);
+    this.handleMinRestoreClick = this.handleMinRestoreClick.bind(this)
+  }
+
+  handleMinRestoreClick() {
+    let { handleMinRestoreClick, winId } = this.props
+
+    if(handleMinRestoreClick !== undefined) {
+      handleMinRestoreClick(winId)
+    }
   }
 
   render() {
     return (
       <Dialog
-        handleTopClick={this.props.handleTopClick}
-        winId={this.props.winId}
-        metadata={this.props.metadata}
+        {...this.props}
+        handleMinRestoreClick={this.handleMinRestoreClick}
         level={DIALOG_LEVEL.INFO}
         handleOkClick={()=>{}}
         handleNoClick={()=>{}}

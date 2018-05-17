@@ -30,6 +30,7 @@ export default class WindowsManager extends React.Component<any, WindowsManagerS
 
     this.handleTopClick = this.handleTopClick.bind(this)
     this.handleUpdateMetadata = this.handleUpdateMetadata.bind(this)
+    this.handleMinRestoreClick = this.handleMinRestoreClick.bind(this)
   }
 
   handleTopClick(id:string) {
@@ -40,10 +41,22 @@ export default class WindowsManager extends React.Component<any, WindowsManagerS
 
     order.splice(index, 1)
 
-    console.log(`top ${id}`);
-
     this.setState({
       order: [...order, id]
+    })
+  }
+
+  handleMinRestoreClick(id:string) {
+    let { windows } = this.state
+
+    this.setState({
+      windows: {
+        ...windows,
+        [id]: {
+          ...windows[id],
+          isMined: !windows[id].isMined,
+        }
+      }
     })
   }
 
@@ -76,6 +89,7 @@ export default class WindowsManager extends React.Component<any, WindowsManagerS
           return (
             <window.component
               handleTopClick={this.handleTopClick}
+              handleMinRestoreClick={this.handleMinRestoreClick}
               winId={window.id}
               isMined={window.isMined}
               metadata={window.metadata}

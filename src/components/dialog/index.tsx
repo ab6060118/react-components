@@ -4,7 +4,7 @@ import Button from '../button'
 
 import './stylt.scss'
 
-interface DialogProps extends WindowProps{
+interface DialogProps extends WindowProps {
   level:DIALOG_LEVEL
   handleCloseClick:any
   handleOkClick:Function
@@ -21,7 +21,7 @@ export const enum DIALOG_LEVEL {
   ERROR,
 }
 
-export default class Dialog extends React.Component <DialogProps> {
+export default class Dialog extends React.PureComponent <DialogProps> {
   getIconClass(level:DIALOG_LEVEL) {
     switch(level) {
       case DIALOG_LEVEL.INFO:
@@ -45,23 +45,21 @@ export default class Dialog extends React.Component <DialogProps> {
       handleOkClick,
       handleNoClick,
       showOkButton,
-      handleTopClick,
-      winId,
+      handleMinRestoreClick,
     } = this.props
 
-    console.log('rerender');
     return (
       <WindowContainer
-        winId={winId}
+        {...this.props}
         minWidth={340}
         minHeight={200}
         maxWidth={540}
         maxHeight={300}
-        handleTopClick={handleTopClick}
         handleMoveClass="dialog-header">
         <div className="dialog">
           <div className="dialog-header">
             <div className="dialog-tool-icon-group">
+              <span onClick={handleMinRestoreClick as any}>{'-'}</span>
               <span className="dialog-icon-close" onClick={handleCloseClick}></span>
             </div>
           </div>
