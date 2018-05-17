@@ -46,11 +46,13 @@ export default class Dialog extends React.Component <DialogProps> {
       handleNoClick,
       showOkButton,
       handleTopClick,
+      winId,
     } = this.props
 
     console.log('rerender');
     return (
       <WindowContainer
+        winId={winId}
         minWidth={340}
         minHeight={200}
         maxWidth={540}

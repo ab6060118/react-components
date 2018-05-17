@@ -9,7 +9,10 @@ enum SIDES {
 }
 
 export interface WindowProps {
-  handleTopClick?:(e:React.MouseEvent<HTMLDivElement>) => void
+  winId:string
+  isMined?:boolean
+  metadata?:any
+  handleTopClick?:Function
 }
 
 interface WindowContainerState {
@@ -31,7 +34,7 @@ interface WindowContainerProps extends WindowProps {
   maxWidth:number
   maxHeight:number
   resizable?:boolean
-  zIndex?:number
+  relativeToParent?:boolean
 }
 
 export default class WindowContainer extends React.Component <WindowContainerProps, WindowContainerState> {
@@ -57,21 +60,30 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     this.handleContainerMoving = this.handleContainerMoving.bind(this)
     this.handleResizeUp = this.handleResizeUp.bind(this)
     this.handleResizeMove = this.handleResizeMove.bind(this)
+    this.handleTopClick = this.handleTopClick.bind(this)
 
     console.log(props);
   }
 
   componentDidMount() {
-    this.updateContainerPosition()
+    this.initContainerPosition()
   }
 
   componentWillUnmount() {
-    (this.refs.container as HTMLElement).querySelector('.' + this.props.handleMoveClass).removeEventListener('mousedown', this.handleMovingDown, true)
+    (this.refs.container as HTMLElement).querySelector('.' + this.props.handleMoveClass).removeEventListener('mousedown', this.handleMovingDown)
 
     document.removeEventListener('mouseup', this.handleMovingUp)
     document.removeEventListener('mouseup', this.handleResizeUp)
     document.removeEventListener('mousemove', this.handleContainerMoving)
     document.removeEventListener('mousemove', this.handleResizeMove)
+  }
+
+  handleTopClick() {
+    let { handleTopClick, winId, isMined } = this.props
+
+    if(isMined !== true && handleTopClick !== undefined) {
+      handleTopClick(winId)
+    }
   }
 
   handleMovingDown(e:MouseEvent) {
@@ -97,11 +109,11 @@ export default class WindowContainer extends React.Component <WindowContainerPro
   }
 
   handleContainerMoving(e:MouseEvent) {
-    let { top, left } = this.state
-    let moveX = e.pageX - this.state.mouseDownPos.x
-    let moveY = e.pageY - this.state.mouseDownPos.y
-    let resultLeft =  this.state.mouseDownWindowPos.x + moveX
-    let resultTop =  this.state.mouseDownWindowPos.y + moveY
+    let { top, left, mouseDownPos, mouseDownWindowPos } = this.state
+    let moveX = e.pageX - mouseDownPos.x
+    let moveY = e.pageY - mouseDownPos.y
+    let resultLeft =  mouseDownWindowPos.x + moveX
+    let resultTop =  mouseDownWindowPos.y + moveY
 
     if(resultLeft < 0) {
       resultLeft = 0
@@ -120,8 +132,6 @@ export default class WindowContainer extends React.Component <WindowContainerPro
 
   handleResizeDown(resizeSide: SIDES, e:React.MouseEvent<HTMLElement>) {
     if(this.props.resizable === false) return
-
-    e.stopPropagation()
 
     let { left, top, width, height } = this.state
 
@@ -162,16 +172,16 @@ export default class WindowContainer extends React.Component <WindowContainerPro
 
     if(resizeSide & SIDES.TOP) {
       newTop = mouseDownWindowPos.y + e.pageY - mouseDownPos.y
-      newHeight = mouseDownWindowPos.h - e.pageY + mouseDownPos.y
 
+      if(newTop >=  0) newHeight = mouseDownWindowPos.h - e.pageY + mouseDownPos.y
       if(newHeight > maxHeight) newTop = mouseDownWindowPos.y - maxHeight + mouseDownWindowPos.h
       if(newHeight < minHeight) newTop = mouseDownWindowPos.y + mouseDownWindowPos.h - minHeight
     }
 
     if(resizeSide & SIDES.LEFT) {
       newLeft = mouseDownWindowPos.x + e.pageX - mouseDownPos.x
-      newWidth = mouseDownWindowPos.w - e.pageX + mouseDownPos.x
 
+      if(newLeft >= 0) newWidth = mouseDownWindowPos.w - e.pageX + mouseDownPos.x
       if(newWidth > maxWidth) newLeft = mouseDownWindowPos.x - maxWidth + mouseDownWindowPos.w
       if(newWidth < minWidth) newLeft = mouseDownWindowPos.x + mouseDownWindowPos.w - minWidth
     }
@@ -180,6 +190,8 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     if(newHeight < minHeight) newHeight = minHeight
     if(newWidth > maxWidth) newWidth = maxWidth
     if(newWidth < minWidth) newWidth = minWidth
+    if(newTop < 0) newTop = 0
+    if(newLeft < 0) newLeft = 0
 
     if(width === newWidth && height === newHeight) return
 
@@ -191,15 +203,30 @@ export default class WindowContainer extends React.Component <WindowContainerPro
     })
   }
 
-  updateContainerPosition() {
+  initContainerPosition() {
     if(!this.refs.container) return ;
 
-    let { handleMoveClass } = this.props
+    let { handleMoveClass, relativeToParent } = this.props
     let { container } = this.refs
-    let { offsetHeight, offsetWidth } =  container.parentElement
     let { offsetHeight:height, offsetWidth:width } = container
-    let resultTop = (offsetHeight - height) / 2
-    let resultLeft = (offsetWidth - width) / 2  
+    let parentHeight:number = undefined
+    let parentWidth:number = undefined
+
+    if(relativeToParent === true) {
+      let parentElement = container.parentElement
+      parentHeight = parentElement.offsetHeight
+      parentWidth = parentElement.offsetWidth
+    }
+    else {
+      let parentElement = window
+      parentHeight = parentElement.innerHeight
+      parentWidth = parentElement.innerWidth
+    }
+
+    console.log(parentWidth, parentHeight);
+
+    let resultTop = (parentHeight - height) / 2
+    let resultLeft = (parentWidth - width) / 2  
 
     if(resultLeft < 0) {
       resultLeft = 0
@@ -221,10 +248,11 @@ export default class WindowContainer extends React.Component <WindowContainerPro
   }
 
   render() {
+    console.log('render');
     let { top, left, width, height } = this.state
-    let { resizable, minWidth, maxWidth, minHeight, maxHeight, zIndex, children, handleTopClick } = this.props
+    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, relativeToParent } = this.props
     let containerStyle:React.CSSProperties = {
-      position:  'absolute',
+      position:  relativeToParent === true ? 'absolute' : 'fixed',
       top:       top,
       left:      left,
       width:     width || 'unset',
@@ -233,11 +261,10 @@ export default class WindowContainer extends React.Component <WindowContainerPro
       minHeight: minHeight,
       maxWidth:  maxWidth,
       maxHeight: maxHeight,
-      zIndex:    zIndex || 1,
     }
 
     return (
-      <div className="window-container" style={containerStyle} ref='container' onClick={handleTopClick}>
+      <div className="window-container" style={containerStyle} ref='container' onMouseDown={this.handleTopClick}>
         {resizable !== false && 
         <div className="window-container-resizer-top" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP)}></div>
         }
@@ -265,5 +292,5 @@ export default class WindowContainer extends React.Component <WindowContainerPro
         {children}
       </div>
     )
-}
+  }
 }
