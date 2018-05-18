@@ -1,14 +1,14 @@
 .page-control {
   display: flex;
   justify-content: space-between;
-  height: (25rem/16);
-  padding: 0 (10rem/16);
+  height: 25px;
+  padding: 0 10px;
   border: 1px solid black;
   border-top: 0;
   background-color: #ffffff;
 
   span {
-    font-size: (12rem/16);
+    font-size: 12px;
   }
 
   .page-control-input {
@@ -16,29 +16,29 @@
     align-items: center;
     .input-label {
       display: flex;
-      height: 1rem;
+      height: 16px;
     }
 
     .input-field {
-      margin-left: (4rem/16);
-      height: 1rem;
-      width: 3rem;
+      margin-left: 4px;
+      height: 16px;
+      width: 48px;
       text-align: right;
       color: #0278d1;
-      font-size: (12rem/16);
+      font-size: 12px;
     }
   }
 
   .page-control-dropdown {
-    height: 1rem;
+    height: 16px;
     .dropdown-field {
       border: 0;
     }
   }
 
   .page-control-divider {
-    height: 1rem;
-    margin: 0 (10rem/16);
+    height: 16px;
+    margin: 0 10px;
     border-left: 1px solid #c8c8c8;
   }
 
@@ -54,8 +54,8 @@
 }
 
 @mixin page-control-icon($normal, $disable, $active) {
-  width: (16rem/16);
-  height: (15rem/16);
+  width: 16px;
+  height: 15px;
   display: inline-block;
   cursor: pointer;
   background-repeat: no-repeat;
@@ -84,13 +84,13 @@
 .page-control-icon-more-right {
   @include page-control-icon('./imgs/more_right.png', './imgs/more_right_disable.png', './imgs/more_right_active.png')
 
-  margin-left: (6rem/16);
+  margin-left: 6px;
 }
 
 .page-control-icon-left {
   @include page-control-icon('./imgs/play_left.png', './imgs/play_left_disable.png', './imgs/play_left_active.png')
 
-  margin-left: (6rem/16);
+  margin-left: 6px;
 }
 
 .page-control-icon-right {

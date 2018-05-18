@@ -8,8 +8,8 @@
 }
 
 @mixin checkbox-icon($normal, $hover, $disable) {
-  width: (16rem/16);
-  height: (15rem/16);
+  width: 16px;
+  height: 15px;
   display: inline-block;
   cursor: pointer;
   background-repeat: no-repeat;

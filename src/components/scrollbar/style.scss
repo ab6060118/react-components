@@ -11,7 +11,7 @@
   .scrollbar-bar {
     display: none;
     flex-direction: column;
-    width: (12rem/16);
+    width: 12px;
     background-color: #eaeaea;
     position: absolute;
     top: 0;
@@ -40,8 +40,8 @@
 }
 
 @mixin bar-icon($normal, $hover, $disable, $active) {
-  width: (12rem/16);
-  height: (12rem/16);
+  width: 12px;
+  height: 12px;
   display: inline-block;
   cursor: pointer;
   background-repeat: no-repeat;

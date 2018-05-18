@@ -3,8 +3,8 @@
   background-position: center;
   background-repeat: no-repeat;
   display: inline-block;
-  width: (32rem/16);
-  height: (32rem/16);
+  width: 32px;
+  height: 32px;
   background-image: url($path);
   flex-shrink: 0;
 }
@@ -17,16 +17,16 @@
   flex-direction: column;
 
   .dialog-header {
-    height: (24rem/16);
+    height: 24px;
     cursor: move;
     display: flex;
-    padding: 0 (8rem/16);
-    padding-top: (8rem/16);
+    padding: 0 8px;
+    padding-top: 8px;
     justify-content: flex-end;
 
     .dialog-tool-icon-group {
       display: flex;
-      width: (10rem/16);
+      width: 10px;
 
       span {
         cursor: pointer;
@@ -36,7 +36,7 @@
 
   .dialog-body {
     display: flex;
-    padding: 0 (24rem/16);
+    padding: 0 24px;
     flex-grow: 1;
 
     .dialog-icon-container {
@@ -44,14 +44,14 @@
     }
 
     .dialog-content {
-      padding: 0 (16rem/16);
-      padding-top: (8rem/16);
-      min-height: (34rem/16);
+      padding: 0 16px;
+      padding-top: 8px;
+      min-height: 34px;
       flex-grow: 1;
       flex-shrink: 1;
 
       span {
-        font-size: (14rem/16);
+        font-size: 14px;
         color: #2f2f2f;
       }
     }
@@ -60,13 +60,13 @@
   .dialog-footer {
     display: flex;
     justify-content: flex-end;
-    height: (74rem/16);
-    padding: 0 (24rem/16);
-    padding-bottom: (24rem/16);
+    height: 74px;
+    padding: 0 24px;
+    padding-bottom: 24px;
 
     .button-group {
       align-self: flex-end;
-      width: (168rem/16);
+      width: 168px;
       display: flex;
       justify-content: space-between;
     }
@@ -91,6 +91,6 @@
 
 .dialog-icon-close {
   @include dialog-icon('./imgs/delete.svg');
-  width: (10rem/16);
-  height: (10rem/16);
+  width: 10px;
+  height: 10px;
 }

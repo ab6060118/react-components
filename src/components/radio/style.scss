@@ -3,7 +3,7 @@
   align-items: center;
 
   .radio-label {
-    margin-left: (10rem/16);
+    margin-left: 10px;
   }
 
   &.disabled {
@@ -12,8 +12,8 @@
 }
 
 @mixin radio-icon($normal, $hover, $disable) {
-  width: (12rem/16);
-  height: (12rem/16);
+  width: 12px;
+  height: 12px;
   display: inline-block;
   cursor: pointer;
   background-repeat: no-repeat;

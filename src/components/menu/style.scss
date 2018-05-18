@@ -4,8 +4,8 @@
   display: flex;
   align-items: center;
   position: relative;
-  height: (28rem/16);
-  padding: 0 (22rem/16);
+  height: 28px;
+  padding: 0 22px;
 }
 
 .menu {
@@ -14,13 +14,13 @@
   flex-direction: column;
   background-color: #FFFFFF;
   border: 1px solid #b0b0b0;
-  min-width: 10rem;
-  max-width: (300rem/16);
+  min-width: 160px;
+  max-width: 300px;
   z-index: 1;
-  padding: 1rem 0;
+  padding: 16px 0;
 
   span {
-    font-size: (13rem/16);
+    font-size: 13px;
   }
 
   .menu-item-default {
@@ -33,7 +33,7 @@
 
   .menu-item-sub-menu {
     @include menu-item();
-    padding-right: (10rem/16);
+    padding-right: 10px;
 
     .menu-item-sub-menu-content {
       flex-grow: 1;
@@ -46,7 +46,7 @@
 
   .menu-item-divider {
     @include menu-item();
-    height: (17rem/16);
+    height: 17px;
     padding: 0;
 
     .menu-item-divider-item {
@@ -66,8 +66,8 @@
 }
 
 @mixin menu-icon($path) {
-  width: 1rem;
-  height: 1rem;
+  width: 16px;
+  height: 16px;
   display: inline-block;
   cursor: pointer;
   background-repeat: no-repeat;
@@ -78,5 +78,5 @@
 
 .menu-icon-next {
   @include menu-icon('./imgs/framset_next.svg')
-  margin-left: (14rem/16);
+  margin-left: 14px;
 }

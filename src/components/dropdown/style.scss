@@ -2,14 +2,14 @@
   background-size: contain;
   background-position: center;
   display: inline-block;
-  width: (6rem/16);
-  height: (4rem/16);
+  width: 6px;
+  height: 4px;
   background-image: url($path);
 }
 
 .dropdown {
   display: flex;
-  height: (24rem/16);
+  height: 24px;
 
   &.disabled {
     opacity: 0.5;
@@ -26,7 +26,7 @@
     display: flex;
     align-items: center;
     flex-grow: 1;
-    padding-right: (22rem/16);
+    padding-right: 22px;
     border: 1px solid #848484;
     position: relative;
     height: 100%;
@@ -40,7 +40,7 @@
       position: absolute;
       top: 0;
       right: 0;
-      width: (22rem/16);
+      width: 22px;
       height: 100%;
 
       .dropdown-open-icon {
@@ -63,13 +63,13 @@
     flex-direction: column;
 
     .dropdown-item-normal {
-      padding-left: (10rem/16);
+      padding-left: 10px;
       display: flex;
       flex-grow: 1;
       flex-shrink: 0;
       align-items: center;
       width: 100%;
-      height: (22rem/16);
+      height: 22px;
       cursor: pointer;
 
       &:hover {
