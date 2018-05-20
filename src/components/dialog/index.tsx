@@ -1,17 +1,21 @@
 import * as React from 'react'
-import WindowContainer, { WindowProps } from '../window_container'
+import WindowContainer from '../window_container'
 import Button from '../button'
 
 import './stylt.scss'
 
-interface DialogProps extends WindowProps {
+interface DialogProps {
   level:DIALOG_LEVEL
-  handleCloseClick:any
-  handleOkClick:Function
-  handleNoClick:Function
-  showOkButton?:boolean
+  handleOkClick:React.MouseEventHandler<HTMLElement>
+  handleNoClick:React.MouseEventHandler<HTMLElement>
+  handleCloseClick:React.MouseEventHandler<HTMLElement>
+  handleTopClick:React.MouseEventHandler<HTMLElement>
+  handleMinRestoreClick:React.MouseEventHandler<HTMLElement>
+  isMined:boolean
+  minOrder:number
   noText?:string
   okText?:string
+  showOkButton?:boolean
 }
 
 export const enum DIALOG_LEVEL {
@@ -36,6 +40,7 @@ export default class Dialog extends React.PureComponent <DialogProps> {
   }
 
   render() {
+    console.log('dialog rerender');
     let { 
       level,
       okText,
@@ -46,22 +51,27 @@ export default class Dialog extends React.PureComponent <DialogProps> {
       handleNoClick,
       showOkButton,
       handleMinRestoreClick,
+      handleTopClick,
+      isMined,
+      minOrder,
     } = this.props
 
     return (
       <WindowContainer
-        {...this.props}
         minWidth={340}
         minHeight={200}
         maxWidth={540}
         maxHeight={300}
+        isMined={isMined}
+        minOrder={minOrder}
+        handleMinRestoreClick={handleMinRestoreClick}
+        handleTopClick={handleTopClick}
         handleMoveClass="dialog-header">
         <div className="dialog">
           <div className="dialog-header">
             <div className="dialog-tool-icon-group">
-              <span onClick={handleMinRestoreClick as any}>{'-'}</span>
-              <span className="dialog-icon-close" onClick={handleCloseClick}></span>
-            </div>
+              <span onClick={handleMinRestoreClick}>{'-'}</span>
+              <span className="dialog-icon-close" onClick={handleCloseClick}></span> </div>
           </div>
           <div className="dialog-body">
             <div className="dialog-icon-container">
@@ -74,9 +84,13 @@ export default class Dialog extends React.PureComponent <DialogProps> {
           <div className="dialog-footer">
             <div className="button-group">
             {showOkButton !== false &&
-              <Button handleClick={handleOkClick} text={okText || 'Ok'} disabled={false} />
+              <Button handleClick={handleOkClick} disabled={true}>
+                {okText || 'Ok'}
+              </Button>
             }
-              <Button handleClick={handleNoClick} text={noText || 'No'} disabled={false} />
+              <Button handleClick={handleNoClick} disabled={false}>
+                {noText || 'No'}
+              </Button>
             </div>
           </div>
         </div>

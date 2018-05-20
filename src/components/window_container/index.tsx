@@ -8,32 +8,29 @@ enum SIDES {
   LEFT = 1 << 3,
 }
 
-export interface WindowProps {
-  winId:string
-  isMined?:boolean
-  metadata?:any
-  handleTopClick?:Function
-  handleMinRestoreClick?:Function
-}
-
 interface WindowContainerState {
   top: number
   left: number
   width: number
   height: number
   isMoving: boolean
+  isMounted: boolean
   isResizing: boolean
   resizeSide: SIDES
   mouseDownPos: { x:number, y: number }
   mouseDownWindowPos: { x:number, y: number, h:number, w:number }
 }
 
-interface WindowContainerProps extends WindowProps {
+interface WindowContainerProps {
   handleMoveClass:string
   minWidth:number
   minHeight:number
   maxWidth:number
   maxHeight:number
+  handleTopClick:React.MouseEventHandler<HTMLElement>
+  handleMinRestoreClick:React.MouseEventHandler<HTMLElement>
+  isMined:boolean
+  minOrder:number
   resizable?:boolean
   relativeToParent?:boolean
 }
@@ -50,6 +47,7 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
       width: 0,
       height: 0,
       isMoving: false,
+      isMounted: false,
       isResizing: false,
       resizeSide: undefined,
       mouseDownPos: { x: 0, y: 0 },
@@ -61,7 +59,7 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
     this.handleContainerMoving = this.handleContainerMoving.bind(this)
     this.handleResizeUp = this.handleResizeUp.bind(this)
     this.handleResizeMove = this.handleResizeMove.bind(this)
-    this.handleTopClick = this.handleTopClick.bind(this)
+    this.handleResizeDown = this.handleResizeDown.bind(this)
   }
 
   componentDidMount() {
@@ -83,14 +81,6 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
     document.removeEventListener('mouseup', this.handleResizeUp)
     document.removeEventListener('mousemove', this.handleContainerMoving)
     document.removeEventListener('mousemove', this.handleResizeMove)
-  }
-
-  handleTopClick() {
-    let { handleTopClick, winId, isMined } = this.props
-
-    if(isMined !== true && handleTopClick !== undefined) {
-      handleTopClick(winId)
-    }
   }
 
   handleMovingDown(e:MouseEvent) {
@@ -139,8 +129,9 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
     })
   }
 
-  handleResizeDown(resizeSide: SIDES, e:React.MouseEvent<HTMLElement>) {
+  handleResizeDown(e:React.MouseEvent<HTMLElement>) {
     let { resizable,  isMined } = this.props
+    let resizeSide = parseInt(e.currentTarget.dataset.side)
 
     if(resizable === false || isMined === true) return
 
@@ -157,7 +148,7 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
     document.addEventListener('mousemove', this.handleResizeMove)
   }
 
-  handleResizeUp() {
+  handleResizeUp(e:MouseEvent) {
     if(this.props.resizable === false || this.state.isResizing === false) return
 
     this.setState({
@@ -253,12 +244,13 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
       height: height,
       top: resultTop,
       left: resultLeft,
+      isMounted: true,
     })
   }
 
   render() {
-    let { top, left, width, height } = this.state
-    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, handleMinRestoreClick, relativeToParent, isMined } = this.props
+    let { top, left, width, height, isResizing, isMoving, isMounted } = this.state
+    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, handleMinRestoreClick, relativeToParent, isMined, minOrder } = this.props
     let containerStyle:React.CSSProperties = {
       position:  relativeToParent === true ? 'absolute' : 'fixed',
       top:       top,
@@ -271,39 +263,43 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
       maxHeight: maxHeight,
     }
 
+    if(isMoving || isResizing || !isMounted) containerStyle.transition = 'initial'
+
+    console.log(containerStyle, isMounted);
+
     return (
       <div
         className={`window-container ${isMined === true ? 'minimized' : ''}`}
-        style={isMined === true ? {} : containerStyle}
-         onMouseDown={this.handleTopClick}
+        style={isMined === true ? { top: `calc(100vh - ${30*(minOrder + 1)}px)` } : containerStyle}
+        onMouseDown={handleTopClick}
         ref='container'>
         {(resizable !== false &&  isMined !== true) &&
-        <div className="window-container-resizer-top" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP)}></div>
+        <div className="window-container-resizer-top" data-side={SIDES.TOP} onMouseDown={this.handleResizeDown}></div>
         }
         {(resizable !== false &&  isMined !== true) &&
-        <div className="window-container-resizer-bottom" onMouseDown={this.handleResizeDown.bind(this, SIDES.BOTTOM)}></div>
+        <div className="window-container-resizer-bottom" data-side={SIDES.BOTTOM} onMouseDown={this.handleResizeDown}></div>
         }
         {(resizable !== false &&  isMined !== true) &&
-        <div className="window-container-resizer-left" onMouseDown={this.handleResizeDown.bind(this, SIDES.LEFT)}></div>
+        <div className="window-container-resizer-left" data-side={SIDES.LEFT} onMouseDown={this.handleResizeDown}></div>
         }
         {(resizable !== false &&  isMined !== true) &&
-        <div className="window-container-resizer-right" onMouseDown={this.handleResizeDown.bind(this, SIDES.RIGHT)}></div>
+        <div className="window-container-resizer-right" data-side={SIDES.RIGHT} onMouseDown={this.handleResizeDown}></div>
         }
         {(resizable !== false &&  isMined !== true) &&
-        <div className="window-container-resizer-top-right" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP|SIDES.RIGHT)}></div>
+        <div className="window-container-resizer-top-right" data-side={SIDES.TOP|SIDES.RIGHT} onMouseDown={this.handleResizeDown}></div>
         }
         {(resizable !== false &&  isMined !== true) &&
-        <div className="window-container-resizer-bottom-right" onMouseDown={this.handleResizeDown.bind(this, SIDES.BOTTOM|SIDES.RIGHT)}></div>
+        <div className="window-container-resizer-bottom-right" data-side={SIDES.BOTTOM|SIDES.RIGHT} onMouseDown={this.handleResizeDown}></div>
         }
         {(resizable !== false &&  isMined !== true) &&
-        <div className="window-container-resizer-bottom-left" onMouseDown={this.handleResizeDown.bind(this, SIDES.BOTTOM|SIDES.LEFT)}></div>
+        <div className="window-container-resizer-bottom-left" data-side={SIDES.BOTTOM|SIDES.LEFT} onMouseDown={this.handleResizeDown}></div>
         }
         {(resizable !== false &&  isMined !== true) &&
-        <div className="window-container-resizer-top-left" onMouseDown={this.handleResizeDown.bind(this, SIDES.TOP|SIDES.LEFT)}></div>
+        <div className="window-container-resizer-top-left" data-side={SIDES.TOP|SIDES.LEFT} onMouseDown={this.handleResizeDown}></div>
         }
         {isMined !== true ?
           (children) : (
-            <span onClick={handleMinRestoreClick as any}>{'+'}</span>
+            <span onClick={handleMinRestoreClick}>{'+'}</span>
           )
         }
       </div>

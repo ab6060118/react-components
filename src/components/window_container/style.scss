@@ -27,6 +27,16 @@
 }
 
 .window-container {
+  transition: width 0.5s, height 0.5s, left 0.5s, top 0.5s;
+
+  &.minimized {
+    position: fixed;
+    width: 300px;
+    height: 30px;
+    left: calc(100vw - 300px);
+    background-color: #fff;
+  }
+
   .window-container-resizer-top {
     @include window-container-resizer-n();
   }
@@ -56,13 +66,5 @@
   }
   .window-container-resizer-top-left {
     @include window-container-resizer-se();
-  }
-
-  &.minimized {
-    position: fixed;
-    width: 300px;
-    height: 50px;
-    bottom: 0;
-    right: 0;
   }
 }

@@ -1,99 +1,59 @@
 import * as React from 'react'
+import { connect, Dispatch } from 'react-redux';
+import { State, IWindows } from '../reducers/store_type';
+
+import { openWindow } from '../actions/windows';
+
 import Dialog from './dialog';
 
-interface IWindow {
-  id:string
-  component:any
-  isMined:boolean
-  metadata:any
-}
-
-interface WindowsManagerState {
-  windows: {[key:string]:IWindow}
+interface WindowsManagerProps {
+  windows:IWindows
   order:string[]
+  openWindow:(id:string, component:string, metadata?:any) => Dispatch
 }
 
-export default class WindowsManager extends React.Component<any, WindowsManagerState> {
-  constructor(props:any) {
+class WindowsManager extends React.PureComponent<WindowsManagerProps> {
+  constructor(props:WindowsManagerProps) {
     super(props)
 
-    this.state = {
-      windows: {
-        'dialog-1': { id: 'dialog-1', component: Dialog, isMined: false, metadata: {} },
-        'dialog-2': { id: 'dialog-2', component: Dialog, isMined: false, metadata: {} },
-        'dialog-3': { id: 'dialog-3', component: Dialog, isMined: false, metadata: {} },
-        'dialog-4': { id: 'dialog-4', component: Dialog, isMined: false, metadata: {} },
-        'dialog-5': { id: 'dialog-5', component: Dialog, isMined: false, metadata: {} },
-      },
-      order: [ 'dialog-1', 'dialog-2', 'dialog-3', 'dialog-4', 'dialog-5' ]
-    }
-
-    this.handleTopClick = this.handleTopClick.bind(this)
-    this.handleUpdateMetadata = this.handleUpdateMetadata.bind(this)
-    this.handleMinRestoreClick = this.handleMinRestoreClick.bind(this)
+    this.handleOpenWindowClick = this.handleOpenWindowClick.bind(this)
   }
 
-  handleTopClick(id:string) {
-    let { order, windows } = this.state
-    let index = order.indexOf(id)
+  handleOpenWindowClick(e:React.MouseEvent<HTMLElement>) {
+    let { openWindow } = this.props
 
-    if(index < 0 || windows[id].isMined === true || index === order.length - 1) return
-
-    order.splice(index, 1)
-
-    this.setState({
-      order: [...order, id]
-    })
-  }
-
-  handleMinRestoreClick(id:string) {
-    let { windows } = this.state
-
-    this.setState({
-      windows: {
-        ...windows,
-        [id]: {
-          ...windows[id],
-          isMined: !windows[id].isMined,
-        }
-      }
-    })
-  }
-
-  handleUpdateMetadata() {
-    let { windows } = this.state
-
-    this.setState({
-      windows: {
-        ...windows,
-        'dialog-1': {
-          ...windows['dialog-1'],
-          metadata: {
-            ...windows['dialog-1'].metadata,
-            tt: +new Date(),
-          }
-        }
-      }
-    })
+    openWindow(`dialog-${+new Date}`, 'dialog', {id: `dialog-${+new Date}`})
   }
 
   render() {
-    let { windows, order } = this.state
+    let { windows, order } = this.props
+    let minOrder:number = 0
 
     return (
       <div>
-      <button onClick={this.handleUpdateMetadata}>'123'</button>
+      <button onClick={this.handleOpenWindowClick}>{"Open dialog"}</button>
       {
-        order.map((winId) => {
-          let window = windows[winId]
+        order.map((id) => {
+          let window = windows[id]
+          if(window === undefined) return undefined
+          let { isMined, metadata } = window
+          let WinCmp
+
+          switch(window.component) {
+            case 'dialog':
+              WinCmp = Dialog
+              break;
+            default:
+              WinCmp = undefined
+          }
+
           return (
-            <window.component
-              handleTopClick={this.handleTopClick}
-              handleMinRestoreClick={this.handleMinRestoreClick}
-              winId={window.id}
-              isMined={window.isMined}
-              metadata={window.metadata}
-              key={window.id}/>
+            <WinCmp
+              winId={id}
+              minOrder={isMined === true ? minOrder++ : undefined}
+              isMined={isMined}
+              metadata={metadata}
+              key={id}/>
           )
         })
       }
@@ -101,3 +61,14 @@ export default class WindowsManager extends React.Component<any, WindowsManagerS
     )  
   }
 }
+
+const mapStateToProps = (state:State) => ({
+  windows: state.windows.windows,
+  order: state.windows.order,
+})
+
+const mapDispatchToProps = (dispatch:Dispatch) => ({
+  openWindow: (id:string, component:string, metadata?:any) => dispatch(openWindow(id, component, metadata))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(WindowsManager)
