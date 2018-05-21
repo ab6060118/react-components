@@ -19,25 +19,23 @@ class DialogContainer extends React.PureComponent<any,any> {
   handleMinRestoreClick(e:React.MouseEvent<HTMLElement>) {
     let { minRestoreWindow, winId } = this.props
 
-    if(minRestoreWindow !== undefined) {
-      minRestoreWindow(winId)
-    }
+    console.log('min');
+
+    minRestoreWindow(winId)
   }
 
   handleTopClick(e:React.MouseEvent<HTMLElement>) {
     let { topWindow, winId } = this.props
 
-    if(topWindow !== undefined) {
-      topWindow(winId)
-    }
+    console.log(`top ${winId}`);
+
+    topWindow(winId)
   }
 
   handleCloseClick(e:React.MouseEvent<HTMLElement>) {
     let { closeWindow, winId } = this.props
 
-    if(closeWindow !== undefined) {
-      closeWindow(winId)
-    }
+    closeWindow(winId)
   }
 
   handleOkClick(e:React.MouseEvent<HTMLElement>) {
@@ -49,7 +47,9 @@ class DialogContainer extends React.PureComponent<any,any> {
   }
 
   render() {
-    let { isMined, minOrder } = this.props
+    let { isMined, minOrder, winId } = this.props
+
+    console.log('dialog container');
 
     return (
       <Dialog

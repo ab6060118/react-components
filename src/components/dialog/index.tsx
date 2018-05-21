@@ -40,20 +40,20 @@ export default class Dialog extends React.PureComponent <DialogProps> {
   }
 
   render() {
-    console.log('dialog rerender');
+    console.log('dialog');
     let { 
       level,
       okText,
       noText,
+      isMined,
       children,
-      handleCloseClick,
+      minOrder,
+      showOkButton,
       handleOkClick,
       handleNoClick,
-      showOkButton,
-      handleMinRestoreClick,
       handleTopClick,
-      isMined,
-      minOrder,
+      handleCloseClick,
+      handleMinRestoreClick,
     } = this.props
 
     return (
@@ -70,8 +70,9 @@ export default class Dialog extends React.PureComponent <DialogProps> {
         <div className="dialog">
           <div className="dialog-header">
             <div className="dialog-tool-icon-group">
-              <span onClick={handleMinRestoreClick}>{'-'}</span>
-              <span className="dialog-icon-close" onClick={handleCloseClick}></span> </div>
+              <span style={{display: 'inline-block', width: 10, height: 10, marginRight: 10}} onClick={handleMinRestoreClick} onMouseDown={()=>{console.log(`min down `)}} onMouseUp={()=>{console.log('min up')}}>{'-'}</span>
+              <span className="dialog-icon-close" onClick={handleCloseClick}></span>
+            </div>
           </div>
           <div className="dialog-body">
             <div className="dialog-icon-container">

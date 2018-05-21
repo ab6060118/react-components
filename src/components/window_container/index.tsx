@@ -14,7 +14,6 @@ interface WindowContainerState {
   width: number
   height: number
   isMoving: boolean
-  isMounted: boolean
   isResizing: boolean
   resizeSide: SIDES
   mouseDownPos: { x:number, y: number }
@@ -47,7 +46,6 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
       width: 0,
       height: 0,
       isMoving: false,
-      isMounted: false,
       isResizing: false,
       resizeSide: undefined,
       mouseDownPos: { x: 0, y: 0 },
@@ -75,7 +73,7 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
   }
 
   componentWillUnmount() {
-    (this.refs.container as HTMLElement).querySelector('.' + this.props.handleMoveClass).removeEventListener('mousedown', this.handleMovingDown)
+    this.refs.container.querySelector('.' + this.props.handleMoveClass).removeEventListener('mousedown', this.handleMovingDown)
 
     document.removeEventListener('mouseup', this.handleMovingUp)
     document.removeEventListener('mouseup', this.handleResizeUp)
@@ -90,18 +88,18 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
 
     let { left, top, width, height } = this.state
 
-    this.setState({
-      isMoving: true,
-      mouseDownPos: { x: e.pageX, y: e.pageY },
-      mouseDownWindowPos: { x: left, y: top, w: width, h: height }
-    })
+    // this.setState({
+      // isMoving: true,
+      // mouseDownPos: { x: e.pageX, y: e.pageY },
+      // mouseDownWindowPos: { x: left, y: top, w: width, h: height }
+    // })
 
     document.addEventListener('mousemove', this.handleContainerMoving)
     document.addEventListener('mouseup', this.handleMovingUp)
   }
 
   handleMovingUp(e:MouseEvent) {
-    this.setState({isMoving: false})
+    // this.setState({isMoving: false})
 
     document.removeEventListener('mousemove', this.handleContainerMoving)
     document.removeEventListener('mouseup', this.handleMovingUp)
@@ -235,42 +233,39 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
       resultTop = 0
     }
 
-    if(this.props.handleMoveClass) {
-      container.querySelector('.' + handleMoveClass).addEventListener('mousedown', this.handleMovingDown)
-    }
+    container.querySelector('.' + handleMoveClass).addEventListener('mousedown', this.handleMovingDown)
 
     this.setState({
       width: width,
       height: height,
       top: resultTop,
       left: resultLeft,
-      isMounted: true,
     })
   }
 
   render() {
-    let { top, left, width, height, isResizing, isMoving, isMounted } = this.state
+    let { top, left, width, height, isResizing, isMoving } = this.state
     let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, handleMinRestoreClick, relativeToParent, isMined, minOrder } = this.props
     let containerStyle:React.CSSProperties = {
       position:  relativeToParent === true ? 'absolute' : 'fixed',
-      top:       top,
-      left:      left,
-      width:     width || 'unset',
-      height:    height || 'unset',
+      top:       top || 'auto',
+      left:      left || 'auto',
+      width:     width || 'auto',
+      height:    height || 'auto',
       minWidth:  minWidth,
       minHeight: minHeight,
       maxWidth:  maxWidth,
       maxHeight: maxHeight,
     }
 
-    if(isMoving || isResizing || !isMounted) containerStyle.transition = 'initial'
+    if(isMoving || isResizing) containerStyle.transition = 'initial'
 
-    console.log(containerStyle, isMounted);
+    console.log('window_container');
 
     return (
       <div
         className={`window-container ${isMined === true ? 'minimized' : ''}`}
-        style={isMined === true ? { top: `calc(100vh - ${30*(minOrder + 1)}px)` } : containerStyle}
+        style={isMined === true ? { top: `calc(100vh - ${30*(minOrder + 1)}px)`} : containerStyle}
         onMouseDown={handleTopClick}
         ref='container'>
         {(resizable !== false &&  isMined !== true) &&

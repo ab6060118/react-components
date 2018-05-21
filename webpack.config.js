@@ -13,17 +13,17 @@ const plugins = [
     filename: "[name]/style.css",
     disable: process.env.NODE_ENV !== "prod"
   }),
-  new Webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
-    filename: 'vendor.bundle.js',
-    minChunks: (module) => {
-      var context = module.context;
-      if (typeof context !== 'string') {
-        return false;
-      }
-      return context.indexOf('node_modules') !== -1;
-    }
-  }),
+  // new Webpack.optimize.CommonsChunkPlugin({
+    // name: 'vendor',
+    // filename: 'vendor.bundle.js',
+    // minChunks: (module) => {
+      // var context = module.context;
+      // if (typeof context !== 'string') {
+        // return false;
+      // }
+      // return context.indexOf('node_modules') !== -1;
+    // },
+  // }),
 ]
 
 module.exports = {
