@@ -15,8 +15,8 @@ export default class CheckboxContainer extends React.Component<any, any> {
     return (
       <Checkbox
         id={'example-checkbox-' + +new Date()}
-        handleClick={(value:boolean) => {this.setState({value: value})}}
-        disabled={false}
+        handleClick={() => {this.setState({value: !value}); console.log('click')}}
+        disabled={true}
         checked={value}>
         <span>{'Example checkbox'}</span>
       </Checkbox>
