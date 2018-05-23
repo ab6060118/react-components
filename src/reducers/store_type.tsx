@@ -5,6 +5,7 @@ export interface State {
 export interface WindowsState{
   windows:IWindows
   order:string[]
+  minOrder:string[]
 }
 
 export interface IWindow {

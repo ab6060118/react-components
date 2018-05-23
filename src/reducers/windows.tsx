@@ -3,7 +3,8 @@ import { WINDOWS_ACTION } from '../actions/action_type';
 
 const initState:WindowsState = {
   windows:{},
-  order:[]
+  order:[],
+  minOrder:[]
 }
 
 export default (state:WindowsState = initState, action:{type:WINDOWS_ACTION, id:string, component?:string, metadata?:any, key?:string, value?:any}) => {
@@ -28,28 +29,29 @@ export default (state:WindowsState = initState, action:{type:WINDOWS_ACTION, id:
     case WINDOWS_ACTION.DELETE_WINDOW:
       return {
         ...state,
-        windows: Object.keys(state.windows).reduce((p:any, n) => {
-          let result:IWindows = {}
-
-          if(typeof p === 'string')
-            state.windows.hasOwnProperty(p) ? result[p] = state.windows[p] : result = {}
-          if(state.windows.hasOwnProperty(n) )
-            result[n] = state.windows[n]
-
-          return typeof p === 'string' ? {...result} : {...p, ...result}
-        }),
+        windows: Object.keys(state.windows).reduce((p, n) => {
+          return n === action.id ? p : {
+            ...p,
+            [n]: {...state.windows[n]}
+          }
+        }, {}),
         order: state.order.filter(id => id !== action.id)
       }
     case WINDOWS_ACTION.UPDATE_WINDOW:
+      let { key, id, value } = action
+      let { windows, minOrder } = state
       return {
         ...state,
         windows: {
-          ...state.windows,
-          [action.id]: {
-            ...state.windows[action.id],
-            [action.key]: action.value
+          ...windows,
+          [id]: {
+            ...state.windows[id],
+            [key]: value
           }
-        }
+        },
+        minOrder: key === 'isMined' ? (
+          value ? [...minOrder, id] : minOrder.filter(winId => winId !== id)
+        ) : minOrder
       }
     case WINDOWS_ACTION.TOP_WINDOW:
       return {

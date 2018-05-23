@@ -12,6 +12,7 @@ interface DialogProps {
   handleTopClick:React.MouseEventHandler<HTMLElement>
   handleMinRestoreClick:React.MouseEventHandler<HTMLElement>
   isMined:boolean
+  order:number
   minOrder:number
   noText?:string
   okText?:string
@@ -40,13 +41,13 @@ export default class Dialog extends React.PureComponent <DialogProps> {
   }
 
   render() {
-    console.log('dialog');
     let { 
       level,
       okText,
       noText,
       isMined,
       children,
+      order,
       minOrder,
       showOkButton,
       handleOkClick,
@@ -63,14 +64,15 @@ export default class Dialog extends React.PureComponent <DialogProps> {
         maxWidth={540}
         maxHeight={300}
         isMined={isMined}
+        order={order}
         minOrder={minOrder}
         handleMinRestoreClick={handleMinRestoreClick}
         handleTopClick={handleTopClick}
-        handleMoveClass="dialog-header">
+        handleMoveClass="dialog-header" >
         <div className="dialog">
           <div className="dialog-header">
             <div className="dialog-tool-icon-group">
-              <span style={{display: 'inline-block', width: 10, height: 10, marginRight: 10}} onClick={handleMinRestoreClick} onMouseDown={()=>{console.log(`min down `)}} onMouseUp={()=>{console.log('min up')}}>{'-'}</span>
+              <span style={{display: 'inline-block', width: 10, height: 10, marginRight: 10}} onClick={handleMinRestoreClick}>{'-'}</span>
               <span className="dialog-icon-close" onClick={handleCloseClick}></span>
             </div>
           </div>

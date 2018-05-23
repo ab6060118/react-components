@@ -9,10 +9,11 @@ import Dialog from './dialog';
 interface WindowsManagerProps {
   windows:IWindows
   order:string[]
-  openWindow:(id:string, component:string, metadata?:any) => Dispatch
+  minOrder:string[]
+  openWindow:(id:string, component:string, metadata?:any) => void
 }
 
-class WindowsManager extends React.PureComponent<WindowsManagerProps> {
+class WindowsManager extends React.Component<WindowsManagerProps> {
   constructor(props:WindowsManagerProps) {
     super(props)
 
@@ -26,16 +27,14 @@ class WindowsManager extends React.PureComponent<WindowsManagerProps> {
   }
 
   render() {
-    let { windows, order } = this.props
-    let minOrder:number = 0
+    let { windows, order, minOrder } = this.props
 
     return (
       <div>
       <button onClick={this.handleOpenWindowClick}>{"Open dialog"}</button>
       {
-        order.map((id) => {
+        Object.keys(windows).map((id, index) => {
           let window = windows[id]
-          if(window === undefined) return undefined
           let { isMined, metadata } = window
           let WinCmp
 
@@ -50,7 +49,8 @@ class WindowsManager extends React.PureComponent<WindowsManagerProps> {
           return (
             <WinCmp
               winId={id}
-              minOrder={isMined === true ? minOrder++ : undefined}
+              order={order.indexOf(id)}
+              minOrder={minOrder.indexOf(id)}
               isMined={isMined}
               metadata={metadata}
               key={id}/>
@@ -65,9 +65,10 @@ class WindowsManager extends React.PureComponent<WindowsManagerProps> {
 const mapStateToProps = (state:State) => ({
   windows: state.windows.windows,
   order: state.windows.order,
+  minOrder: state.windows.minOrder,
 })
 
-const mapDispatchToProps = (dispatch:Dispatch) => ({
+const mapDispatchToProps = (dispatch:any) => ({
   openWindow: (id:string, component:string, metadata?:any) => dispatch(openWindow(id, component, metadata))
 })
 

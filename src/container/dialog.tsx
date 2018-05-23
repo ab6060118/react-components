@@ -19,15 +19,11 @@ class DialogContainer extends React.PureComponent<any,any> {
   handleMinRestoreClick(e:React.MouseEvent<HTMLElement>) {
     let { minRestoreWindow, winId } = this.props
 
-    console.log('min');
-
     minRestoreWindow(winId)
   }
 
   handleTopClick(e:React.MouseEvent<HTMLElement>) {
     let { topWindow, winId } = this.props
-
-    console.log(`top ${winId}`);
 
     topWindow(winId)
   }
@@ -47,17 +43,16 @@ class DialogContainer extends React.PureComponent<any,any> {
   }
 
   render() {
-    let { isMined, minOrder, winId } = this.props
-
-    console.log('dialog container');
+    let { isMined, minOrder, winId, order } = this.props
 
     return (
       <Dialog
         isMined={isMined}
+        order={order}
         minOrder={minOrder}
         level={DIALOG_LEVEL.INFO}
         handleOkClick={this.handleOkClick}
-        handleNoClick={this.handleNoClick}
+        handleNoClick={this.handleCloseClick}
         handleTopClick={this.handleTopClick}
         handleMinRestoreClick={this.handleMinRestoreClick}
         handleCloseClick={this.handleCloseClick}>
@@ -71,7 +66,7 @@ const mapStateToProps = (state:State, ownProps:any) => ({
   ...ownProps,
 })
 
-const mapDispatchToProps = (dispatch:Dispatch) => ({
+const mapDispatchToProps = (dispatch:any) => ({
   topWindow: (id:string) => dispatch(topWindow(id)),
   closeWindow: (id:string) => dispatch(closeWindow(id)),
   minRestoreWindow: (id:string) => dispatch(minRestoreWindow(id)),

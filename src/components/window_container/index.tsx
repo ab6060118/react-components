@@ -29,6 +29,7 @@ interface WindowContainerProps {
   handleTopClick:React.MouseEventHandler<HTMLElement>
   handleMinRestoreClick:React.MouseEventHandler<HTMLElement>
   isMined:boolean
+  order:number
   minOrder:number
   resizable?:boolean
   relativeToParent?:boolean
@@ -41,10 +42,10 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
     super(props)
 
     this.state = {
-      top: 0,
-      left: 0,
-      width: 0,
-      height: 0,
+      top: undefined,
+      left: undefined,
+      width: undefined,
+      height: undefined,
       isMoving: false,
       isResizing: false,
       resizeSide: undefined,
@@ -88,18 +89,18 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
 
     let { left, top, width, height } = this.state
 
-    // this.setState({
-      // isMoving: true,
-      // mouseDownPos: { x: e.pageX, y: e.pageY },
-      // mouseDownWindowPos: { x: left, y: top, w: width, h: height }
-    // })
+    this.setState({
+      isMoving: true,
+      mouseDownPos: { x: e.pageX, y: e.pageY },
+      mouseDownWindowPos: { x: left, y: top, w: width, h: height }
+    })
 
     document.addEventListener('mousemove', this.handleContainerMoving)
     document.addEventListener('mouseup', this.handleMovingUp)
   }
 
   handleMovingUp(e:MouseEvent) {
-    // this.setState({isMoving: false})
+    this.setState({isMoving: false})
 
     document.removeEventListener('mousemove', this.handleContainerMoving)
     document.removeEventListener('mouseup', this.handleMovingUp)
@@ -245,22 +246,21 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
 
   render() {
     let { top, left, width, height, isResizing, isMoving } = this.state
-    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, handleMinRestoreClick, relativeToParent, isMined, minOrder } = this.props
+    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, handleMinRestoreClick, relativeToParent, isMined, minOrder, order } = this.props
     let containerStyle:React.CSSProperties = {
       position:  relativeToParent === true ? 'absolute' : 'fixed',
-      top:       top || 'auto',
-      left:      left || 'auto',
-      width:     width || 'auto',
-      height:    height || 'auto',
+      top:       top,
+      left:      left,
+      width:     width,
+      height:    height,
       minWidth:  minWidth,
       minHeight: minHeight,
       maxWidth:  maxWidth,
       maxHeight: maxHeight,
+      zIndex: order,
     }
 
     if(isMoving || isResizing) containerStyle.transition = 'initial'
-
-    console.log('window_container');
 
     return (
       <div
