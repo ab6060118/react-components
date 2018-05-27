@@ -1,6 +1,7 @@
 @mixin dropdown-icon($path) {
   background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   display: inline-block;
   width: 6px;
   height: 4px;
@@ -17,38 +18,42 @@
 
   .dropdown-label-container {
     display: flex;
+    flex-grow: 1;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0
-  }
-
-  .dropdown-field {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    padding-right: 22px;
-    border: 1px solid #848484;
-    position: relative;
-    height: 100%;
     cursor: pointer;
-    background-color: #ffffff;
 
-    .dropdown-icon-container {
+    .dropdown-field {
       display: flex;
-      justify-content:center;
       align-items: center;
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 22px;
+      flex-grow: 1;
+      padding-right: 22px;
+      border: 1px solid #848484;
+      position: relative;
       height: 100%;
+      background-color: #ffffff;
 
-      .dropdown-open-icon {
-        @include dropdown-icon('./imgs/list_sort_down.png')
+      &:nth-child(2) {
+        margin-left: 10px;
       }
 
-      .dropdown-close-icon {
-        @include dropdown-icon('./imgs/list_sort_up.png')
+      .dropdown-icon-container {
+        display: flex;
+        justify-content:center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 22px;
+        height: 100%;
+
+        .dropdown-open-icon {
+          @include dropdown-icon('./imgs/list_sort_down.png')
+        }
+
+        .dropdown-close-icon {
+          @include dropdown-icon('./imgs/list_sort_up.png')
+        }
       }
     }
   }

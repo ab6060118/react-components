@@ -7,43 +7,27 @@ export interface Option {
 }
 
 interface DropdownItemNormalProps extends Option{
-  handleSelect?:Function
+  handleSelect?:React.MouseEventHandler<HTMLElement>
 }
 
 export default class DropdownItemNormal extends React.PureComponent<DropdownItemNormalProps> {
-  constructor(props:DropdownItemNormalProps) {
-    super(props)
-    this.handleSelect = this.handleSelect.bind(this)
-  }
-
-  handleSelect(e:React.MouseEvent<HTMLElement>) {
-    let { value, disabled, selectAble, handleSelect } = this.props
-
-    if(disabled === true || selectAble === false) {
-      e.stopPropagation()
-
-      return
-    }
-
-    handleSelect(value)
-  }
-
   getClassName() {
     let { disabled } = this.props
     let className:string[] = ['dropdown-item-normal']
 
-    if(disabled === true) className.push('disabled')
+    if(disabled) className.push('disabled')
 
     return className.join(' ')
   }
 
   render() {
-    let { children } = this.props
+    let { children, selectAble, disabled, value, handleSelect } = this.props
 
     return (
-      <div className={this.getClassName()} onClick={this.handleSelect}>
-      {children}
-      </div>
+      <label className={this.getClassName()} htmlFor={`dropdown-item-normal-${value}`}>
+        <input style={{display: 'none'}} id={`dropdown-item-normal-${value}`} onClick={handleSelect} disabled={disabled || selectAble} data-value={value} readOnly/>
+        {children}
+      </label>
     )
   }
 }

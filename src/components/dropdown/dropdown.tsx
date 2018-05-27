@@ -2,14 +2,14 @@ import * as React from 'react'
 import Scrollbar from '../scrollbar';
 
 interface DropdownProps {
-  handleUpdate:Function
   id:string
-  valueElement: JSX.Element
-  multiMode?:boolean
-  labelElement?:JSX.Element
+  disabled:boolean
+  multiMode:boolean
+  valueElement:JSX.Element
+  labelElement:JSX.Element
+  handleSelect:React.MouseEventHandler<HTMLElement>
+  handleCloseDropdown:Function
   className?:string
-  disabled?: boolean
-  handleCloseDropdown?:Function
 }
 
 interface DropdownState {
@@ -29,14 +29,19 @@ export default class Dropdown extends React.PureComponent<DropdownProps, Dropdow
     this.handleWheelOutOfDropdown = this.handleWheelOutOfDropdown.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.handleWindowResize = this.handleWindowResize.bind(this)
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.handleWindowResize)
   }
 
   componentWillUnmount() {
     this.unbindListeners()
   }
 
-  componentDidUpdate() {
-    this.menuOverflow()
+  componentDidUpdate(prevProps:DropdownProps, prevState:DropdownState) {
+    if(this.state.isOpend && !prevState.isOpend) this.menuOverflow()
   }
 
   handleWheelOutOfDropdown(e:MouseEvent) {
@@ -58,8 +63,6 @@ export default class Dropdown extends React.PureComponent<DropdownProps, Dropdow
   handleClick() {
     let isOpend = !this.state.isOpend
 
-    if(this.props.disabled === true) return
-    
     if(isOpend) {
       document.addEventListener('wheel', this.handleWheelOutOfDropdown)
       document.addEventListener('mousedown', this.handleMouseDown)
@@ -70,12 +73,16 @@ export default class Dropdown extends React.PureComponent<DropdownProps, Dropdow
     }
   }
 
-  handleSelect(value:any) {
-    let { handleUpdate, multiMode } = this.props
+  handleWindowResize(e:Event) {
+    this.closeMenu()
+  }
 
-    if(handleUpdate) handleUpdate(value)
+  handleSelect(e:React.MouseEvent<HTMLElement>) {
+    let { handleSelect, multiMode } = this.props
 
-    if(multiMode !== true) {
+    handleSelect(e)
+
+    if(!multiMode) {
       this.closeMenu()
     }
   }
@@ -93,6 +100,7 @@ export default class Dropdown extends React.PureComponent<DropdownProps, Dropdow
   unbindListeners() {
     document.removeEventListener('mousedown', this.handleMouseDown)
     document.removeEventListener('wheel', this.handleWheelOutOfDropdown)
+    window.removeEventListener('resize', this.handleWindowResize)
   }
 
   menuOverflow() {    
@@ -104,37 +112,39 @@ export default class Dropdown extends React.PureComponent<DropdownProps, Dropdow
 
     let paddingSpace = 10;
     let { innerHeight:windowHeight } = window;
-    let { top:parentTop, left:parentLeft, height: parentHeight, bottom: parentBottom, width:parentWidth } = field.getBoundingClientRect();
+    let { top:fieldTop, left:fieldLeft, height: fieldHeight, bottom: fieldBottom, width:fieldWidth } = field.getBoundingClientRect();
     let { top, height } = menu.getBoundingClientRect();
-    let newTop = parentTop + parentHeight;
-    let maxHeight:number;
+    let newTop = fieldTop + fieldHeight;
+    let maxHeight:number
 
-    if (windowHeight > newTop + height + paddingSpace){
-      // display as bottom side 
-      menu.style.top = newTop + 'px';
-      menu.style.marginTop = '-1px'
-    }else if ( parentTop - height > paddingSpace){
-      // display as top side
-      menu.style.top = parentTop - height + 'px';
-      menu.style.marginTop = '1px'
-    }else{
-      // limit menu height
-      if (parentTop > windowHeight - parentBottom ){
-        // display as top side
-        maxHeight = parentTop - paddingSpace;
-        menu.style.top = parentTop - maxHeight + 'px';
-        menu.style.marginTop = '1px'
-      }else{
-        // display as bottom side 
-        maxHeight = windowHeight - parentBottom - paddingSpace
-        menu.style.top = newTop + 'px';
+    if(height > windowHeight / 2) {
+      if(fieldTop + fieldHeight / 2 < windowHeight){
         menu.style.marginTop = '-1px'
+        menu.style.top = fieldBottom + 'px'
+        maxHeight = windowHeight - fieldBottom - paddingSpace
       }
-      menu.style.maxHeight = maxHeight + 'px';
+      else {
+        menu.style.marginTop = '1px'
+        menu.style.bottom = windowHeight -fieldTop + 'px'
+        maxHeight = fieldTop - paddingSpace
+      }
+    }
+    else {
+      if(fieldBottom + height < windowHeight) {
+        menu.style.marginTop = '-1px'
+        menu.style.top = fieldTop + fieldHeight + 'px'
+        maxHeight = windowHeight - fieldBottom - paddingSpace
+      }
+      else {
+        menu.style.marginTop = '1px'
+        menu.style.bottom = windowHeight -fieldTop + 'px'
+        maxHeight = fieldTop - paddingSpace
+      }
     }
 
-    menu.style.left = parentLeft + 'px';
-    menu.style.width = parentWidth + 'px';
+    menu.style.maxHeight = maxHeight + 'px';
+    menu.style.left = fieldLeft + 'px';
+    menu.style.width = fieldWidth + 'px';
   }
 
   getDropdownClassName() {
@@ -148,21 +158,23 @@ export default class Dropdown extends React.PureComponent<DropdownProps, Dropdow
   }
 
   render() {
-    let { id, labelElement, valueElement, children } = this.props
+    let { id, labelElement, valueElement, children, disabled, handleSelect } = this.props
     let { isOpend } = this.state
 
     return (
       <div className={this.getDropdownClassName()} ref='dropdown'>
-        <input style={{display: 'none'}} readOnly id={id} onClick={this.handleClick} />
-        {labelElement && <label className="dropdown-label-container" htmlFor={id}>{labelElement}</label> }
-        <div className="dropdown-field" onClick={this.handleClick} ref='field'>
-          <div className="dropdown-item">
-            {valueElement}
+        <input style={{display: 'none'}} readOnly id={id} onClick={this.handleClick} disabled={disabled}/>
+        <label className="dropdown-label-container" htmlFor={id}>
+          {labelElement}
+          <div className="dropdown-field" ref='field'>
+            <div className="dropdown-item">
+              {valueElement}
+            </div>
+            <div className="dropdown-icon-container">
+              <span className={isOpend ? 'dropdown-close-icon' : 'dropdown-open-icon'}></span>
+            </div>
           </div>
-          <div className="dropdown-icon-container">
-            <span className={isOpend ? 'dropdown-close-icon' : 'dropdown-open-icon'}></span>
-          </div>
-        </div>
+        </label>
       { isOpend &&
         <div className="dropdown-menu" ref='menu'>
           <Scrollbar>

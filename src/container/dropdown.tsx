@@ -37,14 +37,14 @@ const dropdownItems:{text:string, value:any}[] = [
 
 interface DropdownContainerState {
   dropdownValue:any
-  labelElement:JSX.Element
 }
+
+const labelElement = <div><span>{'dropdown'}</span></div>
 
 export default class DropdownContainer extends React.PureComponent<any, DropdownContainerState> {
   constructor(props:any) {
     super(props)
     this.state = {
-      labelElement: <div><span>{'dropdown'}</span></div>,
       dropdownValue: [1],
     }
 
@@ -69,7 +69,7 @@ export default class DropdownContainer extends React.PureComponent<any, Dropdown
   }
 
   render() {
-    let { dropdownValue, labelElement } = this.state
+    let { dropdownValue } = this.state
     let dividerContainerStyle:React.CSSProperties = {
       display: 'flex',
       alignItems: 'center',
@@ -88,15 +88,16 @@ export default class DropdownContainer extends React.PureComponent<any, Dropdown
 
     return (
       <Dropdown 
+        disabled={false}
         labelElement={labelElement}
-        handleUpdate={this.handleUpdate}
+        handleSelect={this.handleUpdate}
         handleCloseDropdown={this.handleCloseDropdown}
         id={'example-dropdown'}
         multiMode={true}
         valueElement={ <span style={{marginLeft: 10}}>{dropdownValue.join(',')}</span> } >
         {
           dropdownItems.map((option, index) => (
-            <DropdownItemNormal value={option.value} key={index}>
+            <DropdownItemNormal value={option.value} key={index} selectAble={false}>
               <span className="function-info-icon"></span>
               <span style={itemStyle}>{option.text}</span>
             </DropdownItemNormal>

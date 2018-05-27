@@ -17,7 +17,7 @@ interface PageControlProps {
   totalItems:number
   itemPerPage:number
   itemPerPageList:number[]
-  handleItemPerPageUpdate:Function
+  handleItemPerPageUpdate:React.MouseEventHandler<HTMLElement>
   handleGoPage:Function
   disabled?:boolean
   pageText?:string
@@ -129,10 +129,13 @@ export default class PageControl extends React.Component<PageControlProps, PageC
           <span>{totalText || 'Total:' + totalItems}</span>
           <div className='page-control-divider'></div>
           <Dropdown
-            className='page-control-dropdown'
-            labelElement={<span style={{marginRight: 4}}>{showText || 'show'}</span>}
-            handleUpdate={handleItemPerPageUpdate}
             id='page-control-dropdown'
+            multiMode={false}
+            disabled={false}
+            className='page-control-dropdown'
+            handleSelect={handleItemPerPageUpdate}
+            handleCloseDropdown={undefined}
+            labelElement={<span style={{marginRight: 4}}>{showText || 'show'}</span>}
             valueElement={<span>{itemPerPage}</span>} >
           {
             itemPerPageList.map((item, index) => (

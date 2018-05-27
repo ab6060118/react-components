@@ -50,7 +50,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
       selected:[],
       head: ['name', 'delivery method', 'action'],
       reightClickPos:{left:0,top:0},
-      itemPerPage:10,
+      itemPerPage:30,
       tableData:[]
     }
 
@@ -70,9 +70,9 @@ export default class TableContainer extends React.PureComponent<any, TableContai
     this.unbindEvent()
   }
 
-  handlePerpageUpdate(itemrPerpage:number) {
+  handlePerpageUpdate(e:React.MouseEvent<HTMLElement>) {
     this.setState({
-      itemPerPage: itemrPerpage
+      itemPerPage: parseInt(e.currentTarget.dataset.value)
     }, this.updateTableData)
   }
 
@@ -199,7 +199,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
             handleItemPerPageUpdate={this.handlePerpageUpdate}
             totalItems={tableDataTotal.length}
             itemPerPage={itemPerPage}
-            itemPerPageList={[10,20,30]}
+            itemPerPageList={[10,20,30,50,100,200,300,400]}
             currentPage={parseInt(currentPage as any)} />
         </div>
       </div>
