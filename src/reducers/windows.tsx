@@ -35,7 +35,8 @@ export default (state:WindowsState = initState, action:{type:WINDOWS_ACTION, id:
             [n]: {...state.windows[n]}
           }
         }, {}),
-        order: state.order.filter(id => id !== action.id)
+        order: state.order.filter(id => id !== action.id),
+        minOrder: state.minOrder.filter(id => id !== action.id)
       }
     case WINDOWS_ACTION.UPDATE_WINDOW:
       let { key, id, value } = action

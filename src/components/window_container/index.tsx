@@ -28,9 +28,11 @@ interface WindowContainerProps {
   maxHeight:number
   handleTopClick:React.MouseEventHandler<HTMLElement>
   handleMinRestoreClick:React.MouseEventHandler<HTMLElement>
+  handleCloseClick:React.MouseEventHandler<HTMLElement>
   isMined:boolean
   order:number
   minOrder:number
+  minTitle?:string
   resizable?:boolean
   relativeToParent?:boolean
 }
@@ -74,7 +76,8 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
   }
 
   componentWillUnmount() {
-    this.refs.container.querySelector('.' + this.props.handleMoveClass).removeEventListener('mousedown', this.handleMovingDown)
+    if(!this.props.isMined)
+      this.refs.container.querySelector('.' + this.props.handleMoveClass).removeEventListener('mousedown', this.handleMovingDown)
 
     document.removeEventListener('mouseup', this.handleMovingUp)
     document.removeEventListener('mouseup', this.handleResizeUp)
@@ -213,7 +216,7 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
     let parentHeight:number = undefined
     let parentWidth:number = undefined
 
-    if(relativeToParent === true) {
+    if(relativeToParent) {
       let parentElement = container.parentElement
       parentHeight = parentElement.offsetHeight
       parentWidth = parentElement.offsetWidth
@@ -246,9 +249,9 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
 
   render() {
     let { top, left, width, height, isResizing, isMoving } = this.state
-    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, handleMinRestoreClick, relativeToParent, isMined, minOrder, order } = this.props
+    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, handleMinRestoreClick, handleCloseClick, relativeToParent, isMined, minOrder, minTitle, order } = this.props
     let containerStyle:React.CSSProperties = {
-      position:  relativeToParent === true ? 'absolute' : 'fixed',
+      position:  relativeToParent ? 'absolute' : 'fixed',
       top:       top,
       left:      left,
       width:     width,
@@ -294,7 +297,18 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
         }
         {isMined !== true ?
           (children) : (
-            <span onClick={handleMinRestoreClick}>{'+'}</span>
+            <React.Fragment>
+              <div className="window-container-minimized-left">
+                <span className="window-tool-icon-minimized"></span>
+              </div>
+              <div className="window-container-minimized-center">
+                <span>{minTitle}</span>
+              </div>
+              <div className="window-container-minimized-right">
+                <span className="window-tool-icon-max" onClick={handleMinRestoreClick}></span>
+                <span className="window-tool-icon-close" onClick={handleCloseClick}></span>
+              </div>
+            </React.Fragment>
           )
         }
       </div>

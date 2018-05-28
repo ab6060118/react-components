@@ -1,0 +1,17 @@
+<svg id="btn_close_over.png_btn_close_over.svg" data-name="btn_close_over.png,btn_close_over.svg" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #930000;
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #bababa;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <rect id="矩形_3_拷貝_4" data-name="矩形 3 拷貝 4" class="cls-1" width="11" height="11"/>
+  <path id="矩形_3_拷貝_6" data-name="矩形 3 拷貝 6" class="cls-2" d="M40.45,9.743l-0.707.707L35.5,6.207,31.257,10.45,30.55,9.743,34.793,5.5,30.55,1.257l0.707-.707L35.5,4.793,39.743,0.55,40.45,1.257,36.207,5.5Z" transform="translate(-30)"/>
+</svg>

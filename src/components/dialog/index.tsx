@@ -66,14 +66,16 @@ export default class Dialog extends React.PureComponent <DialogProps> {
         isMined={isMined}
         order={order}
         minOrder={minOrder}
+        minTitle="Dialog"
         handleMinRestoreClick={handleMinRestoreClick}
         handleTopClick={handleTopClick}
+        handleCloseClick={handleCloseClick}
         handleMoveClass="dialog-header" >
         <div className="dialog">
           <div className="dialog-header">
             <div className="dialog-tool-icon-group">
-              <span style={{display: 'inline-block', width: 10, height: 10, marginRight: 10}} onClick={handleMinRestoreClick}>{'-'}</span>
-              <span className="dialog-icon-close" onClick={handleCloseClick}></span>
+              <span className="window-tool-icon-min" onClick={handleMinRestoreClick}></span>
+              <span className="window-tool-icon-close" onClick={handleCloseClick}></span>
             </div>
           </div>
           <div className="dialog-body">

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="11" viewBox="0 0 11 11">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #6d6d6d;
+        fill-rule: evenodd;
+        filter: url(#filter);
+      }
+    </style>
+    <filter id="filter" x="60" y="60" width="11" height="11" filterUnits="userSpaceOnUse">
+      <feFlood result="flood" flood-color="#6d6d6d"/>
+      <feComposite result="composite" operator="in" in2="SourceGraphic"/>
+      <feBlend result="blend" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <path id="btn_max_pressed.png_btn_max_pressed.svg" data-name="btn_max_pressed.png,btn_max_pressed.svg" class="cls-1" d="M71,66H66v5H65V66H60V65h5V60h1v5h5v1Z" transform="translate(-60 -60)"/>
+</svg>

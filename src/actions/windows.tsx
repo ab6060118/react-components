@@ -1,5 +1,4 @@
 import { WINDOWS_ACTION } from './action_type';
-// import { any } from 'react-redux';
 
 const createWindow = (id:string, component:string, metadata:any) => ({type: WINDOWS_ACTION.CREATE_WINDOW, id, component, metadata})
 

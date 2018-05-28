@@ -30,6 +30,10 @@
       span {
         cursor: pointer;
       }
+
+      span+span {
+        margin-left: 10px;
+      }
     }
   }
 
@@ -86,10 +90,4 @@
 
 .dialog-icon-error {
   @include dialog-icon('./imgs/error.svg');
-}
-
-.dialog-icon-close {
-  @include dialog-icon('./imgs/delete.svg');
-  width: 10px;
-  height: 10px;
 }

@@ -1,0 +1,16 @@
+<svg id="btn_mini_over.png_btn_mini_over.svg" data-name="btn_mini_over.png,btn_mini_over.svg" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #930000;
+        opacity: 0;
+      }
+
+      .cls-2 {
+        fill: #bababa;
+      }
+    </style>
+  </defs>
+  <rect id="矩形_3_拷貝_12" data-name="矩形 3 拷貝 12" class="cls-1" width="11" height="11"/>
+  <rect id="btn_mimi" class="cls-2" y="5" width="11" height="1"/>
+</svg>
