@@ -12,7 +12,7 @@ interface MenuSubMenuItemState {
   subMenuLeft:number
 }
 
-export default class MenuSubMenuItem extends React.Component<MenuSubMenuItemProps, MenuSubMenuItemState> {
+export default class MenuSubMenuItem extends React.PureComponent<MenuSubMenuItemProps, MenuSubMenuItemState> {
   refs:{[key:string]:HTMLDivElement}
 
   constructor(props:MenuSubMenuItemProps) {

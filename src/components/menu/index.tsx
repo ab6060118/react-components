@@ -5,7 +5,7 @@ import MenuSubMenuItem from './menu_sub_menu_item';
 
 import './style.scss'
 
-class MenuDividerItem extends React.Component {
+class MenuDividerItem extends React.PureComponent {
   render() {
     return (
       <div className="menu-item-divider">
@@ -15,7 +15,7 @@ class MenuDividerItem extends React.Component {
   }
 }
 
-class MenuTitleItem extends React.Component<{text:string}> {
+class MenuTitleItem extends React.PureComponent<{text:string}> {
   render() {
     return (
       <div className="menu-item-title">

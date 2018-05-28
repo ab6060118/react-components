@@ -1,10 +1,10 @@
 import * as React from 'react'
 
 interface MenuDefaultItemProps {
-  onClick:(e:React.MouseEvent<HTMLDivElement>)=>void
+  onClick:React.MouseEventHandler<HTMLElement>
 }
 
-export default class MenuDefaultItem extends React.Component<MenuDefaultItemProps> {
+export default class MenuDefaultItem extends React.PureComponent<MenuDefaultItemProps> {
   render() {
     let { children, onClick } = this.props
 

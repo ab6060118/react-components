@@ -7,14 +7,14 @@ interface MenuProps {
   isSubMenu?:boolean
 }
 
-export default class Menu extends React.Component<MenuProps>{
+export default class Menu extends React.PureComponent<MenuProps>{
   refs:{[key:string]:HTMLElement}
 
-  componentDidMount() {
+  PureComponentDidMount() {
     this.updateMenuPosition()
   }
 
-  componentDidUpdate() {
+  PureComponentDidUpdate() {
     this.updateMenuPosition()
   }
 
