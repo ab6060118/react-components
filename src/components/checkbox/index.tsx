@@ -10,7 +10,7 @@ interface ICheckbox {
   className?:string
 }
 
-export default class Checkbox extends React.Component <ICheckbox> {
+export default class Checkbox extends React.PureComponent <ICheckbox> {
   getClassName() {
     let { className:classStr, disabled } = this.props
     let className:string[] = ['checkbox']

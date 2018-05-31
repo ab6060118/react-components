@@ -52,7 +52,6 @@ class WindowsManager extends React.Component<WindowsManagerProps> {
               order={order.indexOf(id)}
               minOrder={minOrder.indexOf(id)}
               isMined={isMined}
-              metadata={metadata}
               key={id}/>
           )
         })

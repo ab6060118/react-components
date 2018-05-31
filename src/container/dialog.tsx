@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect, Dispatch } from 'react-redux';
 
 import Dialog, { DIALOG_LEVEL } from '../components/dialog';
-import { minRestoreWindow, topWindow, closeWindow } from '../actions/windows';
+import { minRestoreWindow, topWindow, closeWindow, updateMetadata } from '../actions/windows';
 import { State } from '../reducers/store_type'
 
 class DialogContainer extends React.PureComponent<any,any> {
@@ -64,12 +64,14 @@ class DialogContainer extends React.PureComponent<any,any> {
 
 const mapStateToProps = (state:State, ownProps:any) => ({
   ...ownProps,
+  metadata: state.windows.windows[ownProps.winId],
 })
 
 const mapDispatchToProps = (dispatch:any) => ({
   topWindow: (id:string) => dispatch(topWindow(id)),
   closeWindow: (id:string) => dispatch(closeWindow(id)),
   minRestoreWindow: (id:string) => dispatch(minRestoreWindow(id)),
+  updateMetadata: (id:string, key:string, value:any) => dispatch(updateMetadata(id, key, value))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DialogContainer)

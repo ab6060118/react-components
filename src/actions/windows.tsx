@@ -6,6 +6,8 @@ const deleteWindow = (id:string) => ({type: WINDOWS_ACTION.DELETE_WINDOW, id})
 
 const updateWindow = (id:string, key:string, value:any) => ({type: WINDOWS_ACTION.UPDATE_WINDOW, id, key, value})
 
+export const updateMetadata = (id:string, key:string, value:any) => ({type: WINDOWS_ACTION.UPDATE_METADATA, id, key, value})
+
 export const openWindow = (id:string, component:string, metadata?:any) => (dispatch:any) => {
   dispatch(createWindow(id, component, metadata || {}))
 }

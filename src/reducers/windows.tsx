@@ -8,45 +8,46 @@ const initState:WindowsState = {
 }
 
 export default (state:WindowsState = initState, action:{type:WINDOWS_ACTION, id:string, component?:string, metadata?:any, key?:string, value?:any}) => {
-  switch(action.type) {
+  let { windows, minOrder, order } = state
+  let { type, key, id, value, component, metadata } = action
+
+  switch(type) {
     case WINDOWS_ACTION.CREATE_WINDOW:
-      return {
-        ...state,
-        windows: {
-          ...state.windows,
-          [action.id]: {
-            id: action.id,
-            component: action.component,
-            isMined: false,
-            metadata: action.metadata || {}
-          }
-        },
-        order: [
-          ...state.order,
-          action.id
-        ]
-      }
-    case WINDOWS_ACTION.DELETE_WINDOW:
-      return {
-        ...state,
-        windows: Object.keys(state.windows).reduce((p, n) => {
-          return n === action.id ? p : {
-            ...p,
-            [n]: {...state.windows[n]}
-          }
-        }, {}),
-        order: state.order.filter(id => id !== action.id),
-        minOrder: state.minOrder.filter(id => id !== action.id)
-      }
-    case WINDOWS_ACTION.UPDATE_WINDOW:
-      let { key, id, value } = action
-      let { windows, minOrder } = state
       return {
         ...state,
         windows: {
           ...windows,
           [id]: {
-            ...state.windows[id],
+            id: id,
+            component: component,
+            isMined: false,
+            metadata: metadata || {}
+          }
+        },
+        order: [
+          ...order,
+          id
+        ]
+      }
+    case WINDOWS_ACTION.DELETE_WINDOW:
+      return {
+        ...state,
+        windows: Object.keys(windows).reduce((p, n) => {
+          return n === action.id ? p : {
+            ...p,
+            [n]: {...windows[n]}
+          }
+        }, {}),
+        order: order.filter(winId => winId !== id),
+        minOrder: minOrder.filter(winId => winId !== id)
+      }
+    case WINDOWS_ACTION.UPDATE_WINDOW:
+      return {
+        ...state,
+        windows: {
+          ...windows,
+          [id]: {
+            ...windows[id],
             [key]: value
           }
         },
@@ -58,9 +59,23 @@ export default (state:WindowsState = initState, action:{type:WINDOWS_ACTION, id:
       return {
         ...state,
         order: [
-          ...state.order.filter(id => id !== action.id),
-          action.id
+          ...order.filter(winId => winId !== id),
+          id
         ]
+      }
+    case WINDOWS_ACTION.UPDATE_METADATA:
+      return {
+        ...state,
+        windows: {
+          ...windows,
+          [id]: {
+            ...windows[id],
+            metadata: {
+              ...windows[id].metadata,
+              [key]: value,
+            }
+          }
+        }
       }
     default:
       return state
