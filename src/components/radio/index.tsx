@@ -3,9 +3,10 @@ import * as React from 'react';
 import './style.scss'
 
 interface RadionProps {
+  id:string
   value:any
-  handleClick:Function
-  checked?:boolean
+  onChange:React.ChangeEventHandler<HTMLElement>
+  checked:boolean
   disabled?:boolean
   className?:string
 }
@@ -13,18 +14,6 @@ interface RadionProps {
 export default class Radio extends React.Component<RadionProps> {
   constructor(props:RadionProps) {
     super(props)
-
-    this.handleClick = this.handleClick.bind(this)
-  }
-
-  handleClick() {
-    let { handleClick, value, disabled } = this.props
-
-    if(disabled === true) return
-
-    if(handleClick !== undefined) {
-      handleClick(value)
-    }
   }
 
   getClassName() {
@@ -48,13 +37,14 @@ export default class Radio extends React.Component<RadionProps> {
   }
 
   render() {
-    let { children } = this.props
+    let { children, disabled, checked, onChange, id, value } = this.props
 
     return (
-      <div className={this.getClassName()}>
-        <span className={this.getIconClassName()} onClick={this.handleClick}></span>
-        <label className="radio-label" onClick={this.handleClick}>{children}</label>
-      </div>
+      <label className={this.getClassName()} htmlFor={id}>
+        <input type="radio" id={id} disabled={disabled} checked={checked} onChange={onChange} style={{display:'none'}} value={value}/>
+        <span className={this.getIconClassName()}></span>
+        {children}
+      </label>
     )
   }
 }

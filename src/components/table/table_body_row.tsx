@@ -13,7 +13,7 @@ interface TableBodyRowProps {
   handleRowRightClick?:Function
 }
 
-export default class TableBodyRow extends React.Component<TableBodyRowProps> {
+export default class TableBodyRow extends React.PureComponent<TableBodyRowProps> {
   constructor(props:TableBodyRowProps) {
     super(props)
 
@@ -51,7 +51,7 @@ export default class TableBodyRow extends React.Component<TableBodyRowProps> {
   }
 
   render() {
-    let { children, onClick, onContextMenu, widths } = this.props
+    let { children, widths } = this.props
     return (
       <div 
         className={this.getClassName()}

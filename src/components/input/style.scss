@@ -1,6 +1,20 @@
 .input {
+  display: flex;
+  align-items: center;
+
   .input-field {
+    outline: none;
     padding: 0 10px;
     height: 24px;
+
+    &:nth-child(2) {
+      margin-left: 10px;
+    }
+  }
+
+  &.invalid {
+    .input-field {
+      border: 1px solid red;
+    }
   }
 }

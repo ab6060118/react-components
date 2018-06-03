@@ -10,13 +10,12 @@ export default class Radios extends React.Component<any, any> {
       value: '1',
     }
 
-    this.handleClick = this.handleClick.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  handleClick(value:any) {
-    this.setState({
-      value: value
-    })
+  handleChange(e:React.ChangeEvent<HTMLInputElement>) {
+    let value = e.currentTarget.value
+    this.setState({value})
   }
 
   render() {
@@ -24,9 +23,9 @@ export default class Radios extends React.Component<any, any> {
 
     return (
       <div>
-        <Radio value="1" checked={value === '1'} handleClick={this.handleClick} disabled={true}>{'test1'}</Radio>
-        <Radio value="2" checked={value === '2'} handleClick={this.handleClick} disabled={true}>{'test2'}</Radio>
-        <Radio value="3" checked={value === '3'} handleClick={this.handleClick}>{'test3'}</Radio>
+        <Radio id="label1" value="1" checked={value === '1'} onChange={this.handleChange} disabled={false}>{'test1'}</Radio>
+        <Radio id="label2" value="2" checked={value === '2'} onChange={this.handleChange} disabled={true}>{'test2'}</Radio>
+        <Radio id="label3" value="3" checked={value === '3'} onChange={this.handleChange}>{'test3'}</Radio>
       </div>
     )
   }

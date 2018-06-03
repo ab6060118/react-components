@@ -2,8 +2,8 @@
   display: flex;
   align-items: center;
 
-  .radio-label {
-    margin-left: 10px;
+  span[class^="radio-icon"] {
+    margin-right: 10px;
   }
 
   &.disabled {

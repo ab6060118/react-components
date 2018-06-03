@@ -5,12 +5,12 @@ import './style.scss'
 interface InputProps {
   id:string
   value:any
-  handleUpdate:Function
+  onChange:React.ChangeEventHandler<HTMLInputElement>
   handleEnter?:Function
   className?:string
   type?:string
   labelElement?:JSX.Element
-  error?:boolean
+  invalid?:boolean
   disabled?:boolean
 }
 
@@ -18,10 +18,10 @@ interface InputState {
 } 
 
 export default class Input extends React.Component<InputProps> {
-  handleInputChange(e:React.ChangeEvent<HTMLInputElement>) {
-    let { handleUpdate } = this.props
+  constructor(props:InputProps) {
+    super(props)
 
-    if(handleUpdate) handleUpdate(e.target.value)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
   }
 
   handleKeyDown(e:React.KeyboardEvent<HTMLInputElement>) {
@@ -32,31 +32,30 @@ export default class Input extends React.Component<InputProps> {
 
   getClassName() {
     let className:string[] = ['input']
-    let { disabled, error, className:classStr } = this.props
+    let { disabled, invalid, className:classStr } = this.props
 
-    if(className !== undefined) className.push(classStr)
-    if(error === true) className.push('error')
-    if(disabled === true) className.push('disabled')
+    if(classStr) className.push(classStr)
+    if(invalid) className.push('invalid')
+    if(disabled) className.push('disabled')
 
     return className.join(' ')
   }
 
   render() {
-    let { id, labelElement, type, value } = this.props
+    let { id, labelElement, type, value, disabled, onChange } = this.props
 
     return (
-      <div className={this.getClassName()}>
-      {labelElement !== undefined &&
-        <label className='input-label' htmlFor={id}>{labelElement}</label>
-      }
+      <label className={this.getClassName()} htmlFor={id}>
+        {labelElement}
         <input
           className='input-field'
           type={type || 'text'}
           id={id}
-          onChange={this.handleInputChange.bind(this)}
-          onKeyDown={this.handleKeyDown.bind(this)}
-          value={value} />
-      </div>
+          onChange={onChange}
+          onKeyDown={this.handleKeyDown}
+          value={value}
+          disabled={disabled} />
+      </label>
     )
   }
 }

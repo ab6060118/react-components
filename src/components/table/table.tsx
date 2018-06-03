@@ -8,7 +8,7 @@ interface TableState {
   widths:number[]
 }
 
-export default class Table extends React.Component<TableProps, TableState> {
+export default class Table extends React.PureComponent<TableProps, TableState> {
   constructor(props:TableProps) {
     super(props)
 

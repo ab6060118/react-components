@@ -37,6 +37,10 @@ export default class PageControl extends React.Component<PageControlProps, PageC
     this.state = {
       pageTemp: props.currentPage
     }
+
+    this.handlePageTempUpdate = this.handlePageTempUpdate.bind(this)
+    this.handleGoPage = this.handleGoPage.bind(this)
+    this.handleIconClick = this.handleIconClick.bind(this)
   }
 
   componentWillReceiveProps(nextProps:PageControlProps) {
@@ -45,9 +49,13 @@ export default class PageControl extends React.Component<PageControlProps, PageC
     })
   }
 
-  handlePageTempUpdate(page:any) {
+  handlePageTempUpdate(e:React.ChangeEvent<HTMLInputElement>) {
+    let value = parseInt(e.target.value)
+
+    if(isNaN(value)) return
+
     this.setState({
-      pageTemp: page
+      pageTemp: value
     })
   }
 
@@ -61,9 +69,10 @@ export default class PageControl extends React.Component<PageControlProps, PageC
     }
   }
 
-  handleIconClick(type:ICON_TYPE) {
+  handleIconClick(e:React.MouseEvent<HTMLElement>) {
     let { currentPage, totalItems, itemPerPage } = this.props
     let totalPage = Math.ceil(totalItems/itemPerPage)
+    let type = parseInt(e.currentTarget.dataset.type)
     let page:number
 
     if(type === ICON_TYPE.FIRST && currentPage !== 1) this.goPage(1)
@@ -105,26 +114,26 @@ export default class PageControl extends React.Component<PageControlProps, PageC
     return (
       <div className='page-control'>
         <div className='page-control-left'>
-          <span className={this.getIconStyle(ICON_TYPE.LEFT, 'page-control-icon-more-left')} onClick={this.handleIconClick.bind(this, ICON_TYPE.FIRST)}></span>
-          <span className={this.getIconStyle(ICON_TYPE.LEFT, 'page-control-icon-left')} onClick={this.handleIconClick.bind(this, ICON_TYPE.LEFT)}></span>
+          <span className={this.getIconStyle(ICON_TYPE.LEFT, 'page-control-icon-more-left')} data-type={ICON_TYPE.FIRST} onClick={this.handleIconClick} />
+          <span className={this.getIconStyle(ICON_TYPE.LEFT, 'page-control-icon-left')} data-type={ICON_TYPE.LEFT} onClick={this.handleIconClick} />
           <div className='page-control-divider'></div>
           <Input
             className='page-control-input'
             labelElement={<span>{pageText || 'Page'}</span>}
             id="page-control-input"
             value={pageTemp}
-            handleUpdate={this.handlePageTempUpdate.bind(this)}
-            handleEnter={this.handleGoPage.bind(this)} />
+            onChange={this.handlePageTempUpdate}
+            handleEnter={this.handleGoPage} />
           <span style={{paddingLeft: 6}}>{'/' + totalPage}</span>
+          <div className='page-control-divider'/>
+          <span className={this.getIconStyle(ICON_TYPE.RIGHT, 'page-control-icon-right')} data-type={ICON_TYPE.RIGHT} onClick={this.handleIconClick}/>
+          <span className={this.getIconStyle(ICON_TYPE.RIGHT, 'page-control-icon-more-right')} data-type={ICON_TYPE.LAST} onClick={this.handleIconClick}/>
           <div className='page-control-divider'></div>
-          <span className={this.getIconStyle(ICON_TYPE.RIGHT, 'page-control-icon-right')} onClick={this.handleIconClick.bind(this, ICON_TYPE.RIGHT)}></span>
-          <span className={this.getIconStyle(ICON_TYPE.RIGHT, 'page-control-icon-more-right')} onClick={this.handleIconClick.bind(this, ICON_TYPE.LAST)}></span>
-          <div className='page-control-divider'></div>
-          <span className={this.getIconStyle(ICON_TYPE.REFRESH, 'page-control-icon-refresh')} onClick={this.handleIconClick.bind(this, ICON_TYPE.REFRESH)}></span>
+          <span className={this.getIconStyle(ICON_TYPE.REFRESH, 'page-control-icon-refresh')} data-type={ICON_TYPE.REFRESH} onClick={this.handleIconClick}/>
         </div>
         <div className='page-control-right'>
           <div className='page-control-divider'></div>
-          <span>{displayItemText || 'Disable item:'}</span>
+          <span>{displayItemText || 'Display item:'}</span>
           <span>{`${itemStart+1}-${itemEnd < totalItems ? itemEnd : totalItems},`}</span>
           <span>{totalText || 'Total:' + totalItems}</span>
           <div className='page-control-divider'></div>

@@ -22,7 +22,7 @@ export enum TABLE_ROW_CLICK_OPERATIONS {
   SHIFT,
 }
 
-export default class TableBody extends React.Component<TableBodyProps, TableBodyStete> {
+export default class TableBody extends React.PureComponent<TableBodyProps, TableBodyStete> {
   constructor(props:TableBodyProps) {
     super(props)
 

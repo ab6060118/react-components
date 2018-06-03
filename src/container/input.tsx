@@ -6,24 +6,37 @@ export default class InputContainer extends React.PureComponent<any, any> {
   constructor(props:any) {
     super(props)
     this.state = {
-      value: 'test'
+      value: 'test',
+      invalid: false,
     }
 
     this.handleUpdate = this.handleUpdate.bind(this)
+    this.validator = this.validator.bind(this)
   }
 
-  handleUpdate(value:any) {
-    this.setState({value:value})
+  handleUpdate(e:React.ChangeEvent<HTMLInputElement>) {
+    let value = e.target.value
+
+    this.setState({
+      value: value,
+      invalid: value.includes('a')
+    })
+  }
+
+  validator() {
+    let { value } = this.state
+    return 
   }
 
   render() {
-    let { value } = this.state
+    let { value, invalid } = this.state
 
     return (
       <Input 
         value={value}
+        invalid={invalid}
         labelElement={<span>Example</span>}
-        handleUpdate={this.handleUpdate}
+        onChange={this.handleUpdate}
         id='example-input' />
     )
   }
