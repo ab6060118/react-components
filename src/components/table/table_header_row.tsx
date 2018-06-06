@@ -11,7 +11,7 @@ export default class TableHeaderRow extends React.Component<TableHeaderRowProps>
     return (
       <div className="table-header-row">
       {
-        React.Children.map(children, (child, index) => {
+        React.Children.map(React.Children.toArray(children), (child, index) => {
           let resizable:boolean = true
 
           if((child as any).props.resizable !== undefined) resizable = (child as any).props.resizable

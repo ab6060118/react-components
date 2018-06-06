@@ -58,7 +58,7 @@ export default class TableBodyRow extends React.PureComponent<TableBodyRowProps>
         onClick={this.handleRowClick}
         onContextMenu={this.handleRowRightClick}>
       {
-        React.Children.map(children, (child, index) => {
+        React.Children.map(React.Children.toArray(children), (child, index) => {
           return React.cloneElement(React.Children.only(child), { 
             width: widths[index],
             index: index,
