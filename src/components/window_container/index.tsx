@@ -21,7 +21,6 @@ interface WindowContainerState {
 }
 
 interface WindowContainerProps {
-  handleMoveClass:string
   minWidth:number
   minHeight:number
   maxWidth:number
@@ -32,7 +31,7 @@ interface WindowContainerProps {
   isMined:boolean
   order:number
   minOrder:number
-  minTitle?:string
+  title?:string
   resizable?:boolean
   relativeToParent?:boolean
 }
@@ -68,16 +67,25 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
   }
 
   componentDidUpdate(prevProps:WindowContainerProps) {
-    let { isMined, handleMoveClass } = this.props
+    let { isMined } = this.props
 
     if(prevProps.isMined === true && isMined === false) {
-      this.refs.container.querySelector('.' + handleMoveClass).addEventListener('mousedown', this.handleMovingDown)
+      let moveElement = this.refs.container.querySelector('.move-area')
+
+      if(moveElement) {
+        moveElement.addEventListener('mousedown', this.handleMovingDown)
+      }
     }
   }
 
   componentWillUnmount() {
-    if(!this.props.isMined)
-      this.refs.container.querySelector('.' + this.props.handleMoveClass).removeEventListener('mousedown', this.handleMovingDown)
+    if(!this.props.isMined) {
+      let moveElement = this.refs.container.querySelector('.move-area')
+
+      if(moveElement) {
+        moveElement.addEventListener('mousedown', this.handleMovingDown)
+      }
+    }
 
     document.removeEventListener('mouseup', this.handleMovingUp)
     document.removeEventListener('mouseup', this.handleResizeUp)
@@ -210,11 +218,12 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
   initContainerPosition() {
     if(!this.refs.container) return ;
 
-    let { handleMoveClass, relativeToParent } = this.props
+    let { relativeToParent } = this.props
     let { container } = this.refs
     let { offsetHeight:height, offsetWidth:width } = container
     let parentHeight:number = undefined
     let parentWidth:number = undefined
+    let moveElement = this.refs.container.querySelector('.move-area')
 
     if(relativeToParent) {
       let parentElement = container.parentElement
@@ -237,7 +246,9 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
       resultTop = 0
     }
 
-    container.querySelector('.' + handleMoveClass).addEventListener('mousedown', this.handleMovingDown)
+    if(moveElement) {
+      moveElement.addEventListener('mousedown', this.handleMovingDown)
+    }
 
     this.setState({
       width: width,
@@ -249,7 +260,7 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
 
   render() {
     let { top, left, width, height, isResizing, isMoving } = this.state
-    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, handleMinRestoreClick, handleCloseClick, relativeToParent, isMined, minOrder, minTitle, order } = this.props
+    let { resizable, minWidth, maxWidth, minHeight, maxHeight, children, handleTopClick, handleMinRestoreClick, handleCloseClick, relativeToParent, isMined, minOrder, title, order } = this.props
     let containerStyle:React.CSSProperties = {
       position:  relativeToParent ? 'absolute' : 'fixed',
       top:       top,
@@ -302,7 +313,7 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
                 <span className="window-tool-icon-minimized"></span>
               </div>
               <div className="window-container-minimized-center">
-                <span>{minTitle}</span>
+                <span>{title}</span>
               </div>
               <div className="window-container-minimized-right">
                 <span className="window-tool-icon-max" onClick={handleMinRestoreClick}></span>

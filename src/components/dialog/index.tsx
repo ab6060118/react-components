@@ -9,11 +9,7 @@ interface DialogProps {
   handleOkClick:React.MouseEventHandler<HTMLElement>
   handleNoClick:React.MouseEventHandler<HTMLElement>
   handleCloseClick:React.MouseEventHandler<HTMLElement>
-  handleTopClick:React.MouseEventHandler<HTMLElement>
   handleMinRestoreClick:React.MouseEventHandler<HTMLElement>
-  isMined:boolean
-  order:number
-  minOrder:number
   noText?:string
   okText?:string
   showOkButton?:boolean
@@ -45,61 +41,43 @@ export default class Dialog extends React.PureComponent <DialogProps> {
       level,
       okText,
       noText,
-      isMined,
       children,
-      order,
-      minOrder,
       showOkButton,
       handleOkClick,
       handleNoClick,
-      handleTopClick,
       handleCloseClick,
       handleMinRestoreClick,
     } = this.props
 
     return (
-      <WindowContainer
-        minWidth={340}
-        minHeight={200}
-        maxWidth={540}
-        maxHeight={300}
-        isMined={isMined}
-        order={order}
-        minOrder={minOrder}
-        minTitle="Dialog"
-        handleMinRestoreClick={handleMinRestoreClick}
-        handleTopClick={handleTopClick}
-        handleCloseClick={handleCloseClick}
-        handleMoveClass="dialog-header" >
-        <div className="dialog">
-          <div className="dialog-header">
-            <div className="dialog-tool-icon-group">
-              <span className="window-tool-icon-min" onClick={handleMinRestoreClick}></span>
-              <span className="window-tool-icon-close" onClick={handleCloseClick}></span>
-            </div>
-          </div>
-          <div className="dialog-body">
-            <div className="dialog-icon-container">
-              <span className={this.getIconClass(level)}></span>
-            </div>
-            <div className="dialog-content">
-            { children }
-            </div>
-          </div>
-          <div className="dialog-footer">
-            <div className="button-group">
-            {showOkButton !== false &&
-              <Button handleClick={handleOkClick} disabled={true}>
-                {okText || 'Ok'}
-              </Button>
-            }
-              <Button handleClick={handleNoClick} disabled={false}>
-                {noText || 'No'}
-              </Button>
-            </div>
+      <div className="dialog">
+        <div className="dialog-header move-area">
+          <div className="dialog-tool-icon-group">
+            <span className="window-tool-icon-min" onClick={handleMinRestoreClick}></span>
+            <span className="window-tool-icon-close" onClick={handleCloseClick}></span>
           </div>
         </div>
-      </WindowContainer>
+        <div className="dialog-body">
+          <div className="dialog-icon-container">
+            <span className={this.getIconClass(level)}></span>
+          </div>
+          <div className="dialog-content">
+          { children }
+          </div>
+        </div>
+        <div className="dialog-footer">
+          <div className="button-group">
+          {showOkButton !== false &&
+            <Button handleClick={handleOkClick} disabled={true}>
+              {okText || 'Ok'}
+            </Button>
+          }
+            <Button handleClick={handleNoClick} disabled={false}>
+              {noText || 'No'}
+            </Button>
+          </div>
+        </div>
+      </div>
     )
   }
 }

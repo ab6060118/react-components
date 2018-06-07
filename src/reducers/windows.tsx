@@ -1,15 +1,35 @@
+import { IWindowProperties } from "./store_type";
 import { WindowsState, IWindows } from './store_type';
 import { WINDOWS_ACTION } from '../actions/action_type';
 
-const initState:WindowsState = {
+const initState = ():WindowsState => ({
   windows:{},
   order:[],
   minOrder:[]
+})
+
+export const initWindowProps = (min:number[], max:number[], title?:string, resizable?:boolean):IWindowProperties => ({
+  minWidth: min[0],
+  minHeight: min[1],
+  maxWidth: max[0],
+  maxHeight: max[1],
+  title: title || '',
+  resizable: resizable === undefined ? true : resizable
+})
+
+interface IWindowsAction {
+  type:WINDOWS_ACTION
+  id:string
+  component?:string
+  properties?:IWindowProperties
+  metadata?:any
+  key?:string
+  value?:any
 }
 
-export default (state:WindowsState = initState, action:{type:WINDOWS_ACTION, id:string, component?:string, metadata?:any, key?:string, value?:any}) => {
+export default (state:WindowsState = initState(), action:IWindowsAction) => {
   let { windows, minOrder, order } = state
-  let { type, key, id, value, component, metadata } = action
+  let { type, key, id, value, component, metadata, properties } = action
 
   switch(type) {
     case WINDOWS_ACTION.CREATE_WINDOW:
@@ -21,7 +41,8 @@ export default (state:WindowsState = initState, action:{type:WINDOWS_ACTION, id:
             id: id,
             component: component,
             isMined: false,
-            metadata: metadata || {}
+            metadata: metadata || {},
+            properties,
           }
         },
         order: [

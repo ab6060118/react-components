@@ -13,6 +13,16 @@ export interface IWindow {
   isMined:boolean
   metadata:any
   component:string
+  properties:IWindowProperties
+}
+
+export interface IWindowProperties {
+  title?:string
+  minWidth:number
+  minHeight:number
+  maxWidth:number
+  maxHeight:number
+  resizable:boolean
 }
 
 export interface IWindows {
