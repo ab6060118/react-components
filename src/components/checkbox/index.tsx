@@ -38,13 +38,11 @@ export default class Checkbox extends React.PureComponent <ICheckbox> {
     let { id, children, onClick, disabled, value } = this.props
 
     return (
-      <div className={this.getClassName()}>
+      <label className={this.getClassName()} htmlFor={id}>
         <input type="checkbox" id={id} style={{display: 'none'}} onClick={onClick} disabled={disabled} data-value={value}/>
-        <label className="checkbox-label" htmlFor={id}>
-          <span className={this.getIconClassName()}></span>
-          {children}
-        </label>
-      </div>
+        <span className={this.getIconClassName()}></span>
+        {children}
+      </label>
     )
   }
 }
