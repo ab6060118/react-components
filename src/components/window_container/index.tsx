@@ -98,7 +98,7 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
 
     if (e.button !== 0 || isMined === true) return
 
-    let { left, top, width, height } = this.state
+    let { left, top, width, height } = this.refs.container.getBoundingClientRect()
 
     this.setState({
       isMoving: true,
@@ -118,7 +118,8 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
   }
 
   handleContainerMoving(e:MouseEvent) {
-    let { top, left, mouseDownPos, mouseDownWindowPos } = this.state
+    let { mouseDownPos, mouseDownWindowPos } = this.state
+    let { top, left } = this.refs.container.getBoundingClientRect()
     let moveX = e.pageX - mouseDownPos.x
     let moveY = e.pageY - mouseDownPos.y
     let resultLeft =  mouseDownWindowPos.x + moveX
@@ -145,7 +146,7 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
 
     if(resizable === false || isMined === true) return
 
-    let { left, top, width, height } = this.state
+    let { left, top, width, height } = this.refs.container.getBoundingClientRect()
 
     this.setState({
       isResizing: true,
@@ -172,8 +173,9 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
   handleResizeMove(e:MouseEvent) {
     if(this.state.isResizing === false) return
 
-    let { width, height, top, left, resizeSide, mouseDownPos, mouseDownWindowPos } = this.state
+    let { resizeSide, mouseDownPos, mouseDownWindowPos } = this.state
     let { minWidth, maxWidth, minHeight, maxHeight } = this.props
+    let { width, height, top, left } = this.refs.container.getBoundingClientRect()
     let newTop:number    = top
     let newLeft:number   = left
     let newWidth:number  = width
@@ -251,8 +253,8 @@ export default class WindowContainer extends React.PureComponent <WindowContaine
     }
 
     this.setState({
-      width: width,
-      height: height,
+      // width: width ,
+      // height: height,
       top: resultTop,
       left: resultLeft,
     })
