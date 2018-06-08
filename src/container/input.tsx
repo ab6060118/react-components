@@ -11,7 +11,7 @@ export default class InputContainer extends React.PureComponent<any, any> {
     }
 
     this.handleUpdate = this.handleUpdate.bind(this)
-    this.validator = this.validator.bind(this)
+    this.handleClearClick = this.handleClearClick.bind(this)
   }
 
   handleUpdate(e:React.ChangeEvent<HTMLInputElement>) {
@@ -23,9 +23,10 @@ export default class InputContainer extends React.PureComponent<any, any> {
     })
   }
 
-  validator() {
-    let { value } = this.state
-    return 
+  handleClearClick(e:React.MouseEvent<HTMLElement>) {
+    this.setState({
+      value: '',
+    })
   }
 
   render() {
@@ -33,9 +34,12 @@ export default class InputContainer extends React.PureComponent<any, any> {
 
     return (
       <Input 
+        clearable={true}
+        handleClearClick={this.handleClearClick}
         value={value}
         invalid={invalid}
         labelElement={<span>Example</span>}
+        onClick={undefined}
         onChange={this.handleUpdate}
         id='example-input' />
     )

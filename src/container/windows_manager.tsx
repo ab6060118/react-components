@@ -27,7 +27,7 @@ class WindowsManager extends React.Component<WindowsManagerProps> {
     openWindow(
       `dialog-${+new Date}`,
       'dialog',
-      initWindowProps([300,200],[600,400],`dialog-${+new Date}`,false),
+      initWindowProps([300,200],[600,400],`dialog-${+new Date}`),
       {id: `dialog-${+new Date}`},
     )
   }
@@ -41,7 +41,7 @@ class WindowsManager extends React.Component<WindowsManagerProps> {
       {
         Object.keys(windows).map((id, index) => {
           let window = windows[id]
-          let { isMined, metadata, properties } = window
+          let { isMined, properties } = window
           let WinCmp
 
           switch(window.component) {
@@ -59,7 +59,6 @@ class WindowsManager extends React.Component<WindowsManagerProps> {
               order={order.indexOf(id)}
               minOrder={minOrder.indexOf(id)}
               isMined={isMined}
-              metadata={metadata}
               key={id}/>
           )
         })

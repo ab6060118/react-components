@@ -5,7 +5,10 @@ import './style.scss'
 interface InputProps {
   id:string
   value:any
+  onClick:React.MouseEventHandler<HTMLElement>
   onChange:React.ChangeEventHandler<HTMLInputElement>
+  handleClearClick?:React.MouseEventHandler<HTMLElement>
+  clearable?:boolean
   handleEnter?:Function
   className?:string
   type?:string
@@ -15,13 +18,25 @@ interface InputProps {
 }
 
 interface InputState {
+  showPwd:boolean
 } 
 
-export default class Input extends React.Component<InputProps> {
+export default class Input extends React.Component<InputProps, InputState> {
   constructor(props:InputProps) {
     super(props)
 
+    this.state = {
+      showPwd: false
+    }
+
     this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.handleShowPwdClick = this.handleShowPwdClick.bind(this)
+  }
+
+  handleShowPwdClick(e:React.MouseEvent<HTMLElement>) {
+    this.setState({
+      showPwd: !this.state.showPwd,
+    })
   }
 
   handleKeyDown(e:React.KeyboardEvent<HTMLInputElement>) {
@@ -42,19 +57,28 @@ export default class Input extends React.Component<InputProps> {
   }
 
   render() {
-    let { id, labelElement, type, value, disabled, onChange } = this.props
+    let { id, labelElement, type, value, disabled, onClick, onChange, handleClearClick, clearable } = this.props
+    let { showPwd } = this.state
 
     return (
       <label className={this.getClassName()} htmlFor={id}>
         {labelElement}
-        <input
-          className='input-field'
-          type={type || 'text'}
-          id={id}
-          onChange={onChange}
-          onKeyDown={this.handleKeyDown}
-          value={value}
-          disabled={disabled} />
+        <div className='input-field'>
+          <input
+            type={(showPwd || !type) ? 'text' : type}
+            id={id}
+            onClick={onClick}
+            onChange={onChange}
+            onKeyDown={this.handleKeyDown}
+            value={value}
+            disabled={disabled} />
+        {(!type && clearable) &&
+          <span className="input-icon-delete" onClick={handleClearClick}></span>
+        }
+        {type === 'password' &&
+          <span className={`input-icon-eye ${showPwd ? 'active' : ''}`} onClick={this.handleShowPwdClick}></span>
+        }
+      </div>
       </label>
     )
   }

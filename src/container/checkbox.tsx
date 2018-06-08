@@ -6,8 +6,18 @@ export default class CheckboxContainer extends React.Component<any, any> {
   constructor(props:any) {
     super(props)
     this.state = {
-      value: true
+      test: true
     }
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick(e:React.MouseEvent<HTMLElement>) {
+    let value = !this.state[e.currentTarget.dataset.value]
+    console.log(e.currentTarget.dataset, value);
+
+    this.setState({
+      test: value,
+    })
   }
 
   render() {
@@ -15,8 +25,9 @@ export default class CheckboxContainer extends React.Component<any, any> {
     return (
       <Checkbox
         id={'example-checkbox-' + +new Date()}
-        handleClick={() => {this.setState({value: !value}); console.log('click')}}
-        disabled={true}
+        value="test"
+        onClick={this.handleClick}
+        disabled={false}
         checked={value}>
         <span>{'Example checkbox'}</span>
       </Checkbox>

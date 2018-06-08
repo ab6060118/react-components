@@ -3,12 +3,25 @@
   align-items: center;
 
   .input-field {
+    display: flex;
+    align-items: center;
+    position: relative;
     outline: none;
-    padding: 0 10px;
     height: 24px;
 
     &:nth-child(2) {
       margin-left: 10px;
+    }
+
+    span[class^="input-icon-"] {
+      position: absolute;
+      right: 4px;
+    }
+
+    input {
+      height: 100%;
+      padding: 0 10px;
+      padding-right: 24px;
     }
   }
 
@@ -17,4 +30,39 @@
       border: 1px solid red;
     }
   }
+}
+
+@mixin icon {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.input-icon-delete {
+  @include icon;
+  background-image: url('./imgs/btn_text_close.svg');
+  height: 16px;
+  width: 16px;
+  
+  &:hover {
+    background-image: url('./imgs/btn_text_close_over.svg');
+  }
+
+  &:active {
+    background-image: url('./imgs/btn_text_close_over.svg');
+  }
+}
+
+.input-icon-eye {
+  @include icon;
+  height: 24px;
+  width: 24px;
+  background-image: url('./imgs/eye.png');
+
+  &.active, &:active {
+    background-image: url('./imgs/eye_active.png');
+  }
+
 }

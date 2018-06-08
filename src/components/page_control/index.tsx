@@ -119,6 +119,7 @@ export default class PageControl extends React.Component<PageControlProps, PageC
           <div className='page-control-divider'></div>
           <Input
             className='page-control-input'
+            onClick={undefined}
             labelElement={<span>{pageText || 'Page'}</span>}
             id="page-control-input"
             value={pageTemp}

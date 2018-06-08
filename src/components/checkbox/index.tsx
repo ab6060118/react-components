@@ -5,7 +5,8 @@ import './style.scss'
 interface ICheckbox {
   id:string
   checked:boolean
-  handleClick:React.MouseEventHandler<HTMLElement>
+  value:string
+  onClick:React.MouseEventHandler<HTMLElement>
   disabled?:boolean
   className?:string
 }
@@ -34,11 +35,11 @@ export default class Checkbox extends React.PureComponent <ICheckbox> {
   }
 
   render() {
-    let { id, children, handleClick, disabled } = this.props
+    let { id, children, onClick, disabled, value } = this.props
 
     return (
       <div className={this.getClassName()}>
-        <input type="checkbox" id={id} style={{display: 'none'}} onClick={handleClick} disabled={disabled}/>
+        <input type="checkbox" id={id} style={{display: 'none'}} onClick={onClick} disabled={disabled} data-value={value}/>
         <label className="checkbox-label" htmlFor={id}>
           <span className={this.getIconClassName()}></span>
           {children}
