@@ -11,7 +11,7 @@ const plugins = [
   }),
   new ExtractTextPlugin({
     filename: "[name]/style.css",
-    disable: process.env.NODE_ENV !== "prod"
+    disable: process.env.NODE_ENV !== "production"
   }),
   // new Webpack.optimize.CommonsChunkPlugin({
     // name: 'vendor',
@@ -27,7 +27,7 @@ const plugins = [
 ]
 
 module.exports = {
-  mode="development",
+  mode: "development",
   entry: __dirname + "/src/index.tsx",
   output: {
     path: __dirname + "/dist",
@@ -35,7 +35,7 @@ module.exports = {
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: process.env.NODE_ENV === 'prod' ? undefined : "source-map",
+  devtool: process.env.NODE_ENV === 'production' ? undefined : "source-map",
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
