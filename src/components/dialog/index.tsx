@@ -1,6 +1,6 @@
 import * as React from 'react'
 import WindowContainer from '../window_container'
-import Button from '../button'
+import Button from "../button";
 
 import './stylt.scss'
 
@@ -26,13 +26,13 @@ export default class Dialog extends React.PureComponent <DialogProps> {
   getIconClass(level:DIALOG_LEVEL) {
     switch(level) {
       case DIALOG_LEVEL.INFO:
-        return 'dialog-icon-info'
+      return 'dialog-icon-info'
       case DIALOG_LEVEL.WARNING:
-        return 'dialog-icon-warning'
+      return 'dialog-icon-warning'
       case DIALOG_LEVEL.HELP:
-        return 'dialog-icon-help'
+      return 'dialog-icon-help'
       case DIALOG_LEVEL.ERROR:
-        return 'dialog-icon-error'
+      return 'dialog-icon-error'
     }
   }
 
@@ -62,19 +62,15 @@ export default class Dialog extends React.PureComponent <DialogProps> {
             <span className={this.getIconClass(level)}></span>
           </div>
           <div className="dialog-content">
-          { children }
+            { children }
           </div>
         </div>
         <div className="dialog-footer">
           <div className="button-group">
-          {showOkButton !== false &&
-            <Button handleClick={handleOkClick} disabled={true}>
-              {okText || 'Ok'}
-            </Button>
-          }
-            <Button handleClick={handleNoClick} disabled={false}>
-              {noText || 'No'}
-            </Button>
+            {showOkButton !== false &&
+            <Button onClick={handleOkClick} disabled={true}> {okText || 'Ok'} </Button>
+            }
+            <Button onClick={handleNoClick} disabled={false}> {noText || 'No'} </Button>
           </div>
         </div>
       </div>

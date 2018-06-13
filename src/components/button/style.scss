@@ -18,8 +18,9 @@
     color: #2f2f2f;
   }
 
-  &.disabled {
+  &:disabled {
     border-color: #aeaeae;
+    cursor: initial;
     color: #aeaeae;
   }
 }
