@@ -47,14 +47,6 @@
         right: 0;
         width: 22px;
         height: 100%;
-
-        .dropdown-open-icon {
-          @include dropdown-icon('./imgs/list_sort_down.png')
-        }
-
-        .dropdown-close-icon {
-          @include dropdown-icon('./imgs/list_sort_up.png')
-        }
       }
     }
   }
@@ -89,4 +81,24 @@
       }
     }
   }
+}
+
+.dropdown-open-icon {
+  @include dropdown-icon('./imgs/list_sort_down.png')
+}
+
+.dropdown-close-icon {
+  @include dropdown-icon('./imgs/list_sort_up.png')
+}
+
+.dropdown-icon-checked {
+  @include dropdown-icon('./imgs/checkbox_on.svg')
+  width: 12px;
+  height: 12px;
+}
+
+.dropdown-icon-unchecked {
+  @include dropdown-icon('./imgs/checkbox_off.svg')
+  width: 12px;
+  height: 12px;
 }

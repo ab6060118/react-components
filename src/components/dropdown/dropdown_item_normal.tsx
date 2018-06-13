@@ -6,7 +6,7 @@ export interface Option {
   selectAble?:boolean
 }
 
-interface DropdownItemNormalProps extends Option{
+export interface DropdownItemNormalProps extends Option{
   handleSelect?:React.MouseEventHandler<HTMLElement>
 }
 

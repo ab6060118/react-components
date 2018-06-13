@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Dropdown, { DropdownItemNormal } from '../components/dropdown'
+import Dropdown, { DropdownItemNormal, DropdownItemMulti } from '../components/dropdown'
 
 const dropdownItems:{text:string, value:any}[] = [
   { text: '1', value: 1 }, { text: '2', value: 2 }, { text: '3', value: 3 },
@@ -71,10 +71,10 @@ export default class DropdownContainer extends React.PureComponent<any, Dropdown
         valueElement={ <span style={{marginLeft: 10}}>{dropdownValue.join(',')}</span> } >
         {
           dropdownItems.map((option, index) => (
-            <DropdownItemNormal value={option.value} key={index}>
+            <DropdownItemMulti value={option.value} key={index} checked={dropdownValue.indexOf(option.value) > -1}>
               <span className="function-info-icon"></span>
               <span style={itemStyle}>{option.text}</span>
-            </DropdownItemNormal>
+            </DropdownItemMulti>
           ))
         }
       </Dropdown>
