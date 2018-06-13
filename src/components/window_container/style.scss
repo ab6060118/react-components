@@ -1,26 +1,31 @@
-@mixin window-container-resizer-n() {
+@mixin window-container-resizer {
   position: absolute;
+  z-index: 1;
+}
+
+@mixin window-container-resizer-n() {
+  @include window-container-resizer;
   width: 100%;
   height: 5px;
   cursor: n-resize;
 }
 
 @mixin window-container-resizer-e() {
-  position: absolute;
+  @include window-container-resizer;
   height: 100%;
   width: 5px;
   cursor: e-resize;
 }
 
 @mixin window-container-resizer-ne() {
-  position: absolute;
+  @include window-container-resizer;
   height: 5px;
   width: 5px;
   cursor: ne-resize;
 }
 
 @mixin window-container-resizer-se() {
-  position: absolute;
+  @include window-container-resizer;
   height: 5px;
   width: 5px;
   cursor: se-resize;
