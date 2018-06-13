@@ -25,7 +25,7 @@ export default class DropdownItemNormal extends React.PureComponent<DropdownItem
 
     return (
       <label className={this.getClassName()} htmlFor={`dropdown-item-normal-${value}`}>
-        <input style={{display: 'none'}} id={`dropdown-item-normal-${value}`} onClick={handleSelect} disabled={disabled || selectAble} data-value={value} readOnly/>
+        <input style={{display: 'none'}} id={`dropdown-item-normal-${value}`} onClick={handleSelect} disabled={disabled || selectAble === false} data-value={value} readOnly/>
         {children}
       </label>
     )

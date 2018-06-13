@@ -143,6 +143,7 @@ export default class Dropdown extends React.PureComponent<DropdownProps, Dropdow
     }
 
     menu.style.maxHeight = maxHeight + 'px';
+    menu.style.height = height + 'px';
     menu.style.left = fieldLeft + 'px';
     menu.style.width = fieldWidth + 'px';
   }
