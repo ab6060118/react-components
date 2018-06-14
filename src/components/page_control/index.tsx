@@ -28,14 +28,14 @@ interface PageControlProps {
 }
 
 interface PageControlState {
-  pageTemp:number
+  pageTemp:string
 }
 
 export default class PageControl extends React.Component<PageControlProps, PageControlState> {
   constructor(props:PageControlProps) {
     super(props)
     this.state = {
-      pageTemp: props.currentPage
+      pageTemp: props.currentPage.toString()
     }
 
     this.handlePageTempUpdate = this.handlePageTempUpdate.bind(this)
@@ -45,14 +45,14 @@ export default class PageControl extends React.Component<PageControlProps, PageC
 
   componentWillReceiveProps(nextProps:PageControlProps) {
     this.setState({
-      pageTemp: nextProps.currentPage
+      pageTemp: nextProps.currentPage.toString()
     })
   }
 
   handlePageTempUpdate(e:React.ChangeEvent<HTMLInputElement>) {
-    let value = parseInt(e.target.value)
+    let value = e.target.value
 
-    if(isNaN(value)) return
+    if(!/^\d+$/.test(value) && value !== '') return 
 
     this.setState({
       pageTemp: value
@@ -61,7 +61,7 @@ export default class PageControl extends React.Component<PageControlProps, PageC
 
   handleGoPage() {
     let { totalItems, itemPerPage } = this.props
-    let { pageTemp } = this.state
+    let pageTemp = parseInt(this.state.pageTemp)
     let totalPage = Math.ceil(totalItems/itemPerPage)
 
     if(pageTemp > 0 && !isNaN(pageTemp) && pageTemp <= totalPage) {
