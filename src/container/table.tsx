@@ -76,7 +76,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
     }, this.updateTableData)
   }
 
-  handleBodyRowRightClick(selected:any[], top:number, left:number) {
+  handleBodyRowRightClick(e:React.MouseEvent<HTMLElement>, selected:any[]) {
     document.addEventListener('click', this.handleClickOutOfRightClickMenu)
     document.addEventListener('keydown', this.handlePressESC)
 
@@ -84,8 +84,8 @@ export default class TableContainer extends React.PureComponent<any, TableContai
       selected: selected,
       isRightClickMenuOpened: true,
       reightClickPos: {
-        left: left,
-        top: top,
+        top: e.clientY,
+        left: e.clientX,
       }
     })
   }
@@ -178,7 +178,7 @@ export default class TableContainer extends React.PureComponent<any, TableContai
                 </TableHeaderCol>
               </TableHeaderRow>
             </TableHeader>
-            <TableBody multiSelect={true} selectable={true} handleRowSelect={(selected:any[])=>{console.log(selected)}} handleRowRightClick={this.handleBodyRowRightClick}>
+            <TableBody multiSelect={true} selectable={true} handleRowSelect={(e:React.MouseEvent<HTMLElement>,selected:any[])=>{console.log(selected)}} handleRowRightClick={this.handleBodyRowRightClick}>
             {tableData.map((item, index) => (
               <TableBodyRow id={item.id} key={index}>
                 <TableBodyCol>

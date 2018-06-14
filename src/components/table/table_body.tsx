@@ -16,12 +16,6 @@ interface TableBodyStete {
   lastSelectedRowIndex:number
 }
 
-export enum TABLE_ROW_CLICK_OPERATIONS {
-  NORMAL,
-  CTRL,
-  SHIFT,
-}
-
 export default class TableBody extends React.PureComponent<TableBodyProps, TableBodyStete> {
   constructor(props:TableBodyProps) {
     super(props)
@@ -31,20 +25,22 @@ export default class TableBody extends React.PureComponent<TableBodyProps, Table
       lastSelectedRowIndex: undefined
     }
 
-    this.handleRowSelect = this.handleRowSelect.bind(this)
+    this.handleRowClick = this.handleRowClick.bind(this)
     this.handleRowRightClick = this.handleRowRightClick.bind(this)
   }
 
-  handleRowSelect(operation:TABLE_ROW_CLICK_OPERATIONS, index:number, id:any, callback:Function) {
-    let { lastSelectedRowIndex, selected } = this.state
+  handleRowClick(e:React.MouseEvent<HTMLElement>) {
     let { selectable, multiSelect, children, handleRowSelect } = this.props
+    let { lastSelectedRowIndex, selected } = this.state
+    let id = e.currentTarget.dataset.id
+    let index = parseInt(e.currentTarget.dataset.index)
     let newLastSelectedRowIndex:number = lastSelectedRowIndex
     let newSelected:any[] = [...selected]
     let rowElements = React.Children.toArray(children)
 
     if(selectable === false) return
 
-    if(operation === TABLE_ROW_CLICK_OPERATIONS.CTRL && multiSelect === true) {
+    if(e.ctrlKey && multiSelect) {
       if(newSelected.indexOf(id) < 0) {
         newSelected.push(id)
       }
@@ -52,7 +48,7 @@ export default class TableBody extends React.PureComponent<TableBodyProps, Table
         newSelected = newSelected.filter((selected:any) => selected !== id)
       }
     }
-    else if(operation === TABLE_ROW_CLICK_OPERATIONS.SHIFT && multiSelect === true) {
+    else if(e.shiftKey && multiSelect) {
       let selectedIndexs:number[] = []
 
       newSelected = rowElements.filter((row, rowIndex) => {
@@ -61,13 +57,13 @@ export default class TableBody extends React.PureComponent<TableBodyProps, Table
         }
 
         return rowIndex >= index && rowIndex <= lastSelectedRowIndex
-      }).map((row) => (row as any).props.id)
+      }).map((row) => (row as any).props.id.toString())
     }
     else {
       newSelected = [id]
     }
 
-    if(operation !== TABLE_ROW_CLICK_OPERATIONS.SHIFT && multiSelect === true) {
+    if(!e.shiftKey && multiSelect) {
       newLastSelectedRowIndex = index
     }
 
@@ -77,25 +73,32 @@ export default class TableBody extends React.PureComponent<TableBodyProps, Table
     }, () => {
       let { selected } = this.state
       if(handleRowSelect !== undefined) {
-        handleRowSelect(selected)
-      }
-      if(callback !== undefined) {
-        callback(selected)
+        handleRowSelect(e, selected)
       }
     })
   }
 
-  handleRowRightClick(index:number, id:any, mousePosition?:{top:number, left:number}) {
+  handleRowRightClick(e:React.MouseEvent<HTMLElement>) {
     let { selected } = this.state
+    let id = e.currentTarget.dataset.id
+    let index = parseInt(e.currentTarget.dataset.index)
     let { handleRowRightClick } = this.props
 
+    if(!handleRowRightClick) return ;
+
+    e.persist()
+
     if(selected.indexOf(id) < 0) {
-      this.handleRowSelect(TABLE_ROW_CLICK_OPERATIONS.NORMAL, index, id, (selected:any[]) => {
-        handleRowRightClick(selected, mousePosition.top, mousePosition.left)
+      this.setState({
+        selected: [id],
+        lastSelectedRowIndex: index,
+      }, () => {
+        let { selected } = this.state
+        handleRowRightClick(e, selected)
       })
     }
     else {
-      handleRowRightClick(selected, mousePosition.top, mousePosition.left)
+      handleRowRightClick(e, selected)
     }
   }
 
@@ -109,9 +112,9 @@ export default class TableBody extends React.PureComponent<TableBodyProps, Table
         {
           React.Children.map(children, (child, index) => {
             return React.cloneElement(React.Children.only(child), { 
-              isSelected: selected.indexOf((child as any).props.id) > -1,
-              handleRowSelect: this.handleRowSelect,
-              handleRowRightClick: this.handleRowRightClick,
+              isSelected: selected.indexOf((child as any).props.id.toString()) > -1,
+              onClick: this.handleRowClick,
+              onContextMenu: this.handleRowRightClick,
               widths: widths,
               index: index,
             })
