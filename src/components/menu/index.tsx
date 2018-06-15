@@ -1,11 +1,11 @@
 import * as React from 'react'
 import Menu from './menu';
-import MenuDefaultItem from './menu_default_item';
-import MenuSubMenuItem from './menu_sub_menu_item';
+import MenuItemDefault from './menu_item_default';
+import MenuItemSubMenu from './menu_item_sub_menu';
 
 import './style.scss'
 
-class MenuDividerItem extends React.PureComponent {
+class MenuItemDivider extends React.PureComponent {
   render() {
     return (
       <div className="menu-item-divider">
@@ -15,7 +15,7 @@ class MenuDividerItem extends React.PureComponent {
   }
 }
 
-class MenuTitleItem extends React.PureComponent<{text:string}> {
+class MenuItemTitle extends React.PureComponent<{text:string}> {
   render() {
     return (
       <div className="menu-item-title">
@@ -26,10 +26,10 @@ class MenuTitleItem extends React.PureComponent<{text:string}> {
 }
 
 export {
-  MenuTitleItem,
-  MenuDefaultItem,
-  MenuDividerItem,
-  MenuSubMenuItem,
+  MenuItemTitle,
+  MenuItemDefault,
+  MenuItemDivider,
+  MenuItemSubMenu,
 }
 
 export default Menu

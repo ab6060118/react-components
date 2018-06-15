@@ -1,21 +1,21 @@
 import * as React from 'react'
 import Menu from './menu';
 
-interface MenuSubMenuItemProps {
+interface MenuItemSubMenuProps {
   text:string
 }
 
-interface MenuSubMenuItemState {
+interface MenuItemSubMenuState {
   isHover:boolean
   isSubMentOpened:boolean
   subMenuTop:number
   subMenuLeft:number
 }
 
-export default class MenuSubMenuItem extends React.PureComponent<MenuSubMenuItemProps, MenuSubMenuItemState> {
+export default class MenuItemSubMenu extends React.PureComponent<MenuItemSubMenuProps, MenuItemSubMenuState> {
   refs:{[key:string]:HTMLDivElement}
 
-  constructor(props:MenuSubMenuItemProps) {
+  constructor(props:MenuItemSubMenuProps) {
     super(props)
 
     this.state = {

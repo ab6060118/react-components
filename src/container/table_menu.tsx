@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Menu, { MenuDefaultItem, MenuDividerItem, MenuTitleItem, MenuSubMenuItem } from '../components/menu';
+import Menu, { MenuItemDefault, MenuItemDivider, MenuItemTitle, MenuItemSubMenu } from '../components/menu';
 
 export default class TableMenu extends React.Component<any,any> {
   constructor(props:any) {
@@ -17,24 +17,24 @@ export default class TableMenu extends React.Component<any,any> {
 
     return (
       <Menu className="exapmle-table-menu" top={top} left={left}>
-        <MenuDefaultItem onClick={()=>{ console.log('ItemClick'); }}>
+        <MenuItemDefault onClick={()=>{ console.log('ItemClick'); }}>
           <span>{'123'}</span>
-        </MenuDefaultItem>
-        <MenuDividerItem />
-        <MenuTitleItem text="Title" />
-        <MenuSubMenuItem text="Next">
-          <MenuDefaultItem onClick={this.props.handleRowRemove}>
+        </MenuItemDefault>
+        <MenuItemDivider />
+        <MenuItemTitle text="Title" />
+        <MenuItemSubMenu text="Next">
+          <MenuItemDefault onClick={this.props.handleRowRemove}>
             <span>{'123'}</span>
-          </MenuDefaultItem>
-          <MenuDefaultItem onClick={()=>{ console.log('ItemClick'); }}>
+          </MenuItemDefault>
+          <MenuItemDefault onClick={()=>{ console.log('ItemClick'); }}>
             <span>{'123'}</span>
-          </MenuDefaultItem>
-          <MenuDefaultItem onClick={()=>{ console.log('ItemClick'); }}>
+          </MenuItemDefault>
+          <MenuItemDefault onClick={()=>{ console.log('ItemClick'); }}>
             <span>{'123'}</span>
-          </MenuDefaultItem>
-          <MenuDividerItem />
-          <MenuTitleItem text="Title" />
-        </MenuSubMenuItem>
+          </MenuItemDefault>
+          <MenuItemDivider />
+          <MenuItemTitle text="Title" />
+        </MenuItemSubMenu>
       </Menu>
     )
   }
