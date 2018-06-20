@@ -1,0 +1,39 @@
+.carousel {
+  overflow: hidden;
+  position: relative;
+
+  .carousel-body {
+    overflow: hidden;
+
+    .carousel-track {
+      transition: transform 0.5s;
+
+      .carousel-container {
+        display: inline-block;
+      }
+    }
+  }
+
+  .carousel-footer {
+    text-align: center;
+  }
+
+  %carousel-switch {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
+  .carousel-switch-left {
+    @extend %carousel-switch;
+
+    left: 0;
+  }
+
+  .carousel-switch-right {
+    @extend %carousel-switch;
+
+    right: 0;
+  }
+}
