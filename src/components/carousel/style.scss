@@ -20,20 +20,28 @@
 
   %carousel-switch {
     position: absolute;
+    display: inline-block;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+    height: 40px;
+    width: 21px;
   }
 
   .carousel-switch-left {
     @extend %carousel-switch;
 
     left: 0;
+    background-image: url('./imgs/page_previous.svg');
   }
 
   .carousel-switch-right {
     @extend %carousel-switch;
 
     right: 0;
+    background-image: url('./imgs/page_next.svg');
   }
 }

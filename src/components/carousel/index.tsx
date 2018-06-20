@@ -119,10 +119,10 @@ export default class Carousel extends React.PureComponent<CarouselProps,Carousel
           {dots}
         </div>
         {currentIndex > 0 &&
-        <span className="carousel-switch-left" data-type={SWITCH_BUTTON_TYPE.PREVIOUS} onClick={this.handleSwitchClick}>{"<"}</span>
+        <span className="carousel-switch-left" data-type={SWITCH_BUTTON_TYPE.PREVIOUS} onClick={this.handleSwitchClick}/>
         }
         {currentIndex < totalIndexes-1 &&
-        <span className="carousel-switch-right" data-type={SWITCH_BUTTON_TYPE.NEXT} onClick={this.handleSwitchClick}>{">"}</span>
+        <span className="carousel-switch-right" data-type={SWITCH_BUTTON_TYPE.NEXT} onClick={this.handleSwitchClick}/>
         }
       </div>
     )
