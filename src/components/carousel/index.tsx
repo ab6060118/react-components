@@ -99,7 +99,7 @@ export default class Carousel extends React.PureComponent<CarouselProps,Carousel
     let dots:JSX.Element[] = []
 
     for(var i = 0; i < totalIndexes; i++) {
-      dots.push(<span className={`carousel-dot ${i === currentIndex ? 'active' : ''}`} data-index={i} key={i} onClick={this.handleDotClick}>{i}</span>)
+      dots.push(<div className={`carousel-dot ${i === currentIndex ? 'active' : ''}`} data-index={i} key={i} onClick={this.handleDotClick}/>)
     }
 
     return (
