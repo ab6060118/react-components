@@ -7,7 +7,6 @@ interface CarouselProps {
 }
 
 interface CarouselState {
-  width:number
   currentIndex:number
   totalIndexes:number
 }
@@ -24,13 +23,11 @@ const SwitchButtonAction:{[key:number]:number} = {
 
 export default class Carousel extends React.PureComponent<CarouselProps,CarouselState> {
   carousel:React.RefObject<HTMLDivElement> = React.createRef()
-  track:React.RefObject<HTMLDivElement> = React.createRef()
 
   constructor(props:any) {
     super(props)
 
     this.state = {
-      width: undefined,
       currentIndex: 0,
       totalIndexes: React.Children.count(props.children),
     }
@@ -38,18 +35,6 @@ export default class Carousel extends React.PureComponent<CarouselProps,Carousel
     this.handleDotClick = this.handleDotClick.bind(this)
     this.handlGoIndex = this.handlGoIndex.bind(this)
     this.handleSwitchClick = this.handleSwitchClick.bind(this)
-    this.handleWindowResize = this.handleWindowResize.bind(this)
-    this.updateWidth = this.updateWidth.bind(this)
-  }
-
-  componentDidMount() {
-    this.updateWidth()
-
-    window.addEventListener('resize', this.handleWindowResize)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleWindowResize)
   }
 
   handleDotClick(e:React.MouseEvent<HTMLElement>) {
@@ -76,25 +61,8 @@ export default class Carousel extends React.PureComponent<CarouselProps,Carousel
     this.handlGoIndex(currentIndex + SwitchButtonAction[type])
   }
 
-  handleWindowResize(e:Event) {
-    this.updateWidth()
-  }
-
-  updateWidth() {
-    let { totalIndexes } = this.state
-
-    let parentElement:Element = this.carousel.current.parentElement
-    let { width:paretnWidth } = parentElement.getBoundingClientRect()
-
-    this.track.current.style.width = `${paretnWidth*totalIndexes}px`
-
-    this.setState({
-      width: paretnWidth,
-    })
-  }
-
   render() {
-    let { totalIndexes, currentIndex, width } = this.state
+    let { totalIndexes, currentIndex } = this.state
     let { children } = this.props
     let dots:JSX.Element[] = []
 
@@ -105,10 +73,10 @@ export default class Carousel extends React.PureComponent<CarouselProps,Carousel
     return (
       <div className="carousel" ref={this.carousel}>
         <div className="carousel-body">
-          <div className="carousel-track" style={{transform: `translateX(${-width*currentIndex}px)`}} ref={this.track}>
+          <div className="carousel-track" style={{transform: `translateX(${-100*currentIndex}%)`}}>
             {
             React.Children.map(children, (child) => (
-            <div className="carousel-container" style={{width:width}}>
+            <div className="carousel-container">
               {child}
             </div>
             ))
@@ -118,12 +86,8 @@ export default class Carousel extends React.PureComponent<CarouselProps,Carousel
         <div className="carousel-footer">
           {dots}
         </div>
-        {currentIndex > 0 &&
-        <span className="carousel-switch-left" data-type={SWITCH_BUTTON_TYPE.PREVIOUS} onClick={this.handleSwitchClick}/>
-        }
-        {currentIndex < totalIndexes-1 &&
-        <span className="carousel-switch-right" data-type={SWITCH_BUTTON_TYPE.NEXT} onClick={this.handleSwitchClick}/>
-        }
+        <span className={`carousel-switch-left ${currentIndex === 0 ? 'disabled' : ''}`} data-type={SWITCH_BUTTON_TYPE.PREVIOUS} onClick={this.handleSwitchClick}/>
+        <span  className={`carousel-switch-right ${currentIndex === totalIndexes - 1 ? 'disabled' : ''}`} data-type={SWITCH_BUTTON_TYPE.NEXT} onClick={this.handleSwitchClick}/>
       </div>
     )
   }
