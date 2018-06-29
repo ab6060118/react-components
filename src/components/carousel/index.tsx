@@ -4,6 +4,7 @@ import './style.scss';
 
 interface CarouselProps {
   showDots:boolean
+  defaultIndex?:number
 }
 
 interface CarouselState {
@@ -28,7 +29,7 @@ export default class Carousel extends React.PureComponent<CarouselProps,Carousel
     super(props)
 
     this.state = {
-      currentIndex: 0,
+      currentIndex: props.defaultIndex || 0,
       totalIndexes: React.Children.count(props.children),
     }
 
