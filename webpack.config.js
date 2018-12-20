@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const plugins = [
-  new CleanWebpackPlugin(__dirname + '/dist'),
+  new CleanWebpackPlugin(__dirname + '/dest'),
   new HtmlWebpackPlugin( {
     title: 'Hello',
     template: __dirname + '/src/index.html'
@@ -30,7 +30,7 @@ module.exports = {
   mode: "development",
   entry: __dirname + "/src/index.tsx",
   output: {
-    path: __dirname + "/dist",
+    path: __dirname + "/dest",
     filename: "index.js",
   },
 

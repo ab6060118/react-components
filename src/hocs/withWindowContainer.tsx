@@ -1,5 +1,6 @@
 import * as React from "react";
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { minRestoreWindow, topWindow, closeWindow } from '../actions/windows';
 import { State } from '../reducers/store_type'
