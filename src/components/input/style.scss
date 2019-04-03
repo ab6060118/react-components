@@ -25,6 +25,10 @@
     }
   }
 
+  .input-error-message {
+    color: red;
+  }
+
   &.invalid {
     .input-field {
       border: 1px solid red;
@@ -64,5 +68,4 @@
   &.active, &:active {
     background-image: url('./imgs/eye_active.png');
   }
-
 }

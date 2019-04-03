@@ -3,12 +3,15 @@ import * as React from 'react'
 import Input from '../components/input'
 
 export default class InputContainer extends React.PureComponent<any, any> {
+  private inputRef:React.RefObject<Input>
+
   constructor(props:any) {
     super(props)
     this.state = {
       value: 'test',
-      invalid: false,
     }
+
+    this.inputRef = React.createRef()
 
     this.handleUpdate = this.handleUpdate.bind(this)
     this.handleClearClick = this.handleClearClick.bind(this)
@@ -19,7 +22,6 @@ export default class InputContainer extends React.PureComponent<any, any> {
 
     this.setState({
       value: value,
-      invalid: value.includes('a')
     })
   }
 
@@ -30,17 +32,25 @@ export default class InputContainer extends React.PureComponent<any, any> {
   }
 
   render() {
-    let { value, invalid } = this.state
+    let { value } = this.state
 
     return (
       <Input 
+        ref={this.inputRef}
         clearable={true}
         handleClearClick={this.handleClearClick}
+        type='password'
         value={value}
-        invalid={invalid}
         labelElement={<span>Example</span>}
         onClick={undefined}
         onChange={this.handleUpdate}
+        validator={(v:string) => {
+          let reg = /^\d*$/
+          if(!reg.test(v)) {
+            return 'error'
+          }
+          return true
+        }}
         id='example-input' />
     )
   }

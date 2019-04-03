@@ -8,17 +8,19 @@ interface InputProps {
   onClick:React.MouseEventHandler<HTMLElement>
   onChange:React.ChangeEventHandler<HTMLInputElement>
   handleClearClick?:React.MouseEventHandler<HTMLElement>
+  validator?:Function
   clearable?:boolean
   handleEnter?:Function
   className?:string
   type?:string
   labelElement?:JSX.Element
-  invalid?:boolean
   disabled?:boolean
 }
 
 interface InputState {
-  showPwd:boolean
+  showPwd: boolean
+  isValid: (boolean|string)
+  errorMessage: string
 } 
 
 export default class Input extends React.Component<InputProps, InputState> {
@@ -26,11 +28,15 @@ export default class Input extends React.Component<InputProps, InputState> {
     super(props)
 
     this.state = {
-      showPwd: false
+      showPwd: false,
+      isValid: true,
+      errorMessage: undefined,
     }
 
     this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.handleShowPwdClick = this.handleShowPwdClick.bind(this)
+    this.getClassName = this.getClassName.bind(this)
   }
 
   handleShowPwdClick(e:React.MouseEvent<HTMLElement>) {
@@ -45,20 +51,47 @@ export default class Input extends React.Component<InputProps, InputState> {
     if(e.keyCode === 13 && handleEnter) handleEnter()
   }
 
+  handleChange(e:React.ChangeEvent<HTMLInputElement>) {
+    let { validator, onChange } = this.props
+
+    this.isValid(e.target.value)
+
+    onChange(e)
+  }
+
+  isValid(value:any) {
+    let { validator } = this.props
+
+    if(!validator) {
+      return true
+    }
+
+    let valid = validator(value)
+    let isValid = (typeof valid === 'boolean') ? valid : false
+
+    this.setState({
+      isValid: isValid,
+      errorMessage: (typeof valid === 'string') ? valid : undefined,
+    })
+
+    return isValid
+  }
+
   getClassName() {
     let className:string[] = ['input']
-    let { disabled, invalid, className:classStr } = this.props
+    let { disabled, className:classStr } = this.props
+    let { isValid } = this.state
 
     if(classStr) className.push(classStr)
-    if(invalid) className.push('invalid')
+    if(!isValid) className.push('invalid')
     if(disabled) className.push('disabled')
 
     return className.join(' ')
   }
 
   render() {
-    let { id, labelElement, type, value, disabled, onClick, onChange, handleClearClick, clearable } = this.props
-    let { showPwd } = this.state
+    let { id, labelElement, type, value, disabled, onClick, handleClearClick, clearable, validator } = this.props
+    let { showPwd, isValid, errorMessage } = this.state
 
     return (
       <label className={this.getClassName()} htmlFor={id}>
@@ -68,17 +101,22 @@ export default class Input extends React.Component<InputProps, InputState> {
             type={(showPwd || !type) ? 'text' : type}
             id={id}
             onClick={onClick}
-            onChange={onChange}
+            onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}
             value={value}
             disabled={disabled} />
-        {(!type && clearable) &&
-          <span className="input-icon-delete" onClick={handleClearClick}></span>
+            {(!type && clearable) &&
+              <span className="input-icon-delete" onClick={handleClearClick}></span>
+            }
+            {type === 'password' &&
+              <span className={`input-icon-eye ${showPwd ? 'active' : ''}`} onClick={this.handleShowPwdClick}></span>
+            }
+        </div>
+        {(validator && !isValid) && 
+        <div className="input-error-message">
+          {errorMessage}
+        </div>
         }
-        {type === 'password' &&
-          <span className={`input-icon-eye ${showPwd ? 'active' : ''}`} onClick={this.handleShowPwdClick}></span>
-        }
-      </div>
       </label>
     )
   }
