@@ -31,6 +31,10 @@ export default class InputContainer extends React.PureComponent<any, any> {
     })
   }
 
+  isValid = () => {
+    return this.inputRef.current.isValid(this.state.value)
+  }
+
   render() {
     let { value } = this.state
 
