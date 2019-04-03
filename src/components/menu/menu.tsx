@@ -10,11 +10,11 @@ interface MenuProps {
 export default class Menu extends React.PureComponent<MenuProps>{
   refs:{[key:string]:HTMLElement}
 
-  PureComponentDidMount() {
+  componentDidMount() {
     this.updateMenuPosition()
   }
 
-  PureComponentDidUpdate() {
+  componentDidUpdate() {
     this.updateMenuPosition()
   }
 
@@ -28,7 +28,7 @@ export default class Menu extends React.PureComponent<MenuProps>{
     if(isSubMenu === true) {
       let { left:parentLeft, width:parentWidth } = menu.parentElement.getBoundingClientRect()
 
-      if(height + top > innerHeight) menu.style.top = innerHeight - height - paddingSpace+ 'px'
+      if(height + top > innerHeight) menu.style.top = innerHeight - height - paddingSpace + 'px'
       if(width + left > innerWidth) menu.style.left = parentLeft - parentWidth - 2 + 'px'
     }
     else {
